@@ -71,3 +71,11 @@ CREATE TABLE Offerta (
     Stato VARCHAR(20) NOT NULL CHECK (Stato IN ('InAttesa', 'Accettata', 'Rifiutata', 'Controproposta')),
     DataOfferta TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE StoricoOfferta (
+    IdStorico SERIAL PRIMARY KEY,
+    IdOfferta INT NOT NULL REFERENCES Offerta(IdOfferta) ON DELETE CASCADE,
+    PrezzoOfferto NUMERIC(12,2) NOT NULL,
+    Stato VARCHAR(20) NOT NULL CHECK (Stato IN ('InAttesa', 'Accettata', 'Rifiutata', 'Controproposta')),
+    DataModifica TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
