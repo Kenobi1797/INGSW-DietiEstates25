@@ -1,15 +1,19 @@
+-- ==========================
+-- TABELLE PRINCIPALI
+-- ==========================
+
 CREATE TABLE Utente (
     IdUtente SERIAL PRIMARY KEY,
     Nome VARCHAR(50) NOT NULL,
     Cognome VARCHAR(50) NOT NULL,
     Email VARCHAR(100) UNIQUE NOT NULL,
-    PasswordHash TEXT,
+    PasswordHash TEXT, 
     Ruolo VARCHAR(30) NOT NULL CHECK (Ruolo IN ('AmministratoreAgenzia', 'Supporto', 'Agente', 'Cliente')),
     PasswordModificata BOOLEAN DEFAULT FALSE,
     AccountAttivo BOOLEAN DEFAULT TRUE,
     DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UltimoAccesso TIMESTAMP,
-    IdAgenzia INT REFERENCES Agenzia(IdAgenzia) ON DELETE SET NULL,
+    IdAgenzia INT REFERENCES Agenzia(IdAgenzia) ON DELETE SET NULL,  
     TentativiFalliti INT DEFAULT 0,
     AccountBloccato BOOLEAN DEFAULT FALSE,
     DataBloccaAccount TIMESTAMP,
@@ -53,7 +57,7 @@ CREATE TABLE Immobile (
     Prezzo NUMERIC(12,2) NOT NULL CHECK (Prezzo >= 0),
     Dimensioni NUMERIC(8,2) CHECK (Dimensioni > 0),
     Indirizzo VARCHAR(200) NOT NULL,
-    Comune VARCHAR(100) NOT NULL,
+    Comune VARCHAR(100) NOT NULL, 
     Provincia VARCHAR(50),
     Regione VARCHAR(50),
     CAP VARCHAR(10),
@@ -68,7 +72,7 @@ CREATE TABLE Immobile (
     PostoAuto BOOLEAN DEFAULT FALSE,
     Cantina BOOLEAN DEFAULT FALSE,
     ClasseEnergetica VARCHAR(5) CHECK (ClasseEnergetica IN ('A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G')),
-    ServiziAggiuntivi TEXT,
+    ServiziAggiuntivi TEXT, 
     Tipologia VARCHAR(20) NOT NULL CHECK (Tipologia IN ('Vendita', 'Affitto')),
     Latitudine DECIMAL(10,8) NOT NULL,
     Longitudine DECIMAL(11,8) NOT NULL,
@@ -86,7 +90,7 @@ CREATE TABLE FotoImmobile (
     UrlFoto TEXT NOT NULL,
     NomeFile VARCHAR(255),
     Descrizione VARCHAR(200),
-    OrdineFoto INT DEFAULT 0,
+    OrdineFoto INT DEFAULT 0, 
     FotoPrincipale BOOLEAN DEFAULT FALSE,
     DataCaricamento TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -95,11 +99,11 @@ CREATE TABLE ServizioVicino (
     IdServizio SERIAL PRIMARY KEY,
     IdImmobile INT NOT NULL REFERENCES Immobile(IdImmobile) ON DELETE CASCADE,
     Tipo VARCHAR(50) NOT NULL CHECK (Tipo IN ('Scuola', 'Parco', 'TrasportoPubblico', 'Ospedale', 'Supermercato', 'Farmacia', 'Banca')),
-    Nome VARCHAR(200),
-    Distanza NUMERIC(6,2),
+    Nome VARCHAR(200),  
+    Distanza NUMERIC(6,2), 
     Indirizzo VARCHAR(200),
-    DataVerifica TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    VerificaAutomatica BOOLEAN DEFAULT TRUE
+    DataVerifica TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
+    VerificaAutomatica BOOLEAN DEFAULT TRUE  
 );
 
 CREATE TABLE Offerta (
@@ -110,10 +114,10 @@ CREATE TABLE Offerta (
     PrezzoOfferto NUMERIC(12,2) NOT NULL CHECK (PrezzoOfferto >= 0),
     Stato VARCHAR(20) NOT NULL CHECK (Stato IN ('InAttesa', 'Accettata', 'Rifiutata', 'Controproposta', 'Ritirata')),
     DataOfferta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    DataScadenza TIMESTAMP,
-    Note TEXT,
-    OffertaManuale BOOLEAN DEFAULT FALSE,
-    IdOffertaOriginale INT REFERENCES Offerta(IdOfferta),
+    DataScadenza TIMESTAMP,  
+    Note TEXT,  
+    OffertaManuale BOOLEAN DEFAULT FALSE,  
+    IdOffertaOriginale INT REFERENCES Offerta(IdOfferta),  
     UNIQUE(IdImmobile, IdCliente, Stato) DEFERRABLE INITIALLY DEFERRED
 );
 
@@ -124,6 +128,6 @@ CREATE TABLE StoricoOfferta (
     Stato VARCHAR(20) NOT NULL CHECK (Stato IN ('InAttesa', 'Accettata', 'Rifiutata', 'Controproposta', 'Ritirata')),
     DataModifica TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Note TEXT,
-    IdUtenteModifica INT REFERENCES Utente(IdUtente),
+    IdUtenteModifica INT REFERENCES Utente(IdUtente),  
     MotivoModifica VARCHAR(200)
 );
