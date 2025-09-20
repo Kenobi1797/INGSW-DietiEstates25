@@ -9,19 +9,8 @@ CREATE TABLE Utente (
     Email VARCHAR(100) UNIQUE NOT NULL,
     PasswordHash TEXT, 
     Ruolo VARCHAR(30) NOT NULL CHECK (Ruolo IN ('AmministratoreAgenzia', 'Supporto', 'Agente', 'Cliente')),
-    PasswordModificata BOOLEAN DEFAULT FALSE,
-    AccountAttivo BOOLEAN DEFAULT TRUE,
     DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UltimoAccesso TIMESTAMP,
-    IdAgenzia INT REFERENCES Agenzia(IdAgenzia) ON DELETE SET NULL,  
-    TentativiFalliti INT DEFAULT 0,
-    AccountBloccato BOOLEAN DEFAULT FALSE,
-    DataBloccaAccount TIMESTAMP,
-    
-    CONSTRAINT check_agenzia_ruolo CHECK (
-        (Ruolo = 'AmministratoreAgenzia') OR 
-        (Ruolo != 'AmministratoreAgenzia' AND IdAgenzia IS NOT NULL)
-    )
+    IdAgenzia INT REFERENCES Agenzia(IdAgenzia) ON DELETE SET NULL
 );
 
 CREATE TABLE OAuthAccount (
@@ -119,15 +108,4 @@ CREATE TABLE Offerta (
     OffertaManuale BOOLEAN DEFAULT FALSE,  
     IdOffertaOriginale INT REFERENCES Offerta(IdOfferta),  
     UNIQUE(IdImmobile, IdCliente, Stato) DEFERRABLE INITIALLY DEFERRED
-);
-
-CREATE TABLE StoricoOfferta (
-    IdStorico SERIAL PRIMARY KEY,
-    IdOfferta INT NOT NULL REFERENCES Offerta(IdOfferta) ON DELETE CASCADE,
-    PrezzoOfferto NUMERIC(12,2) NOT NULL,
-    Stato VARCHAR(20) NOT NULL CHECK (Stato IN ('InAttesa', 'Accettata', 'Rifiutata', 'Controproposta', 'Ritirata')),
-    DataModifica TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Note TEXT,
-    IdUtenteModifica INT REFERENCES Utente(IdUtente),  
-    MotivoModifica VARCHAR(200)
 );
