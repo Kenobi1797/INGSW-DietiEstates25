@@ -28,12 +28,7 @@ CREATE TABLE OAuthAccount (
 CREATE TABLE Agenzia (
     IdAgenzia SERIAL PRIMARY KEY,
     Nome VARCHAR(100) NOT NULL,
-    Indirizzo VARCHAR(200),
-    Telefono VARCHAR(20),
-    Email VARCHAR(100),
-    Sito VARCHAR(200),
     IdAmministratore INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
-    DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Attiva BOOLEAN DEFAULT TRUE
 );
 
@@ -98,8 +93,7 @@ CREATE TABLE ServizioVicino (
 CREATE TABLE Offerta (
     IdOfferta SERIAL PRIMARY KEY,
     IdImmobile INT NOT NULL REFERENCES Immobile(IdImmobile) ON DELETE CASCADE,
-    IdCliente INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
-    IdAgente INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
+    IdUtente INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
     PrezzoOfferto NUMERIC(12,2) NOT NULL CHECK (PrezzoOfferto >= 0),
     Stato VARCHAR(20) NOT NULL CHECK (Stato IN ('InAttesa', 'Accettata', 'Rifiutata', 'Controproposta', 'Ritirata')),
     DataOfferta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -107,5 +101,5 @@ CREATE TABLE Offerta (
     Note TEXT,  
     OffertaManuale BOOLEAN DEFAULT FALSE,  
     IdOffertaOriginale INT REFERENCES Offerta(IdOfferta),  
-    UNIQUE(IdImmobile, IdCliente, Stato) DEFERRABLE INITIALLY DEFERRED
+    UNIQUE(IdImmobile, IdUtente, Stato) DEFERRABLE INITIALLY DEFERRED
 );
