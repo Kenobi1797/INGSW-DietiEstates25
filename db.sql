@@ -60,23 +60,13 @@ CREATE TABLE Immobile (
     Tipologia VARCHAR(20) NOT NULL CHECK (Tipologia IN ('Vendita', 'Affitto')),
     Latitudine DECIMAL(10,8) NOT NULL,
     Longitudine DECIMAL(11,8) NOT NULL,
+    FotoUrls TEXT[],
     DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     DataModifica TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Pubblicato BOOLEAN DEFAULT TRUE,
     DataPubblicazione TIMESTAMP,
     Venduto BOOLEAN DEFAULT FALSE,
     DataVendita TIMESTAMP
-);
-
-CREATE TABLE FotoImmobile (
-    IdFoto SERIAL PRIMARY KEY,
-    IdImmobile INT NOT NULL REFERENCES Immobile(IdImmobile) ON DELETE CASCADE,
-    UrlFoto TEXT NOT NULL,
-    NomeFile VARCHAR(255),
-    Descrizione VARCHAR(200),
-    OrdineFoto INT DEFAULT 0, 
-    FotoPrincipale BOOLEAN DEFAULT FALSE,
-    DataCaricamento TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE ServizioVicino (
