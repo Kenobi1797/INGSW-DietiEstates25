@@ -37,6 +37,7 @@ CREATE TABLE Immobile (
     IdAgente INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
     IdAgenzia INT NOT NULL REFERENCES Agenzia(IdAgenzia) ON DELETE CASCADE,
     Titolo VARCHAR(150) NOT NULL,
+    Descrizione TEXT,
     Prezzo NUMERIC(12,2) NOT NULL CHECK (Prezzo >= 0),
     Dimensioni NUMERIC(8,2) CHECK (Dimensioni > 0),
     Indirizzo VARCHAR(200) NOT NULL,
