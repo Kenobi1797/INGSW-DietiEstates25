@@ -35,7 +35,6 @@ CREATE TABLE Agenzia (
 CREATE TABLE Immobile (
     IdImmobile SERIAL PRIMARY KEY,
     IdAgente INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
-    IdAgenzia INT NOT NULL REFERENCES Agenzia(IdAgenzia) ON DELETE CASCADE,
     Titolo VARCHAR(150) NOT NULL,
     Descrizione TEXT,
     Prezzo NUMERIC(12,2) NOT NULL CHECK (Prezzo >= 0),
@@ -50,6 +49,9 @@ CREATE TABLE Immobile (
     Giardino BOOLEAN DEFAULT FALSE,
     PostoAuto BOOLEAN DEFAULT FALSE,
     Cantina BOOLEAN DEFAULT FALSE,
+    ScuoleVicine BOOLEAN DEFAULT FALSE,
+    ParchiVicini BOOLEAN DEFAULT FALSE,
+    TrasportiPubbliciVicini BOOLEAN DEFAULT FALSE,
     ClasseEnergetica VARCHAR(5) CHECK (ClasseEnergetica IN ('A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G')),
     Tipologia VARCHAR(20) NOT NULL CHECK (Tipologia IN ('Vendita', 'Affitto')),
     Latitudine DECIMAL(10,8) NOT NULL,
@@ -58,17 +60,6 @@ CREATE TABLE Immobile (
     DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Venduto BOOLEAN DEFAULT FALSE,
     DataVendita TIMESTAMP
-);
-
-CREATE TABLE ServizioVicino (
-    IdServizio SERIAL PRIMARY KEY,
-    IdImmobile INT NOT NULL REFERENCES Immobile(IdImmobile) ON DELETE CASCADE,
-    Tipo VARCHAR(50) NOT NULL CHECK (Tipo IN ('Scuola', 'Parco', 'TrasportoPubblico', 'Ospedale', 'Supermercato', 'Farmacia', 'Banca')),
-    Nome VARCHAR(200),  
-    Distanza NUMERIC(6,2), 
-    Indirizzo VARCHAR(200),
-    DataVerifica TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
-    VerificaAutomatica BOOLEAN DEFAULT TRUE  
 );
 
 CREATE TABLE Offerta (
@@ -81,6 +72,5 @@ CREATE TABLE Offerta (
     DataScadenza TIMESTAMP,  
     Note TEXT,  
     OffertaManuale BOOLEAN DEFAULT FALSE,  
-    IdOffertaOriginale INT REFERENCES Offerta(IdOfferta),  
-    UNIQUE(IdImmobile, IdUtente, Stato) DEFERRABLE INITIALLY DEFERRED
+    IdOffertaOriginale INT REFERENCES Offerta(IdOfferta)
 );
