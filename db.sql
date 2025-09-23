@@ -2,6 +2,13 @@
 -- TABELLE PRINCIPALI
 -- ==========================
 
+CREATE TABLE Agenzia (
+    IdAgenzia SERIAL PRIMARY KEY,
+    Nome VARCHAR(100) NOT NULL,
+    IdAmministratore INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
+    Attiva BOOLEAN DEFAULT TRUE
+);
+
 CREATE TABLE Utente (
     IdUtente SERIAL PRIMARY KEY,
     Nome VARCHAR(50) NOT NULL,
@@ -23,13 +30,6 @@ CREATE TABLE OAuthAccount (
     RefreshToken TEXT,
     DataCollegamento TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (Provider, ProviderUserId)
-);
-
-CREATE TABLE Agenzia (
-    IdAgenzia SERIAL PRIMARY KEY,
-    Nome VARCHAR(100) NOT NULL,
-    IdAmministratore INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
-    Attiva BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE Immobile (
