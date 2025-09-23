@@ -2,14 +2,14 @@
 
 | Campo | Contenuto |
 |-------|-----------|
-| **Titolo** | Caricamento nuovi immobili |
+| **Titolo** | Caricamento e gestione immobili con verifica automatica servizi |
 | **Attore primario** | Agente immobiliare |
-| **Stakeholder / interessati** | Utenti, Agente immobiliare, Amministratore |
-| **Precondizioni** | Agente autenticato; immobile da inserire pronto |
-| **Postcondizioni** | Immobile salvato nel database con posizione e categorie corrette |
-| **Scenario principale / Flusso base** | 1. Agente apre pagina “Nuovo immobile” <br> 2. Inserisce dati: foto, descrizione, prezzo, stanze, piano, ascensore, servizi, classe energetica <br> 3. Seleziona categoria (vendita/affitto) <br> 4. Posiziona l’immobile sulla mappa <br> 5. Sistema salva immobile |
-| **Flussi alternativi / eccezioni** | - Dati mancanti → messaggio di errore <br> - Immagini troppo grandi → ridimensionamento o avviso |
-| **Requisiti speciali** | Integrazione con mappa interattiva (Google Maps); supporto futuri affitti brevi/case vacanze |
-
-**Mock-up:** Inserire schermata form caricamento immobile con mappa.
-
+| **Stakeholder / interessati** | Utenti/Clienti, Agente immobiliare, Gestore agenzia, Amministratore |
+| **Precondizioni** | Agente autenticato con permessi di inserimento; connessione internet attiva per API esterne |
+| **Postcondizioni** | Immobile salvato nel database con posizione geocodificata, categorie corrette e indicatori di prossimità automaticamente verificati |
+| **Scenario principale / Flusso base** | 1. Agente accede alla sezione "Gestione Immobili" e seleziona "Nuovo immobile" <br> 2. Compila il form con dati obbligatori: <br> &nbsp;&nbsp;&nbsp;- Foto multiple (min. 3, max. 20) <br> &nbsp;&nbsp;&nbsp;- Descrizione dettagliata <br> &nbsp;&nbsp;&nbsp;- Prezzo di listino <br> &nbsp;&nbsp;&nbsp;- Dimensioni (mq) <br> &nbsp;&nbsp;&nbsp;- Indirizzo completo <br> &nbsp;&nbsp;&nbsp;- Numero di stanze e bagni <br> &nbsp;&nbsp;&nbsp;- Piano e presenza ascensore <br> &nbsp;&nbsp;&nbsp;- Classe energetica <br> 3. Seleziona categoria obbligatoria (vendita/affitto) <br> 4. Specifica servizi aggiuntivi (portineria, climatizzazione, garage, etc.) <br> 5. Posiziona l'immobile sulla mappa interattiva per geocodifica precisa <br> 6. Sistema valida automaticamente indirizzo tramite geocoding <br> 7. **Sistema verifica automaticamente tramite API Geoapify:** <br> &nbsp;&nbsp;&nbsp;- Presenza di scuole nelle vicinanze <br> &nbsp;&nbsp;&nbsp;- Parchi pubblici nel raggio di 500m <br> &nbsp;&nbsp;&nbsp;- Fermate trasporto pubblico entro 300m <br> 8. Sistema associa indicatori appropriati ("Vicino a scuole", "Vicino a parchi", "Vicino a trasporto pubblico") <br> 9. Agente rivede riepilogo completo e conferma <br> 10. Sistema salva immobile con tutti i metadati e indicatori |
+| **Flussi alternativi / eccezioni** | **2a.** Dati obbligatori mancanti → sistema evidenzia campi in errore e impedisce prosecuzione <br> **2b.** Foto non conformi (formato/dimensioni) → sistema mostra errore specifico e suggerisce correzioni <br> **5a.** Indirizzo non trovato su mappa → agente può correggere manualmente o inserire coordinate <br> **7a.** API Geoapify non disponibile → sistema procede senza indicatori automatici e notifica l'agente <br> **7b.** Timeout API esterne → sistema riprova automaticamente (max 3 tentativi) <br> **9a.** Errore di salvataggio → sistema mostra messaggio di errore e mantiene i dati inseriti |
+| **Scenari di estensione futura** | **10a.** Supporto categorizzazione "affitti brevi" e "case vacanze" (funzionalità non implementata) |
+| **Requisiti speciali** | - Integrazione obbligatoria con mappa interattiva (Google Maps o equivalente) <br> - Integrazione con API Geoapify per verifica automatica servizi <br> - Upload multiplo foto con ridimensionamento automatico <br> - Validazione real-time dei dati durante inserimento <br> - Salvataggio progressivo per evitare perdita dati |
+| **Frequenza di utilizzo** | Alta - operazione quotidiana per agenti attivi |
+| **Requisiti di performance** | - Caricamento form < 2 secondi <br> - Risposta API geolocalizzazione < 3 secondi <br> - Upload foto < 5 secondi per immagine |
