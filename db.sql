@@ -69,8 +69,6 @@ CREATE TABLE Offerta (
     PrezzoOfferto NUMERIC(12,2) NOT NULL CHECK (PrezzoOfferto >= 0),
     Stato VARCHAR(20) NOT NULL CHECK (Stato IN ('InAttesa', 'Accettata', 'Rifiutata', 'Controproposta', 'Ritirata')),
     DataOfferta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    DataScadenza TIMESTAMP,  
-    Note TEXT,  
     OffertaManuale BOOLEAN DEFAULT FALSE,  
     IdOffertaOriginale INT REFERENCES Offerta(IdOfferta)
 );
