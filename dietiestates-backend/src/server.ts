@@ -2,6 +2,7 @@ import express from 'express';
 import initDb from './config/initDb';
 import pool from './config/db';
 import authRoutes from './routes/auth';
+import immobileRoutes from './routes/immobileRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,6 +12,9 @@ app.use(express.json());
 
 // Rotte autenticazione
 app.use('/api/auth', authRoutes);
+
+// Rotte immobili
+app.use('/api/immobili', immobileRoutes);
 
 // Endpoint di test
 app.get('/', async (req, res) => {
