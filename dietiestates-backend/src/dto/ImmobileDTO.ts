@@ -15,6 +15,9 @@ export interface ImmobileDTO {
   giardino: boolean;
   postoAuto: boolean;
   cantina: boolean;
+  portineria: boolean;
+  climatizzazione: boolean;
+  riscaldamento?: "Autonomo" | "Centralizzato" | "Pompa di calore" | "Altro";
   scuoleVicine: boolean;
   parchiVicini: boolean;
   trasportiPubbliciVicini: boolean;

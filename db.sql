@@ -2,13 +2,6 @@
 -- TABELLE PRINCIPALI
 -- ==========================
 
-CREATE TABLE Agenzia (
-    IdAgenzia SERIAL PRIMARY KEY,
-    Nome VARCHAR(100) NOT NULL,
-    IdAmministratore INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
-    Attiva BOOLEAN DEFAULT TRUE
-);
-
 CREATE TABLE Utente (
     IdUtente SERIAL PRIMARY KEY,
     Nome VARCHAR(50) NOT NULL,
@@ -32,6 +25,13 @@ CREATE TABLE OAuthAccount (
     UNIQUE (Provider, ProviderUserId)
 );
 
+CREATE TABLE Agenzia (
+    IdAgenzia SERIAL PRIMARY KEY,
+    Nome VARCHAR(100) NOT NULL,
+    IdAmministratore INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
+    Attiva BOOLEAN DEFAULT TRUE
+);
+
 CREATE TABLE Immobile (
     IdImmobile SERIAL PRIMARY KEY,
     IdAgente INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
@@ -49,6 +49,9 @@ CREATE TABLE Immobile (
     Giardino BOOLEAN DEFAULT FALSE,
     PostoAuto BOOLEAN DEFAULT FALSE,
     Cantina BOOLEAN DEFAULT FALSE,
+    Portineria BOOLEAN DEFAULT FALSE,
+    Climatizzazione BOOLEAN DEFAULT FALSE,
+    Riscaldamento VARCHAR(30) CHECK (Riscaldamento IN ('Autonomo', 'Centralizzato', 'Pompa di calore', 'Altro')),
     ScuoleVicine BOOLEAN DEFAULT FALSE,
     ParchiVicini BOOLEAN DEFAULT FALSE,
     TrasportiPubbliciVicini BOOLEAN DEFAULT FALSE,

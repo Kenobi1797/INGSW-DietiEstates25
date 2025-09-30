@@ -3,13 +3,6 @@ import pool from './db';
 async function initDb(): Promise<void> {
   // Crea le tabelle base
   await pool.query(`
-   CREATE TABLE IF NOT EXISTS Agenzia (
-     IdAgenzia SERIAL PRIMARY KEY,
-     Nome VARCHAR(100) NOT NULL,
-     IdAmministratore INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
-     Attiva BOOLEAN DEFAULT TRUE
-    );
-
     CREATE TABLE IF NOT EXISTS Utente (
      IdUtente SERIAL PRIMARY KEY,
      Nome VARCHAR(50) NOT NULL,
@@ -33,6 +26,13 @@ async function initDb(): Promise<void> {
      UNIQUE (Provider, ProviderUserId)
     );
 
+    CREATE TABLE IF NOT EXISTS Agenzia (
+     IdAgenzia SERIAL PRIMARY KEY,
+     Nome VARCHAR(100) NOT NULL,
+     IdAmministratore INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
+     Attiva BOOLEAN DEFAULT TRUE
+    );
+
     CREATE TABLE IF NOT EXISTS Immobile (
      IdImmobile SERIAL PRIMARY KEY,
      IdAgente INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
@@ -50,6 +50,9 @@ async function initDb(): Promise<void> {
      Giardino BOOLEAN DEFAULT FALSE,
      PostoAuto BOOLEAN DEFAULT FALSE,
      Cantina BOOLEAN DEFAULT FALSE,
+     Portineria BOOLEAN DEFAULT FALSE,
+     Climatizzazione BOOLEAN DEFAULT FALSE,
+     Riscaldamento VARCHAR(30) CHECK (Riscaldamento IN ('Autonomo', 'Centralizzato', 'Pompa di calore', 'Altro')),
      ScuoleVicine BOOLEAN DEFAULT FALSE,
      ParchiVicini BOOLEAN DEFAULT FALSE,
      TrasportiPubbliciVicini BOOLEAN DEFAULT FALSE,
