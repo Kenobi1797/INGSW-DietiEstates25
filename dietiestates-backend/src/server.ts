@@ -1,14 +1,16 @@
 import express from 'express';
-import initDb from './config/initDb'; // la funzione che crea le tabelle
-import pool from './config/db';       // il pool di connessione
+import initDb from './config/initDb';
+import pool from './config/db';
 import authRoutes from './routes/auth';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use('/api/auth', authRoutes);
-
+// Middleware per parse JSON
 app.use(express.json());
+
+// Rotte autenticazione
+app.use('/api/auth', authRoutes);
 
 // Endpoint di test
 app.get('/', async (req, res) => {
@@ -21,7 +23,7 @@ app.get('/', async (req, res) => {
   }
 });
 
-// Inizializza il database prima di avviare il server
+// Inizializza il database e avvia il server
 initDb()
   .then(() => {
     console.log('Database pronto ✅');
