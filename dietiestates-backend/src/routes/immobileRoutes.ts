@@ -1,15 +1,18 @@
 import express from 'express';
-import { createImmobile } from '../controllers/immobileController';
+import { createImmobile, searchImmobili } from '../controllers/immobileController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
-// Solo agenti e amministratori possono creare immobili
+// Creazione immobile (solo agenti/admin)
 router.post(
   '/',
   authMiddleware,
   roleMiddleware('Agente', 'AmministratoreAgenzia'),
   createImmobile
 );
+
+// Ricerca immobili (pubblica)
+router.get('/search', searchImmobili);
 
 export default router;

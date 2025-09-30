@@ -16,6 +16,8 @@ app.use('/api/auth', authRoutes);
 // Rotte immobili
 app.use('/api/immobili', immobileRoutes);
 
+app.use('/api/search', immobileRoutes);
+
 // Endpoint di test
 app.get('/', async (req, res) => {
   try {
