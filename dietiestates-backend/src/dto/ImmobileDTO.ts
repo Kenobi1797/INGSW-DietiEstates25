@@ -1,0 +1,29 @@
+export interface ImmobileDTO {
+  idImmobile: number;
+  idAgente: number;
+  titolo: string;
+  descrizione?: string;
+  prezzo: number;
+  dimensioni?: number;
+  indirizzo: string;
+  numeroStanze?: number;
+  numeroBagni?: number;
+  piano?: number;
+  ascensore: boolean;
+  balcone: boolean;
+  terrazzo: boolean;
+  giardino: boolean;
+  postoAuto: boolean;
+  cantina: boolean;
+  scuoleVicine: boolean;
+  parchiVicini: boolean;
+  trasportiPubbliciVicini: boolean;
+  classeEnergetica?: "A+" | "A" | "B" | "C" | "D" | "E" | "F" | "G";
+  tipologia: "Vendita" | "Affitto";
+  latitudine: number;
+  longitudine: number;
+  fotoUrls?: string[];
+  dataCreazione: Date;
+  venduto: boolean;
+  dataVendita?: Date | null;
+}
