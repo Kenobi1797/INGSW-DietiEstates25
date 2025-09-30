@@ -84,6 +84,10 @@ async function initDb(): Promise<void> {
   if (process.env.NODE_ENV === 'development') {
     console.log('✅ Database inizializzato (tabelle create se non esistono)');
   }
+
+  await createDefaultAdmin();
+  await createDefaultAgency();
+
 }
 
 async function createDefaultAdmin(): Promise<void> {
@@ -91,31 +95,66 @@ async function createDefaultAdmin(): Promise<void> {
   const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin123!';
 
   try {
-    // Verifica se l'admin esiste già
-    const checkAdmin = await pool.query(
+    const { rows } = await pool.query(
       'SELECT IdUtente FROM Utente WHERE Email = $1',
       [defaultEmail]
     );
 
-    if (checkAdmin.rows.length === 0) {
-      // Hash della password
+    if (rows.length === 0) {
+      // Crea l'utente admin
       const passwordHash = await bcrypt.hash(defaultPassword, 10);
 
-      // Crea l'utente admin
-      await pool.query(`
-        INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
-        VALUES ($1, $2, $3, $4, $5)
-      `, ['Admin', 'Sistema', defaultEmail, passwordHash, 'AmministratoreAgenzia']);
+      await pool.query(
+        `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
+         VALUES ($1, $2, $3, $4, $5)`,
+        ['Admin', 'Sistema', defaultEmail, passwordHash, 'AmministratoreAgenzia']
+      );
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log('✅ Utente amministratore creato:');
-        console.log(`   Email: ${defaultEmail}`);
-        console.log(`   Password: ${defaultPassword}`);
-        console.log('   ⚠️  CAMBIARE LA PASSWORD DOPO IL PRIMO ACCESSO!');
-      }
+      console.log(`✅ Utente amministratore creato con email "${defaultEmail}". Cambia la password al primo accesso!`);
+    } else {
+      console.log(`ℹ️ Utente amministratore già esistente: "${defaultEmail}"`);
     }
   } catch (error) {
-    console.error('❌ Errore durante la creazione dell\'admin predefinito:', error);
+    console.error('❌ Errore durante la creazione/verifica dell\'admin predefinito:', error);
+    throw error;
+  }
+}
+
+async function createDefaultAgency(): Promise<void> {
+  const defaultAdminEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@dietiestates.com';
+  const defaultAgencyName = process.env.DEFAULT_AGENCY_NAME || 'DietiEstates';
+
+  try {
+    // Trova l'admin
+    const { rows: adminRows } = await pool.query(
+      'SELECT IdUtente FROM Utente WHERE Email = $1',
+      [defaultAdminEmail]
+    );
+
+    if (adminRows.length === 0) {
+      console.warn(`⚠️ Admin con email "${defaultAdminEmail}" non trovato. Creazione agenzia saltata.`);
+      return;
+    }
+
+    const adminId = adminRows[0].idutente;
+
+    // Controlla se esiste già un'agenzia per questo admin
+    const { rows: agencyRows } = await pool.query(
+      'SELECT IdAgenzia FROM Agenzia WHERE IdAmministratore = $1',
+      [adminId]
+    );
+
+    if (agencyRows.length === 0) {
+      await pool.query(
+        'INSERT INTO Agenzia (Nome, IdAmministratore, Attiva) VALUES ($1, $2, $3)',
+        [defaultAgencyName, adminId, true]
+      );
+      console.log(`✅ Agenzia predefinita "${defaultAgencyName}" creata per l'admin "${defaultAdminEmail}".`);
+    } else {
+      console.log(`ℹ️ Agenzia predefinita già esistente per l'admin "${defaultAdminEmail}".`);
+    }
+  } catch (error) {
+    console.error('❌ Errore durante la creazione/verifica dell\'agenzia predefinita:', error);
     throw error;
   }
 }
