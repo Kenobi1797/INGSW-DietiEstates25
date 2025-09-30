@@ -1,0 +1,35 @@
+services:
+  dietiestates-db:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: DietiEstates25
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dietiestates-backend:
+    build:
+      context: ./dietiestates-backend
+    volumes:
+      - ./dietiestates-backend:/usr/src/app
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgres://postgres:postgres@dietiestates-db:5432/DietiEstates25
+      - JWT_SECRET=supersecret
+    depends_on:
+      - dietiestates-db
+    restart: unless-stopped
+
+volumes:
+  db_data:
