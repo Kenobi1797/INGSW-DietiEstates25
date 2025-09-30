@@ -1,10 +1,12 @@
-// server.ts
 import express from 'express';
 import initDb from './config/initDb'; // la funzione che crea le tabelle
 import pool from './config/db';       // il pool di connessione
+import authRoutes from './routes/auth';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use('/api/auth', authRoutes);
 
 app.use(express.json());
 
