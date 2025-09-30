@@ -1,27 +1,33 @@
+// server.ts
 import express from 'express';
-import type { Express } from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import * as dotenv from 'dotenv';
-
-// Carica le variabili d'ambiente
-dotenv.config();
+import initDb from './config/initDb'; // la funzione che crea le tabelle
+import pool from './config/db';       // il pool di connessione
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
-// Rotte base
-app.get('/', (_, res) => {
-  res.json({ message: 'Benvenuto in DietiEstates API' });
+// Endpoint di test
+app.get('/', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.json({ serverTime: result.rows[0].now });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore nel server' });
+  }
 });
 
-// Porta del server
-const PORT = process.env['PORT'] || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server in esecuzione sulla porta ${PORT}`);
-});
+// Inizializza il database prima di avviare il server
+initDb()
+  .then(() => {
+    console.log('Database pronto ✅');
+    app.listen(PORT, () => {
+      console.log(`Server avviato su http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Errore durante l’inizializzazione del database:', err);
+    process.exit(1);
+  });
