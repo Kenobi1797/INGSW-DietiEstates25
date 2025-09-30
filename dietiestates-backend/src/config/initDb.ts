@@ -1,4 +1,8 @@
 import pool from './db';
+import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 async function initDb(): Promise<void> {
   // Crea le tabelle base
@@ -10,8 +14,7 @@ async function initDb(): Promise<void> {
      Email VARCHAR(100) UNIQUE NOT NULL,
      PasswordHash TEXT, 
      Ruolo VARCHAR(30) NOT NULL CHECK (Ruolo IN ('AmministratoreAgenzia', 'Supporto', 'Agente', 'Cliente')),
-     DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-     IdAgenzia INT REFERENCES Agenzia(IdAgenzia) ON DELETE SET NULL
+     DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS OAuthAccount (
@@ -80,6 +83,40 @@ async function initDb(): Promise<void> {
 
   if (process.env.NODE_ENV === 'development') {
     console.log('✅ Database inizializzato (tabelle create se non esistono)');
+  }
+}
+
+async function createDefaultAdmin(): Promise<void> {
+  const defaultEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@dietiestates.com';
+  const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin123!';
+
+  try {
+    // Verifica se l'admin esiste già
+    const checkAdmin = await pool.query(
+      'SELECT IdUtente FROM Utente WHERE Email = $1',
+      [defaultEmail]
+    );
+
+    if (checkAdmin.rows.length === 0) {
+      // Hash della password
+      const passwordHash = await bcrypt.hash(defaultPassword, 10);
+
+      // Crea l'utente admin
+      await pool.query(`
+        INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
+        VALUES ($1, $2, $3, $4, $5)
+      `, ['Admin', 'Sistema', defaultEmail, passwordHash, 'AmministratoreAgenzia']);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log('✅ Utente amministratore creato:');
+        console.log(`   Email: ${defaultEmail}`);
+        console.log(`   Password: ${defaultPassword}`);
+        console.log('   ⚠️  CAMBIARE LA PASSWORD DOPO IL PRIMO ACCESSO!');
+      }
+    }
+  } catch (error) {
+    console.error('❌ Errore durante la creazione dell\'admin predefinito:', error);
+    throw error;
   }
 }
 

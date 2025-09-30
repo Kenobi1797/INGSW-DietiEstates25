@@ -10,7 +10,6 @@ CREATE TABLE Utente (
     PasswordHash TEXT, 
     Ruolo VARCHAR(30) NOT NULL CHECK (Ruolo IN ('AmministratoreAgenzia', 'Supporto', 'Agente', 'Cliente')),
     DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    IdAgenzia INT REFERENCES Agenzia(IdAgenzia) ON DELETE SET NULL
 );
 
 CREATE TABLE OAuthAccount (
