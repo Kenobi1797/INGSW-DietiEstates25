@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import pool from '../config/db';
 import { AuthRequest } from '../middleware/authMiddleware';
+import { getNearbyPlaces } from '../utils/geoapify'; 
 
 // Creazione nuovo immobile
 export async function createImmobile(req: AuthRequest, res: Response) {
@@ -23,9 +24,6 @@ export async function createImmobile(req: AuthRequest, res: Response) {
     portineria,
     climatizzazione,
     riscaldamento,
-    scuoleVicine,
-    parchiVicini,
-    trasportiPubbliciVicini,
     classeEnergetica,
     tipologia,
     latitudine,
@@ -40,6 +38,13 @@ export async function createImmobile(req: AuthRequest, res: Response) {
   try {
     const agenteId = req.user.id;
 
+    // 🚀 Chiamata a Geoapify per determinare luoghi vicini
+    const nearbyPlaces = await getNearbyPlaces(latitudine, longitudine);
+
+    const scuoleVicine = nearbyPlaces.some(p => p.type === 'education.school');
+    const parchiVicini = nearbyPlaces.some(p => p.type === 'leisure.park');
+    const trasportiPubbliciVicini = nearbyPlaces.some(p => p.type === 'transport.public_transport');
+
     const result = await pool.query(
       `INSERT INTO Immobile (
         IdAgente, Titolo, Descrizione, Prezzo, Dimensioni, Indirizzo, NumeroStanze, NumeroBagni, Piano,
@@ -53,7 +58,7 @@ export async function createImmobile(req: AuthRequest, res: Response) {
         numeroStanze || null, numeroBagni || null, piano || null,
         ascensore || false, balcone || false, terrazzo || false, giardino || false,
         postoAuto || false, cantina || false, portineria || false, climatizzazione || false, riscaldamento || null,
-        scuoleVicine || false, parchiVicini || false, trasportiPubbliciVicini || false,
+        scuoleVicine, parchiVicini, trasportiPubbliciVicini,
         classeEnergetica || null, tipologia, latitudine, longitudine, fotoUrls || null
       ]
     );
