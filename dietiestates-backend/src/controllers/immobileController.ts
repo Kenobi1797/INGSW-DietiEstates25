@@ -45,7 +45,7 @@ export async function createImmobile(req: AuthRequest, res: Response) {
         Ascensore, Balcone, Terrazzo, Giardino, PostoAuto, Cantina, Portineria, Climatizzazione, Riscaldamento,
         ScuoleVicine, ParchiVicini, TrasportiPubbliciVicini, ClasseEnergetica, Tipologia, Latitudine, Longitudine, FotoUrls
       ) VALUES (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26
       ) RETURNING *`,
       [
         agenteId, titolo, descrizione || null, prezzo, dimensioni || null, indirizzo,
@@ -115,7 +115,7 @@ export async function searchImmobili(req: Request, res: Response) {
     const whereClause = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';
 
     const query = `
-      SELECT *, ${distanceSelect ? distanceSelect.slice(2) : ''} 
+      SELECT * ${distanceSelect}
       FROM Immobile
       ${whereClause}
       ORDER BY DataCreazione DESC
