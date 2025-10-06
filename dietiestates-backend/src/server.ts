@@ -4,6 +4,7 @@ import pool from './config/db';
 import authRoutes from './routes/auth';
 import immobileRoutes from './routes/immobileRoutes';
 import offertaRoutes from './routes/offertaRoutes';
+import agenziaRoutes from './routes/agenziaRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +21,8 @@ app.use('/api/immobili', immobileRoutes);
 app.use('/api/search', immobileRoutes);
 
 app.use('/api/offerte', offertaRoutes);
+
+app.use('/api/agenzie', agenziaRoutes);
 
 // Endpoint di test
 app.get('/', async (req, res) => {
