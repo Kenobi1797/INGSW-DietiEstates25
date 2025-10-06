@@ -1,5 +1,5 @@
 import express from 'express';
-import { createAgenzia, getAgenzie } from '../controllers/agenziaController';
+import { createAgenzia, getAgenzie, updateAgenzia } from '../controllers/agenziaController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
 const router = express.Router();
@@ -9,5 +9,8 @@ router.post('/', authMiddleware, roleMiddleware('AmministratoreAgenzia'), create
 
 // Lista agenzie (qualsiasi utente loggato)
 router.get('/', authMiddleware, getAgenzie);
+
+// Aggiornamento agenzia (solo admin/supporto se vuoi)
+router.put('/:idAgenzia', authMiddleware, roleMiddleware('AmministratoreAgenzia', 'Supporto'), updateAgenzia);
 
 export default router;
