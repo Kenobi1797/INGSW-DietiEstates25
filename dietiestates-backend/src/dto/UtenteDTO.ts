@@ -6,5 +6,4 @@ export interface UtenteDTO {
   passwordHash?: string;
   ruolo: "AmministratoreAgenzia" | "Supporto" | "Agente" | "Cliente";
   dataCreazione: Date;
-  idAgenzia?: number | null;
 }

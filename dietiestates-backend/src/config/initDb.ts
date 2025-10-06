@@ -121,24 +121,10 @@ async function createDefaultAdmin(): Promise<void> {
 }
 
 async function createDefaultAgency(): Promise<void> {
-  const defaultAdminEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@dietiestates.com';
   const defaultAgencyName = process.env.DEFAULT_AGENCY_NAME || 'DietiEstates';
+  const adminId = 1; // ID dell'amministratore predefinito
 
   try {
-    // Trova l'admin
-    const { rows: adminRows } = await pool.query(
-      'SELECT IdUtente FROM Utente WHERE Email = $1',
-      [defaultAdminEmail]
-    );
-
-    if (adminRows.length === 0) {
-      console.warn(`⚠️ Admin con email "${defaultAdminEmail}" non trovato. Creazione agenzia saltata.`);
-      return;
-    }
-
-    const adminId = adminRows[0].idutente;
-
-    // Controlla se esiste già un'agenzia per questo admin
     const { rows: agencyRows } = await pool.query(
       'SELECT IdAgenzia FROM Agenzia WHERE IdAmministratore = $1',
       [adminId]
@@ -149,9 +135,9 @@ async function createDefaultAgency(): Promise<void> {
         'INSERT INTO Agenzia (Nome, IdAmministratore, Attiva) VALUES ($1, $2, $3)',
         [defaultAgencyName, adminId, true]
       );
-      console.log(`✅ Agenzia predefinita "${defaultAgencyName}" creata per l'admin "${defaultAdminEmail}".`);
+      console.log(`✅ Agenzia predefinita "${defaultAgencyName}" creata per l'admin`);
     } else {
-      console.log(`ℹ️ Agenzia predefinita già esistente per l'admin "${defaultAdminEmail}".`);
+      console.log(`ℹ️ Agenzia predefinita già esistente`);
     }
   } catch (error) {
     console.error('❌ Errore durante la creazione/verifica dell\'agenzia predefinita:', error);

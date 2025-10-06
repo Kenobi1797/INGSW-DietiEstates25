@@ -44,42 +44,41 @@ export async function login(req: Request, res: Response) {
 
 // Creazione agente (solo admin/supporto)
 export async function createAgent(req: AuthRequest, res: Response) {
-  const { nome, cognome, email, password } = req.body;
+  const { nome, cognome, email, password, idAgenzia } = req.body;
 
-  if (!nome || !cognome || !email || !password) {
-    return res.status(400).json({ error: 'Tutti i campi sono obbligatori' });
+  if (!nome || !cognome || !email || !password || !idAgenzia) {
+    return res.status(400).json({ error: 'Tutti i campi e idAgenzia sono obbligatori' });
   }
 
   try {
+    // Controlla email duplicata
     const exists = await pool.query('SELECT IdUtente FROM Utente WHERE Email = $1', [email]);
     if (exists.rows.length > 0) return res.status(400).json({ error: 'Email già registrata' });
 
+    // Controlla che l'agenzia esista
+    const agencyCheck = await pool.query('SELECT IdAgenzia FROM Agenzia WHERE IdAgenzia = $1', [idAgenzia]);
+    if (agencyCheck.rows.length === 0) return res.status(400).json({ error: 'Agenzia non trovata' });
+
+    // Crea l'agente
     const passwordHash = await bcrypt.hash(password, 10);
-
-    const creatorId = req.user.id;
-    const { rows: agencyRows } = await pool.query(
-      'SELECT IdAgenzia FROM Agenzia WHERE IdAmministratore = $1',
-      [creatorId]
-    );
-
-    if (agencyRows.length === 0) return res.status(400).json({ error: 'Agenzia non trovata per l\'utente' });
-
-    const idAgenzia = agencyRows[0].idagenzia;
-
     const result = await pool.query(
-      `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo, IdAgenzia)
-       VALUES ($1, $2, $3, $4, $5, $6)
-       RETURNING IdUtente, Nome, Cognome, Email, Ruolo, IdAgenzia, DataCreazione`,
-      [nome, cognome, email, passwordHash, 'Agente', idAgenzia]
+      `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING IdUtente, Nome, Cognome, Email, Ruolo, DataCreazione`,
+      [nome, cognome, email, passwordHash, 'Agente']
     );
 
-    res.status(201).json(result.rows[0]);
+    res.status(201).json({
+      ...result.rows[0],
+      idAgenzia  // restituisci l'idAgenzia per il frontend
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Errore durante la creazione dell\'agente' });
   }
 }
 
+// Creazione supporto (solo admin)
 export async function createSupport(req: AuthRequest, res: Response) {
   const { nome, cognome, email, password } = req.body;
 
@@ -107,6 +106,7 @@ export async function createSupport(req: AuthRequest, res: Response) {
   }
 }
 
+// Cambio password
 export async function changePassword(req: AuthRequest, res: Response) {
   const userId = req.user.id;
   const { oldPassword, newPassword } = req.body;
