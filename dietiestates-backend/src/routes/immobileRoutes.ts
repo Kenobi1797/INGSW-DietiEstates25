@@ -12,7 +12,7 @@ router.post(
   createImmobile
 );
 
-// Ricerca immobili (pubblica)
-router.get('/search', searchImmobili);               // serve autenticazione ?
+// Ricerca immobili (solo utenti registrati)
+router.get('/search', authMiddleware, searchImmobili);             // serve autenticazione ?
 
 export default router;
