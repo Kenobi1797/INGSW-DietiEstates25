@@ -44,7 +44,10 @@ export async function createImmobile(req: AuthRequest, res: Response) {
     // Imposta i flag solo se presenti, altrimenti false
     const scuoleVicine = nearbyPlaces.some(p => p.type === 'education.school') ? true : false;
     const parchiVicini = nearbyPlaces.some(p => p.type === 'leisure.park') ? true : false;
-    const trasportiPubbliciVicini = nearbyPlaces.some(p => p.type === 'transport.public_transport') ? true : false;
+    const trasportiPubbliciVicini = nearbyPlaces.some(p => 
+    ['public_transport.stop_position', 'bus_stop', 'tram_stop', 'subway_entrance', 'railway.station'].includes(p.type)
+    ) ? true : false;
+
 
     const result = await pool.query(
       `INSERT INTO Immobile (
