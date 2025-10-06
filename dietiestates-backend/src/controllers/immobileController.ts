@@ -41,9 +41,10 @@ export async function createImmobile(req: AuthRequest, res: Response) {
     // 🚀 Chiamata a Geoapify per determinare luoghi vicini
     const nearbyPlaces = await getNearbyPlaces(latitudine, longitudine);
 
-    const scuoleVicine = nearbyPlaces.some(p => p.type === 'education.school');
-    const parchiVicini = nearbyPlaces.some(p => p.type === 'leisure.park');
-    const trasportiPubbliciVicini = nearbyPlaces.some(p => p.type === 'transport.public_transport');
+    // Imposta i flag solo se presenti, altrimenti false
+    const scuoleVicine = nearbyPlaces.some(p => p.type === 'education.school') ? true : false;
+    const parchiVicini = nearbyPlaces.some(p => p.type === 'leisure.park') ? true : false;
+    const trasportiPubbliciVicini = nearbyPlaces.some(p => p.type === 'transport.public_transport') ? true : false;
 
     const result = await pool.query(
       `INSERT INTO Immobile (

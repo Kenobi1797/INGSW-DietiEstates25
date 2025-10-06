@@ -24,9 +24,10 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - NODE_ENV=development
-      - DATABASE_URL=postgres://postgres:postgres@dietiestates-db:5432/DietiEstates25
-      - JWT_SECRET=supersecret
+    - NODE_ENV=development
+    - DATABASE_URL=postgres://postgres:postgres@dietiestates-db:5432/DietiEstates25
+    - JWT_SECRET=supersecret
+    - GEOAPIFY_KEY=d563955355f940038bab665e9c538a44
     depends_on:
       - dietiestates-db
     restart: unless-stopped
