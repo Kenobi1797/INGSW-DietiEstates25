@@ -93,3 +93,49 @@ export async function getOffertePerUtente(req: AuthRequest, res: Response) {
     res.status(500).json({ error: 'Errore nel recupero delle offerte dell\'utente' });
   }
 }
+
+// Aggiorna stato offerta (solo agente/admin)
+export async function updateOfferta(req: AuthRequest, res: Response) {
+  const { idOfferta } = req.params;
+  const { nuovoStato, prezzoControproposta } = req.body; // nuovoStato: "Accettata" | "Rifiutata" | "Controproposta"
+
+  if (!nuovoStato || !['Accettata', 'Rifiutata', 'Controproposta'].includes(nuovoStato)) {
+    return res.status(400).json({ error: 'Stato non valido' });
+  }
+
+  try {
+    // Verifica che l'offerta esista
+    const { rows } = await pool.query('SELECT * FROM Offerta WHERE IdOfferta = $1', [idOfferta]);
+    if (!rows.length) return res.status(404).json({ error: 'Offerta non trovata' });
+
+    const offerta = rows[0];
+
+    if (nuovoStato === 'Controproposta') {
+      if (!prezzoControproposta) {
+        return res.status(400).json({ error: 'Prezzo della controproposta obbligatorio' });
+      }
+
+      // Crea nuova offerta collegata all'originale
+      const result = await pool.query(
+        `INSERT INTO Offerta
+         (IdImmobile, IdUtente, PrezzoOfferto, Stato, OffertaManuale, IdOffertaOriginale)
+         VALUES ($1, $2, $3, 'InAttesa', FALSE, $4)
+         RETURNING *`,
+        [offerta.idimmobile, offerta.idutente, prezzoControproposta, offerta.idofferta]
+      );
+
+      return res.status(201).json(result.rows[0]);
+    }
+
+    // Aggiorna stato semplice
+    const result = await pool.query(
+      'UPDATE Offerta SET Stato = $1 WHERE IdOfferta = $2 RETURNING *',
+      [nuovoStato, idOfferta]
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore durante l\'aggiornamento dell\'offerta' });
+  }
+}

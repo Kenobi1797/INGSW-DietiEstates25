@@ -3,7 +3,7 @@ import {
   createOfferta,
   createManualOfferta,
   getOffertePerImmobile,
-  getOffertePerUtente
+  getOffertePerUtente, updateOfferta
 } from '../controllers/offertaController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
@@ -20,5 +20,8 @@ router.get('/immobile/:idImmobile', authMiddleware, roleMiddleware('Agente', 'Am
 
 // Storico offerte utente (cliente)
 router.get('/utente', authMiddleware, roleMiddleware('Cliente'), getOffertePerUtente);
+
+// Aggiornamento stato offerta (solo agente/admin)
+router.put('/:idOfferta', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), updateOfferta);
 
 export default router;
