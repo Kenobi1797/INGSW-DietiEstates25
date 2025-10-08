@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import { verifyToken } from '../utils/jwt';
 
 export interface AuthRequest extends Request {
   user?: any;
@@ -13,7 +13,7 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
   if (!token) return res.status(401).json({ error: 'Token mancante' });
 
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET || 'supersecret');
+    req.user = verifyToken(token);
     next();
   } catch (err) {
     res.status(401).json({ error: 'Token non valido' });
@@ -28,3 +28,4 @@ export function roleMiddleware(...roles: string[]) {
     next();
   };
 }
+
