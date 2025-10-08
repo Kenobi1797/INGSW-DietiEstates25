@@ -1,32 +1,9 @@
 import pool from '../config/db';
+import { ImmobileDTO } from '../dto/ImmobileDTO';
 import { getNearbyPlaces } from '../utils/geoapify';
 
-export async function createImmobile(data: {
-  agenteId: number,
-  titolo: string,
-  descrizione?: string,
-  prezzo: number,
-  dimensioni?: number,
-  indirizzo: string,
-  numeroStanze?: number,
-  numeroBagni?: number,
-  piano?: number,
-  ascensore?: boolean,
-  balcone?: boolean,
-  terrazzo?: boolean,
-  giardino?: boolean,
-  postoAuto?: boolean,
-  cantina?: boolean,
-  portineria?: boolean,
-  climatizzazione?: boolean,
-  riscaldamento?: string,
-  classeEnergetica?: string,
-  tipologia: string,
-  latitudine: number,
-  longitudine: number,
-  fotoUrls?: string[]
-}) {
-  // 🚀 Determina luoghi vicini
+export async function createImmobile(data: ImmobileDTO) {
+  // Determina luoghi vicini
   const nearbyPlaces = await getNearbyPlaces(data.latitudine, data.longitudine);
 
   const scuoleVicine = nearbyPlaces.some(p => p.type === 'education.school');
@@ -44,7 +21,7 @@ export async function createImmobile(data: {
       $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26
     ) RETURNING *`,
     [
-      data.agenteId, data.titolo, data.descrizione || null, data.prezzo, data.dimensioni || null, data.indirizzo,
+      data.idAgente, data.titolo, data.descrizione || null, data.prezzo, data.dimensioni || null, data.indirizzo,
       data.numeroStanze || null, data.numeroBagni || null, data.piano || null,
       data.ascensore || false, data.balcone || false, data.terrazzo || false, data.giardino || false,
       data.postoAuto || false, data.cantina || false, data.portineria || false, data.climatizzazione || false,
