@@ -1,25 +1,21 @@
 import { Request, Response } from 'express';
-import pool from '../config/db';
-import bcrypt from 'bcrypt';
 import { generateToken } from '../utils/jwt';
 import { AuthRequest } from '../middleware/authMiddleware';
+import * as UtenteDAO from '../dao/UtenteDAO';
+import bcrypt from 'bcrypt';
 
 // Registrazione cliente
 export async function register(req: Request, res: Response) {
   const { nome, cognome, email, password } = req.body;
   try {
-    const exists = await pool.query('SELECT IdUtente FROM Utente WHERE Email = $1', [email]);
-    if (exists.rows.length) return res.status(400).json({ error: 'Email già registrata' });
+    if (await UtenteDAO.checkEmailExists(email)) {
+      return res.status(400).json({ error: 'Email già registrata' });
+    }
 
-    const passwordHash = await bcrypt.hash(password, 10);
-    const result = await pool.query(
-      `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo) 
-       VALUES ($1,$2,$3,$4,$5) RETURNING IdUtente, Nome, Cognome, Email, Ruolo, DataCreazione`,
-      [nome, cognome, email, passwordHash, 'Cliente']
-    );
-
-    res.status(201).json(result.rows[0]);
+    const user = await UtenteDAO.createCliente(nome, cognome, email, password);
+    res.status(201).json(user);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Errore durante la registrazione' });
   }
 }
@@ -28,16 +24,16 @@ export async function register(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
   try {
-    const result = await pool.query('SELECT * FROM Utente WHERE Email = $1', [email]);
-    if (!result.rows.length) return res.status(400).json({ error: 'Credenziali non valide' });
+    const user = await UtenteDAO.getUtenteByEmail(email);
+    if (!user) return res.status(400).json({ error: 'Credenziali non valide' });
 
-    const user = result.rows[0];
     const match = await bcrypt.compare(password, user.passwordhash);
     if (!match) return res.status(400).json({ error: 'Credenziali non valide' });
 
     const token = generateToken({ id: user.idutente, ruolo: user.ruolo });
     res.json({ token, user: { id: user.idutente, nome: user.nome, ruolo: user.ruolo } });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Errore durante il login' });
   }
 }
@@ -45,33 +41,15 @@ export async function login(req: Request, res: Response) {
 // Creazione agente (solo admin/supporto)
 export async function createAgent(req: AuthRequest, res: Response) {
   const { nome, cognome, email, password, idAgenzia } = req.body;
-
   if (!nome || !cognome || !email || !password || !idAgenzia) {
     return res.status(400).json({ error: 'Tutti i campi e idAgenzia sono obbligatori' });
   }
 
   try {
-    // Controlla email duplicata
-    const exists = await pool.query('SELECT IdUtente FROM Utente WHERE Email = $1', [email]);
-    if (exists.rows.length > 0) return res.status(400).json({ error: 'Email già registrata' });
+    if (await UtenteDAO.checkEmailExists(email)) return res.status(400).json({ error: 'Email già registrata' });
 
-    // Controlla che l'agenzia esista
-    const agencyCheck = await pool.query('SELECT IdAgenzia FROM Agenzia WHERE IdAgenzia = $1', [idAgenzia]);
-    if (agencyCheck.rows.length === 0) return res.status(400).json({ error: 'Agenzia non trovata' });
-
-    // Crea l'agente
-    const passwordHash = await bcrypt.hash(password, 10);
-    const result = await pool.query(
-      `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING IdUtente, Nome, Cognome, Email, Ruolo, DataCreazione`,
-      [nome, cognome, email, passwordHash, 'Agente']
-    );
-
-    res.status(201).json({
-      ...result.rows[0],
-      idAgenzia  // restituisci l'idAgenzia per il frontend
-    });
+    const agent = await UtenteDAO.createAgent(nome, cognome, email, password, idAgenzia);
+    res.status(201).json(agent);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Errore durante la creazione dell\'agente' });
@@ -81,25 +59,15 @@ export async function createAgent(req: AuthRequest, res: Response) {
 // Creazione supporto (solo admin)
 export async function createSupport(req: AuthRequest, res: Response) {
   const { nome, cognome, email, password } = req.body;
-
   if (!nome || !cognome || !email || !password) {
     return res.status(400).json({ error: 'Tutti i campi sono obbligatori' });
   }
 
   try {
-    const exists = await pool.query('SELECT IdUtente FROM Utente WHERE Email = $1', [email]);
-    if (exists.rows.length > 0) return res.status(400).json({ error: 'Email già registrata' });
+    if (await UtenteDAO.checkEmailExists(email)) return res.status(400).json({ error: 'Email già registrata' });
 
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    const result = await pool.query(
-      `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING IdUtente, Nome, Cognome, Email, Ruolo, DataCreazione`,
-      [nome, cognome, email, passwordHash, 'Supporto']
-    );
-
-    res.status(201).json(result.rows[0]);
+    const support = await UtenteDAO.createSupport(nome, cognome, email, password);
+    res.status(201).json(support);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Errore durante la creazione dell\'utente di supporto' });
@@ -116,15 +84,11 @@ export async function changePassword(req: AuthRequest, res: Response) {
   }
 
   try {
-    const result = await pool.query('SELECT PasswordHash FROM Utente WHERE IdUtente = $1', [userId]);
-    const user = result.rows[0];
-
+    const user = await UtenteDAO.getUtenteById(userId);
     const match = await bcrypt.compare(oldPassword, user.passwordhash);
     if (!match) return res.status(400).json({ error: 'Vecchia password non corretta' });
 
-    const newHash = await bcrypt.hash(newPassword, 10);
-    await pool.query('UPDATE Utente SET PasswordHash = $1 WHERE IdUtente = $2', [newHash, userId]);
-
+    await UtenteDAO.changePassword(userId, newPassword);
     res.json({ message: 'Password aggiornata con successo' });
   } catch (err) {
     console.error(err);

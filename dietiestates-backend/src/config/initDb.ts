@@ -82,7 +82,7 @@ async function initDb(): Promise<void> {
   `);
 
   if (process.env.NODE_ENV === 'development') {
-    console.log('✅ Database inizializzato (tabelle create se non esistono)');
+    console.log('Database inizializzato (tabelle create se non esistono)');
   }
 
   await createDefaultAdmin();
@@ -110,12 +110,12 @@ async function createDefaultAdmin(): Promise<void> {
         ['Admin', 'Sistema', defaultEmail, passwordHash, 'AmministratoreAgenzia']
       );
 
-      console.log(`✅ Utente amministratore creato con email "${defaultEmail}". Cambia la password al primo accesso!`);
+      console.log(`Utente amministratore creato con email "${defaultEmail}". Cambia la password al primo accesso!`);
     } else {
-      console.log(`ℹ️ Utente amministratore già esistente: "${defaultEmail}"`);
+      console.log(`Utente amministratore già esistente: "${defaultEmail}"`);
     }
   } catch (error) {
-    console.error('❌ Errore durante la creazione/verifica dell\'admin predefinito:', error);
+    console.error('Errore durante la creazione/verifica dell\'admin predefinito:', error);
     throw error;
   }
 }
@@ -135,12 +135,12 @@ async function createDefaultAgency(): Promise<void> {
         'INSERT INTO Agenzia (Nome, IdAmministratore, Attiva) VALUES ($1, $2, $3)',
         [defaultAgencyName, adminId, true]
       );
-      console.log(`✅ Agenzia predefinita "${defaultAgencyName}" creata per l'admin`);
+      console.log(`Agenzia predefinita "${defaultAgencyName}" creata per l'admin`);
     } else {
-      console.log(`ℹ️ Agenzia predefinita già esistente`);
+      console.log(`Agenzia predefinita già esistente`);
     }
   } catch (error) {
-    console.error('❌ Errore durante la creazione/verifica dell\'agenzia predefinita:', error);
+    console.error(' Errore durante la creazione/verifica dell\'agenzia predefinita:', error);
     throw error;
   }
 }

@@ -13,16 +13,16 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 // Rotte autenticazione
-app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 
 // Rotte immobili
-app.use('/api/immobili', immobileRoutes);
+app.use('/immobili', immobileRoutes);
 
-app.use('/api/search', immobileRoutes);
+app.use('/search', immobileRoutes);
 
-app.use('/api/offerte', offertaRoutes);
+app.use('/offerte', offertaRoutes);
 
-app.use('/api/agenzie', agenziaRoutes);
+app.use('/agenzie', agenziaRoutes);
 
 // Endpoint di test
 app.get('/', async (req, res) => {
@@ -38,7 +38,7 @@ app.get('/', async (req, res) => {
 // Inizializza il database e avvia il server
 initDb()
   .then(() => {
-    console.log('Database pronto ✅');
+    console.log('Database pronto ');
     app.listen(PORT, () => {
       console.log(`Server avviato su http://localhost:${PORT}`);
     });
