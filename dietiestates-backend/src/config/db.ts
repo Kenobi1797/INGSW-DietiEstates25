@@ -6,9 +6,9 @@ dotenv.config();
 // Configurazione ottimizzata del pool con valori sensati per performance
 const poolConfig: PoolConfig = {
   connectionString: process.env.DATABASE_URL,
-  max: 20, // Massimo 20 connessioni
-  idleTimeoutMillis: 30000, // 30 secondi timeout per connessioni idle
-  connectionTimeoutMillis: 2000, // 2 secondi timeout per connessione
+  max: 20, 
+  idleTimeoutMillis: 30000, 
+  connectionTimeoutMillis: 2000, 
 };
 
 const pool = new Pool(poolConfig);

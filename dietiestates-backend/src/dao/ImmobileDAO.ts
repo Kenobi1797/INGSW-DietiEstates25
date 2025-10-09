@@ -46,63 +46,50 @@ export async function searchImmobili(filters: any) {
   const values: any[] = [];
   let i = 1;
 
-  if (tipologia) { conditions.push(`Tipologia = $${i++}`); values.push(tipologia); }
-  if (prezzoMin) { conditions.push(`Prezzo >= $${i++}`); values.push(Number(prezzoMin)); }
-  if (prezzoMax) { conditions.push(`Prezzo <= $${i++}`); values.push(Number(prezzoMax)); }
-  if (numeroStanze) { conditions.push(`NumeroStanze >= $${i++}`); values.push(Number(numeroStanze)); }
-  if (classeEnergetica) { conditions.push(`ClasseEnergetica = $${i++}`); values.push(classeEnergetica); }
+  const add = (cond: string, val: any) => { conditions.push(cond); values.push(val); i++; };
 
-  const booleanFilters: { [key: string]: string | undefined } = {
-    balcone, terrazzo, giardino, ascensore, postoAuto, cantina,
-    portineria, climatizzazione, scuoleVicine, parchiVicini, trasportiPubbliciVicini
-  };
-  for (const key in booleanFilters) {
-    const val = booleanFilters[key];
-    if (val !== undefined) {
-      conditions.push(`${key} = $${i++}`);
-      values.push(val === 'true');
-    }
-  }
+  if (tipologia) add(`Tipologia = $${i}`, tipologia);
+  if (prezzoMin) add(`Prezzo >= $${i}`, +prezzoMin);
+  if (prezzoMax) add(`Prezzo <= $${i}`, +prezzoMax);
+  if (numeroStanze) add(`NumeroStanze >= $${i}`, +numeroStanze);
+  if (classeEnergetica) add(`ClasseEnergetica = $${i}`, classeEnergetica);
 
-  if (citta) {
-    conditions.push(`Indirizzo ILIKE $${i++}`);
-    values.push(`%${citta}%`);
-  }
+  const bools = { balcone, terrazzo, giardino, ascensore, postoAuto, cantina,
+    portineria, climatizzazione, scuoleVicine, parchiVicini, trasportiPubbliciVicini };
+  for (const [k, v] of Object.entries(bools)) if (v !== undefined) add(`${k} = $${i}`, v === 'true');
+
+  if (citta) add(`Indirizzo ILIKE $${i}`, `%${citta}%`);
 
   let distanceSelect = '';
   if (latitudine && longitudine && raggioKm) {
-    const lat = Number(latitudine);
-    const lng = Number(longitudine);
-    const raggio = Number(raggioKm);
-
-    distanceSelect = `, (6371 * acos(
-      cos(radians($${i})) * cos(radians(Latitudine)) * cos(radians(Longitudine) - radians($${i+1}))
-      + sin(radians($${i})) * sin(radians(Latitudine))
-    )) AS distanza`;
-    values.push(lat, lng);
-    i += 2;
-
-    conditions.push(`(6371 * acos(
-      cos(radians($${i-2})) * cos(radians(Latitudine)) * cos(radians(Longitudine) - radians($${i-1}))
-      + sin(radians($${i-2})) * sin(radians(Latitudine))
-    )) <= $${i++}`);
-    values.push(raggio);
+    const [lat, lng, raggio] = [+latitudine, +longitudine, +raggioKm];
+    distanceSelect = `,
+      (6371 * acos(
+        cos(radians($${i})) * cos(radians(Latitudine)) *
+        cos(radians(Longitudine) - radians($${i+1})) +
+        sin(radians($${i})) * sin(radians(Latitudine))
+      )) AS distanza`;
+    values.push(lat, lng); i += 2;
+    add(`(6371 * acos(
+      cos(radians($${i-2})) * cos(radians(Latitudine)) *
+      cos(radians(Longitudine) - radians($${i-1})) +
+      sin(radians($${i-2})) * sin(radians(Latitudine))
+    )) <= $${i}`, raggio);
   }
 
-  const whereClause = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';
+  const where = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';
   const allowedOrderFields = ['Prezzo', 'DataCreazione', 'distanza'];
-  const orderField = allowedOrderFields.includes(orderBy) ? orderBy : 'DataCreazione';
-  const orderDirection = orderDir?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+  const field = allowedOrderFields.includes(orderBy) ? orderBy : 'DataCreazione';
+  const dir = orderDir?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
 
+  values.push(limit, offset);
   const query = `
     SELECT * ${distanceSelect}
     FROM Immobile
-    ${whereClause}
-    ORDER BY ${orderField} ${orderDirection}
-    LIMIT $${i++} OFFSET $${i++}
-  `;
-  values.push(limit, offset);
-
+    ${where}
+    ORDER BY ${field} ${dir}
+    LIMIT $${i++} OFFSET $${i++}`;
+  
   const result = await pool.query(query, values);
   return result.rows;
 }

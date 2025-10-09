@@ -18,12 +18,18 @@ export async function getAgenziaById(idAgenzia: number) {
   return result.rows[0];
 }
 
-export async function updateAgenziaDB(idAgenzia: number, fields: string[], values: any[]) {
-  const setClause = fields.map((f, i) => `${f} = $${i + 1}`).join(', ');
-  const query = `UPDATE Agenzia SET ${setClause} WHERE IdAgenzia = $${fields.length + 1} RETURNING *`;
-  const result = await pool.query(query, [...values, idAgenzia]);
-  return result.rows[0];
-}
+export const updateAgenziaDB = (idAgenzia: number, fields: string[], values: any[]) => {
+  const allowed = ['Nome', 'Attiva'];
+  const safeFields = fields.filter(f => allowed.includes(f));
+  if (!safeFields.length) throw new Error('Nessun campo valido da aggiornare');
+
+  const setClause = safeFields.map((f, i) => `${f} = $${i + 1}`).join(', ');
+  return pool.query(
+    `UPDATE Agenzia SET ${setClause} WHERE IdAgenzia = $${safeFields.length + 1} RETURNING *`,
+    [...values, idAgenzia]
+  ).then(r => r.rows[0]);
+};
+
 
 export async function checkAdminExists(idAmministratore: number) {
   const result = await pool.query(
