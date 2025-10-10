@@ -1,32 +1,36 @@
-export interface ImmobileDTO {
-  idImmobile: number;
-  idAgente: number;
-  titolo: string;
-  descrizione?: string;
-  prezzo: number;
-  dimensioni?: number;
-  indirizzo: string;
-  numeroStanze?: number;
-  numeroBagni?: number;
-  piano?: number;
-  ascensore: boolean;
-  balcone: boolean;
-  terrazzo: boolean;
-  giardino: boolean;
-  postoAuto: boolean;
-  cantina: boolean;
-  portineria: boolean;
-  climatizzazione: boolean;
-  riscaldamento?: "Autonomo" | "Centralizzato" | "Pompa di calore" | "Altro";
-  scuoleVicine: boolean;
-  parchiVicini: boolean;
-  trasportiPubbliciVicini: boolean;
-  classeEnergetica?: "A+" | "A" | "B" | "C" | "D" | "E" | "F" | "G";
-  tipologia: "Vendita" | "Affitto";
-  latitudine: number;
-  longitudine: number;
-  fotoUrls?: string[];
-  dataCreazione: Date;
-  venduto: boolean;
-  dataVendita?: Date | null;
-}
+import { z } from "zod";
+
+export const ImmobileSchema = z.object({
+  idImmobile: z.number().int().optional(),
+  idAgente: z.number().int(),
+  titolo: z.string().min(1),
+  descrizione: z.string().optional(),
+  prezzo: z.number().positive(),
+  dimensioni: z.number().positive().optional(),
+  indirizzo: z.string().min(1),
+  numeroStanze: z.number().int().optional(),
+  numeroBagni: z.number().int().optional(),
+  piano: z.number().int().optional(),
+  ascensore: z.boolean(),
+  balcone: z.boolean(),
+  terrazzo: z.boolean(),
+  giardino: z.boolean(),
+  postoAuto: z.boolean(),
+  cantina: z.boolean(),
+  portineria: z.boolean(),
+  climatizzazione: z.boolean(),
+  riscaldamento: z.enum(["Autonomo", "Centralizzato", "Pompa di calore", "Altro"]).optional(),
+  scuoleVicine: z.boolean(),
+  parchiVicini: z.boolean(),
+  trasportiPubbliciVicini: z.boolean(),
+  classeEnergetica: z.enum(["A+", "A", "B", "C", "D", "E", "F", "G"]).optional(),
+  tipologia: z.enum(["Vendita", "Affitto"]),
+  latitudine: z.number(),
+  longitudine: z.number(),
+  fotoUrls: z.array(z.string().url()).optional(),
+  dataCreazione: z.date().optional(),
+  venduto: z.boolean(),
+  dataVendita: z.date().nullable().optional(),
+});
+
+export type ImmobileDTO = z.infer<typeof ImmobileSchema>;

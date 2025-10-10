@@ -1,9 +1,13 @@
-export interface UtenteDTO {
-  idUtente: number;
-  nome: string;
-  cognome: string;
-  email: string;
-  passwordHash?: string;
-  ruolo: "AmministratoreAgenzia" | "Supporto" | "Agente" | "Cliente";
-  dataCreazione: Date;
-}
+import { z } from "zod";
+
+export const UtenteSchema = z.object({
+  idUtente: z.number().int().optional(), 
+  nome: z.string().min(1),
+  cognome: z.string().min(1),
+  email: z.string().email(),
+  passwordHash: z.string().optional(),
+  ruolo: z.enum(["AmministratoreAgenzia", "Supporto", "Agente", "Cliente"]),
+  dataCreazione: z.date().optional(),
+});
+
+export type UtenteDTO = z.infer<typeof UtenteSchema>;

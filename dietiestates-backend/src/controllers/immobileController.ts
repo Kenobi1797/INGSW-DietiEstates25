@@ -18,12 +18,18 @@ export async function createImmobile(req: AuthRequest, res: Response) {
 
   try {
     const immobile = await ImmobileDAO.createImmobile({
-      agenteId: req.user.id,
+      idAgente: req.user.id,
       titolo, descrizione, prezzo, dimensioni, indirizzo,
       numeroStanze, numeroBagni, piano, ascensore, balcone,
       terrazzo, giardino, postoAuto, cantina, portineria,
       climatizzazione, riscaldamento, classeEnergetica, tipologia,
-      latitudine, longitudine, fotoUrls
+      latitudine, longitudine, fotoUrls,
+      idImmobile: 0,
+      scuoleVicine: false,
+      parchiVicini: false,
+      trasportiPubbliciVicini: false,
+      dataCreazione: new Date(),
+      venduto: false
     });
 
     res.status(201).json(immobile);
