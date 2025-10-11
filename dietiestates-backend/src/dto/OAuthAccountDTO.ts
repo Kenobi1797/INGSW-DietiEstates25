@@ -5,7 +5,7 @@ export const OAuthAccountSchema = z.object({
   idUtente: z.number().int(),
   provider: z.enum(["Google", "Facebook", "GitHub"]),
   providerUserId: z.string().min(1),
-  email: z.string().email().optional(),
+  email: z.string(),
   accessToken: z.string().optional(),
   refreshToken: z.string().optional(),
   dataCollegamento: z.date().optional(),

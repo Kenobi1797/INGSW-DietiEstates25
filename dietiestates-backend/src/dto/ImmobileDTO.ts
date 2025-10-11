@@ -27,7 +27,7 @@ export const ImmobileSchema = z.object({
   tipologia: z.enum(["Vendita", "Affitto"]),
   latitudine: z.number(),
   longitudine: z.number(),
-  fotoUrls: z.array(z.string().url()).optional(),
+  fotoUrls: z.array(z.string()),
   dataCreazione: z.date().optional(),
   venduto: z.boolean(),
   dataVendita: z.date().nullable().optional(),
