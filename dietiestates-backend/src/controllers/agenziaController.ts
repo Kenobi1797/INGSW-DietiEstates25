@@ -1,21 +1,24 @@
-// src/controllers/agenziaController.ts
 import { Request, Response } from 'express';
 import { AuthRequest } from '../middleware/authMiddleware';
 import * as AgenzieDAO from '../dao/AgenziaDAO';
+import { AgenziaSchema } from '../dto/AgenziaDTO';
+import { z } from 'zod';
 
-// Creazione nuova agenzia (solo admin)
 export async function createAgenzia(req: AuthRequest, res: Response) {
-  const { nome, idAmministratore } = req.body;
+  const parsed = z.object({
+    nome: z.string().min(1),
+    idAmministratore: z.number().int()
+  }).safeParse(req.body);
 
-  if (!nome || !idAmministratore) {
-    return res.status(400).json({ error: 'Nome e idAmministratore sono obbligatori' });
-  }
+  if (!parsed.success) return res.status(400).json({ error: parsed.error });
+
+  const { nome, idAmministratore } = parsed.data;
 
   try {
     const adminExists = await AgenzieDAO.checkAdminExists(idAmministratore);
     if (!adminExists) return res.status(400).json({ error: 'Amministratore non trovato' });
 
-    const agenzia = await AgenzieDAO.createAgenziaDB(nome, idAmministratore);
+    const agenzia = await AgenzieDAO.createAgenziaDB({ nome, idAmministratore });
     res.status(201).json(agenzia);
   } catch (err) {
     console.error(err);
@@ -23,7 +26,6 @@ export async function createAgenzia(req: AuthRequest, res: Response) {
   }
 }
 
-// Recupero agenzie (tutti gli utenti loggati possono vedere)
 export async function getAgenzie(req: Request, res: Response) {
   try {
     const agenzie = await AgenzieDAO.getAgenzieDB();
@@ -34,26 +36,17 @@ export async function getAgenzie(req: Request, res: Response) {
   }
 }
 
-// Aggiornamento agenzia
 export async function updateAgenzia(req: AuthRequest, res: Response) {
   const { idAgenzia } = req.params;
-  const { nome, attiva } = req.body;
 
-  if (!nome && attiva === undefined) {
-    return res.status(400).json({ error: 'Almeno un campo da aggiornare è obbligatorio' });
-  }
+  const parsed = AgenziaSchema.partial().safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: parsed.error });
 
   try {
     const agenziaEsistente = await AgenzieDAO.getAgenziaById(Number(idAgenzia));
     if (!agenziaEsistente) return res.status(404).json({ error: 'Agenzia non trovata' });
 
-    const fields: string[] = [];
-    const values: any[] = [];
-
-    if (nome) { fields.push('Nome'); values.push(nome); }
-    if (attiva !== undefined) { fields.push('Attiva'); values.push(attiva); }
-
-    const agenziaAggiornata = await AgenzieDAO.updateAgenziaDB(Number(idAgenzia), fields, values);
+    const agenziaAggiornata = await AgenzieDAO.updateAgenziaDB(Number(idAgenzia), parsed.data);
     res.json(agenziaAggiornata);
   } catch (err) {
     console.error(err);

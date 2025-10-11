@@ -1,16 +1,26 @@
-import { AuthRequest } from '../middleware/authMiddleware';
 import { Response } from 'express';
+import { AuthRequest } from '../middleware/authMiddleware';
 import * as OffertaDAO from '../dao/OffertaDAO';
+import { z } from 'zod';
+import { OffertaSchema } from '../dto/OffertaDTO';
 
-// Creazione nuova offerta
+// Creazione nuova offerta (cliente)
 export async function createOfferta(req: AuthRequest, res: Response) {
-  const { idImmobile, prezzoOfferto, offertaOriginaleId } = req.body;
-  if (!idImmobile || !prezzoOfferto) {
-    return res.status(400).json({ error: 'idImmobile e prezzoOfferto sono obbligatori' });
-  }
+  const parsed = z.object({
+    idImmobile: z.number().int(),
+    prezzoOfferto: z.number().positive(),
+    offertaOriginaleId: z.number().int().optional()
+  }).safeParse(req.body);
+
+  if (!parsed.success) return res.status(400).json({ error: parsed.error });
 
   try {
-    const offerta = await OffertaDAO.createOfferta(idImmobile, req.user.id, prezzoOfferto, offertaOriginaleId);
+    const offerta = await OffertaDAO.createOfferta(
+      parsed.data.idImmobile,
+      req.user.id,
+      parsed.data.prezzoOfferto,
+      parsed.data.offertaOriginaleId
+    );
     res.status(201).json(offerta);
   } catch (err) {
     console.error(err);
@@ -18,15 +28,24 @@ export async function createOfferta(req: AuthRequest, res: Response) {
   }
 }
 
-// Creazione offerta manuale (solo agente)
+// Creazione offerta manuale (agente/admin)
 export async function createManualOfferta(req: AuthRequest, res: Response) {
-  const { idImmobile, prezzoOfferto, idCliente, offertaOriginaleId } = req.body;
-  if (!idImmobile || !prezzoOfferto || !idCliente) {
-    return res.status(400).json({ error: 'idImmobile, prezzoOfferto e idCliente sono obbligatori' });
-  }
+  const parsed = z.object({
+    idImmobile: z.number().int(),
+    idCliente: z.number().int(),
+    prezzoOfferto: z.number().positive(),
+    offertaOriginaleId: z.number().int().optional()
+  }).safeParse(req.body);
+
+  if (!parsed.success) return res.status(400).json({ error: parsed.error });
 
   try {
-    const offerta = await OffertaDAO.createManualOfferta(idImmobile, idCliente, prezzoOfferto, offertaOriginaleId);
+    const offerta = await OffertaDAO.createManualOfferta(
+      parsed.data.idImmobile,
+      parsed.data.idCliente,
+      parsed.data.prezzoOfferto,
+      parsed.data.offertaOriginaleId
+    );
     res.status(201).json(offerta);
   } catch (err) {
     console.error(err);
@@ -36,10 +55,9 @@ export async function createManualOfferta(req: AuthRequest, res: Response) {
 
 // Recupero storico offerte per immobile
 export async function getOffertePerImmobile(req: AuthRequest, res: Response) {
-  const { idImmobile } = req.params;
-
   try {
-    const offerte = await OffertaDAO.getOffertePerImmobile(Number(idImmobile));
+    const idImmobile = Number(req.params.idImmobile);
+    const offerte = await OffertaDAO.getOffertePerImmobile(idImmobile);
     res.json(offerte);
   } catch (err) {
     console.error(err);
@@ -58,32 +76,34 @@ export async function getOffertePerUtente(req: AuthRequest, res: Response) {
   }
 }
 
-// Aggiorna stato offerta (solo agente/admin)
+// Aggiornamento stato offerta (agente/admin)
 export async function updateOfferta(req: AuthRequest, res: Response) {
-  const { idOfferta } = req.params;
-  const { nuovoStato, prezzoControproposta } = req.body;
+  const parsed = z.object({
+    nuovoStato: z.enum(['Accettata', 'Rifiutata', 'Controproposta']),
+    prezzoControproposta: z.number().positive().optional()
+  }).safeParse(req.body);
 
-  if (!nuovoStato || !['Accettata', 'Rifiutata', 'Controproposta'].includes(nuovoStato)) {
-    return res.status(400).json({ error: 'Stato non valido' });
-  }
+  if (!parsed.success) return res.status(400).json({ error: parsed.error });
 
   try {
-    const offerta = await OffertaDAO.getOffertaById(Number(idOfferta));
+    const idOfferta = Number(req.params.idOfferta);
+    const offerta = await OffertaDAO.getOffertaById(idOfferta);
     if (!offerta) return res.status(404).json({ error: 'Offerta non trovata' });
 
-    if (nuovoStato === 'Controproposta') {
-      if (!prezzoControproposta) return res.status(400).json({ error: 'Prezzo della controproposta obbligatorio' });
-
+    if (parsed.data.nuovoStato === 'Controproposta') {
+      if (!parsed.data.prezzoControproposta) {
+        return res.status(400).json({ error: 'Prezzo della controproposta obbligatorio' });
+      }
       const nuovaOfferta = await OffertaDAO.createOfferta(
-        offerta.idimmobile,
-        offerta.idutente,
-        prezzoControproposta,
-        offerta.idofferta
+        offerta.idImmobile,
+        offerta.idUtente,
+        parsed.data.prezzoControproposta,
+        offerta.idOfferta
       );
       return res.status(201).json(nuovaOfferta);
     }
 
-    const offertaAggiornata = await OffertaDAO.updateStatoOfferta(Number(idOfferta), nuovoStato);
+    const offertaAggiornata = await OffertaDAO.updateStatoOfferta(idOfferta, parsed.data.nuovoStato);
     res.json(offertaAggiornata);
   } catch (err) {
     console.error(err);
