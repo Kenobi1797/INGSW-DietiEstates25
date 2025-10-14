@@ -8,11 +8,11 @@ const router = express.Router();
 router.post(
   '/',
   authMiddleware,
-  roleMiddleware('Agente', 'AmministratoreAgenzia'),  // anche i supportadmin?
+  roleMiddleware('Agente', 'AmministratoreAgenzia', 'SupportAdmin'),
   createImmobile
 );
 
 // Ricerca immobili (solo utenti registrati)
-router.get('/search', authMiddleware, searchImmobili);             // serve autenticazione ?
+router.get('/search', authMiddleware, searchImmobili);   
 
 export default router;
