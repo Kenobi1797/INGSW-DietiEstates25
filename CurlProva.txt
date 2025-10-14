@@ -166,3 +166,71 @@ curl -X GET "http://localhost:5000/immobili/search?tipologia=Vendita&maxPrezzo=3
 =================================
 =  Curl per le rotte di offerte =
 =================================
+
+Il cliente fa un'offerta per l'immobile 
+curl -X POST http://localhost:5000/offerte \
+-H "Authorization: Bearer $TOKEN_CLIENTE" \
+-H "Content-Type: application/json" \
+-d '{
+  "idImmobile": 1,
+  "prezzoOfferto": 210000
+}'
+
+Il cliente visualizza tutte le sue offerte
+curl -X GET http://localhost:5000/offerte/utente \
+-H "Authorization: Bearer $TOKEN_CLIENTE"
+
+L'admin accetta l'offerta 
+curl -X PUT http://localhost:5000/offerte/1 \
+-H "Authorization: Bearer $TOKEN_ADMIN" \
+-H "Content-Type: application/json" \
+-d '{
+  "nuovoStato": "Accettata"
+}'
+
+L'admin rifiuta l'offerta
+curl -X PUT http://localhost:5000/offerte/2 \
+-H "Authorization: Bearer $TOKEN_ADMIN" \
+-H "Content-Type: application/json" \
+-d '{
+  "nuovoStato": "Rifiutata"
+}'
+
+Il cliente fa una nuova offerta
+curl -X POST http://localhost:5000/offerte \
+-H "Authorization: Bearer $TOKEN_CLIENTE" \
+-H "Content-Type: application/json" \
+-d '{
+  "idImmobile": 1,
+  "prezzoOfferto": 205000
+}'
+
+L'admin fa una controproposta all'offerta
+curl -X PUT http://localhost:5000/offerte/3 \
+-H "Authorization: Bearer $TOKEN_ADMIN" \
+-H "Content-Type: application/json" \
+-d '{
+  "nuovoStato": "Controproposta",
+  "prezzoControproposta": 215000
+}'
+
+L'admin crea un'offerta per conto del cliente 
+curl -X POST http://localhost:5000/offerte/manual \
+-H "Authorization: Bearer $TOKEN_ADMIN" \
+-H "Content-Type: application/json" \
+-d '{
+  "idImmobile": 2,
+  "idCliente": 2,
+  "prezzoOfferto": 440000
+}'
+
+L'admin crea una controproposta manuale basata sull'offerta 
+curl -X POST http://localhost:5000/offerte/manual \
+-H "Authorization: Bearer $TOKEN_ADMIN" \
+-H "Content-Type: application/json" \
+-d '{
+  "idImmobile": 2,
+  "idCliente": 2,
+  "prezzoOfferto": 445000,
+  "offertaOriginaleId": 5
+}'

@@ -9,8 +9,8 @@ const insertOfferta = async (
   offertaOriginaleId?: number
 ): Promise<OffertaDTO> => {
   const result = await pool.query(
-    `INSERT INTO Offerta
-     (IdImmobile, IdUtente, PrezzoOfferto, Stato, OffertaManuale, IdOffertaOriginale)
+    `INSERT INTO offerta
+     (idimmobile, idutente, prezzoofferto, stato, offertamanuale, idoffertaoriginale)
      VALUES ($1, $2, $3, 'InAttesa', $4, $5)
      RETURNING *`,
     [idImmobile, idUtente, prezzoOfferto, offertaManuale, offertaOriginaleId || null]
@@ -28,10 +28,10 @@ export const createManualOfferta = (idImmobile: number, idCliente: number, prezz
 export const getOffertePerImmobile = async (idImmobile: number): Promise<OffertaDTO[]> => {
   const result = await pool.query(
     `SELECT o.*, u.nome, u.cognome, u.email
-     FROM Offerta o
-     JOIN Utente u ON o.IdUtente = u.IdUtente
-     WHERE o.IdImmobile = $1
-     ORDER BY o.DataOfferta DESC`,
+     FROM offerta o
+     JOIN utente u ON o.idutente = u.idutente
+     WHERE o.idimmobile = $1
+     ORDER BY o.dataofferta DESC`,
     [idImmobile]
   );
   return result.rows.map(mapRowToOfferta);
@@ -39,24 +39,24 @@ export const getOffertePerImmobile = async (idImmobile: number): Promise<Offerta
 
 export const getOffertePerUtente = async (idUtente: number): Promise<OffertaDTO[]> => {
   const result = await pool.query(
-    `SELECT o.*, i.Titolo, i.Indirizzo
-     FROM Offerta o
-     JOIN Immobile i ON o.IdImmobile = i.IdImmobile
-     WHERE o.IdUtente = $1
-     ORDER BY o.DataOfferta DESC`,
+    `SELECT o.*, i.titolo, i.indirizzo
+     FROM offerta o
+     JOIN immobile i ON o.idimmobile = i.idimmobile
+     WHERE o.idutente = $1
+     ORDER BY o.dataofferta DESC`,
     [idUtente]
   );
   return result.rows.map(mapRowToOfferta);
 };
 
 export const getOffertaById = async (idOfferta: number): Promise<OffertaDTO | null> => {
-  const result = await pool.query('SELECT * FROM Offerta WHERE IdOfferta = $1', [idOfferta]);
+  const result = await pool.query('SELECT * FROM offerta WHERE idofferta = $1', [idOfferta]);
   return result.rows[0] ? mapRowToOfferta(result.rows[0]) : null;
 };
 
 export const updateStatoOfferta = async (idOfferta: number, nuovoStato: string): Promise<OffertaDTO> => {
   const result = await pool.query(
-    'UPDATE Offerta SET Stato = $1 WHERE IdOfferta = $2 RETURNING *',
+    'UPDATE offerta SET stato = $1 WHERE idofferta = $2 RETURNING *',
     [nuovoStato, idOfferta]
   );
   return mapRowToOfferta(result.rows[0]);
@@ -68,7 +68,7 @@ function mapRowToOfferta(row: any): OffertaDTO {
     idOfferta: row.idofferta,
     idImmobile: row.idimmobile,
     idUtente: row.idutente,
-    prezzoOfferto: row.prezzoofferto,
+    prezzoOfferto: parseFloat(row.prezzoofferto), 
     stato: row.stato,
     dataOfferta: row.dataofferta,
     offertaManuale: row.offertamanuale,
