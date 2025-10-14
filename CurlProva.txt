@@ -58,6 +58,10 @@ curl -X POST http://localhost:5000/auth/create-support \
   "password": "Support123!"
 }'
 
+Authorization google
+
+curl -i http://localhost:5000/auth/google
+
 =================================
 =  Curl per le rotte di agenzia =
 =================================
