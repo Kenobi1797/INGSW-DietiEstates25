@@ -2,19 +2,19 @@
 
 import { createContext } from "react";
 import { UserRole } from "@/Types/Ruoli";
-import { User } from "@/Models/User";
+import { AuthUser } from "@/Models/AuthUser";
 
 export interface UserContextData {
-  user: User | null;
-  setUser: (user: User | null) => void;
+  Authuser: AuthUser | null;
+  setAuthUser: (Authuser: AuthUser | null) => void;
 
   activeRole: UserRole | null;
   setActiveRole: (role: UserRole | null) => void;
 }
 
 export const UserContext = createContext<UserContextData>({
-  user: null,
-  setUser: () => {},
+  Authuser: null,
+  setAuthUser: () => {},
   activeRole: null,
   setActiveRole: () => {},
 });

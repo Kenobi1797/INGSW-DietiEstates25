@@ -4,8 +4,10 @@ import LoginForm from "@/components/LoginForm";
 export default function Login() {
     
   return (
-    <div>
-      <LoginForm />
+    <div className="centerGrid">
+      <div className="box">
+         <LoginForm />
+      </div>
     </div>
   );
 }

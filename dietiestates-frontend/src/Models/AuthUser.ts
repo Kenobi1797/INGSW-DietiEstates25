@@ -1,11 +1,8 @@
 
 import { UserRole } from "@/Types/Ruoli";
 
-export interface User {
+export interface AuthUser {
   idUtente: number;
   nome: string;
-  cognome: string;
-  email: string;
   ruolo: UserRole;
-  dataCreazione: string;
 }

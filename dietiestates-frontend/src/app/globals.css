@@ -18,31 +18,28 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+
 .default-button {
-  background-color: #ffffff;  /* background bianco */
-  border-radius: 6px;         /* bordi arrotondati 6px */
-  border: 2px solid #000000;  /* bordo nero */
-  color: #000000;             /* testo nero */
-}
-
-.loginButton {
-  width: 240px;
-  height: 24px;
-
-  border-radius: 12px;
-  border: 2px solid #000000;
-
-  background-color: red;
-  color: #ffffff;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  cursor: pointer;
-  outline: none;
-
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: 0.2s;  /* ✅ Smooth per gli hover */
+}
+
+.btn-default {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ccc;
+}
+.btn-default-pos{
   justify-content: center;
 }
 
@@ -89,4 +86,45 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+.centerGrid {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.box {
+  border: 2px solid black;
+  border-radius: 12px;
+  padding: 24px;
+  background-color: white;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form input,
+.form button {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.divider {
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #dc2626;
+  color: white;
 }

@@ -3,6 +3,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BaseButton from './BaseButton';
+import Logo from './Logo';
+import Link from 'next/link';
+
 
 export default function LoginForm() {
   const router = useRouter();
@@ -27,19 +30,18 @@ export default function LoginForm() {
 
   return (
     <div>
-      <h2>Accedi</h2>
+      <div className='form'>
+      <h2 className='divider'>DietiEstates</h2>
+      <p className='divider'>Accedi</p>
 
       {/* Google login */}
-      <BaseButton
-        action={handleGoogleLogin}
-        className="loginButton"
-      >
-        Continua con Google
+      <BaseButton action={handleGoogleLogin} className='btn-default'>
+         <img src="/GoogleLogo.svg" alt="Google" width={20} height={20} />
+         <span>Continua con Google</span>
       </BaseButton>
-
-      <p>oppure</p>
-
-      <form onSubmit={handleSubmit}>
+    </div>
+    <p className='divider'>oppure</p>
+      <form className= 'form'onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Email o username"
@@ -58,13 +60,20 @@ export default function LoginForm() {
 
         <BaseButton
           type="submit"
-          className="loginButton"
+          className='btn-primary btn-default-pos'
           loading={loading}
           disabled={loading}
         >
           Accedi
         </BaseButton>
       </form>
+      <p className='divider'>
+             Non sei registrato?{' '}
+             <Link href="/SignUp/SignUp" className="text-blue-500 underline">
+              clicca qui
+            </Link>
+          </p>
+
     </div>
   );
 }
