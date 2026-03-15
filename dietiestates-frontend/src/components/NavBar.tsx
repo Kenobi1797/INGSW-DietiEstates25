@@ -2,23 +2,28 @@
 
 import Logo from "./Logo";
 import Menu from "./Menu";
-import { useContext } from "react";
-import { UserContext } from "@/Context/Context";
+import { useUser } from "@/Context/Context";
 import { getMenuForRole } from "@/Constants/NavbarLinks";
+import Link from "next/link";
 
-export default function Navbar() {
-  const { activeRole } = useContext(UserContext);
+export default function Navbar({ className = "" }) {
+  const { authuser } = useUser();
 
   // Otteniamo le voci di menu in base al ruolo
-  const menuItems = getMenuForRole(activeRole);
+  const menuItems = authuser ? getMenuForRole(authuser.ruolo) : [];
 
   return (
-    <nav className="flex items-center justify-between px-6 py-3 border-b border-gray-300 bg-white">
+    <nav className={`navbar ${className}`}>
      
-      <Logo color="black" />
+      <Logo/>
 
-     
-      <Menu items={menuItems} buttonLabel="Azioni" />
+     {authuser ? (
+         <Menu items={menuItems} buttonLabel="Azioni" />
+         ) : (
+              <Link href="/Login">
+                 Accedi
+              </Link>
+         )}
     </nav>
   );
 }

@@ -1,10 +1,12 @@
-// app/page.tsx
-"use client";
+import Navbar from "@/components/NavBar";
+export default function Home() {
+  return (
+     <div className="sfondoHome relative">
 
-import './globals.css';
-import Home from "@/pages/Home/Home";
-import Login from "@/pages/Login/Login";
-
-export default function Page() {
-  return <Login />;
+      <main>
+        <h1 className="text-white text-5xl font-bold">
+          Benvenuto in DietiEstate!</h1>
+      </main>
+        </div>
+  );
 }

@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation';
 import BaseButton from './BaseButton';
 import Logo from './Logo';
 import Link from 'next/link';
-
+import { login } from '@/Services/authservice';
+import { useUser } from "@/Context/Context";
 
 export default function LoginForm() {
   const router = useRouter();
-
+  const { setAuthUser } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,11 +18,16 @@ export default function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    setTimeout(() => {
+    try {
+      const data = await login(username, password);
+      localStorage.setItem('token', data.token);
+      setAuthUser(data.user);       
+      router.push('/');
+    } catch (error: any) {
+      alert(error.message || 'Credenziali non valide');
+    } finally {
       setLoading(false);
-      alert('Login via mail');
-    }, 10000);
+    }
   };
 
   const handleGoogleLogin = () => {
@@ -69,7 +75,7 @@ export default function LoginForm() {
       </form>
       <p className='divider'>
              Non sei registrato?{' '}
-             <Link href="/SignUp/SignUp" className="text-blue-500 underline">
+             <Link href="/SignUp" className="text-blue-500 underline">
               clicca qui
             </Link>
           </p>

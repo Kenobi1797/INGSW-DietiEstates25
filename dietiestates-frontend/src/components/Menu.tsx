@@ -14,17 +14,22 @@ export default function Menu({ items, buttonLabel = "Menu" }: MenuProps) {
 
   return (
     <div className="relative">
-      {/* Bottone che apre/chiude il menu */}
+     {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded focus:outline-none"
+        className="bg-transparent px-4 py-2 rounded focus:outline-none"
         onClick={() => setIsOpen(prev => !prev)}
       >
         {buttonLabel}
       </button>
 
-      {/* Lista menu */}
       {isOpen && (
-        <ul className="absolute right-0 top-full mt-1 bg-white border border-gray-300 w-44 shadow-lg rounded-md z-50">
+        <ul className="absolute right-0 top-full mt-1 bg-white border-2 border-black text-black w-44 shadow-lg rounded-md z-50">
           {items.map(item => (
             <li
               key={item.path}

@@ -59,11 +59,8 @@ export const navbarLinks: MenuLink[] = [
 
 export function getMenuForRole(role: UserRole | null) {
 
-  if (!role) {
-    return navbarLinks.filter(link => link.roles === null);
-  }
+  if (!role) return [];
 
- 
   return navbarLinks.filter(link => link.roles?.includes(role));
 }
 
