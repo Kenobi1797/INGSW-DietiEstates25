@@ -45,15 +45,10 @@ export const navbarLinks: MenuLink[] = [
     roles: ["Agente", "Supporto", "AmministratoreAgenzia"],
   },
   {
-    label: "Crea Agente",
-    path: "/crea-agente",
-    roles: ["Supporto", "AmministratoreAgenzia"],
-  },
-  {
-    label: "Crea Supporto",
-    path: "/crea-supporto",
-    roles: ["AmministratoreAgenzia"],
-  },
+  label: "Crea Staff",
+  path: "/crea-staff",
+  roles: ["Supporto", "AmministratoreAgenzia"],
+},
 ];
 
 
