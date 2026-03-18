@@ -31,7 +31,7 @@ export const navbarLinks: MenuLink[] = [
   },
   {
     label: "Aggiungi Immobile",
-    path: "/newestate",
+    path: "/aggiungi-immobile",
     roles: ["Agente", "Supporto", "AmministratoreAgenzia"],
   },
   {
