@@ -11,8 +11,8 @@ interface Place {
 export async function getNearbyPlaces(lat: number, lon: number, radius: number = 1000): Promise<Place[]> {
   if (!GEOAPIFY_KEY) throw new Error('Chiave Geoapify mancante');
 
-  // Filtra per scuole, parchi
-  const categories = ['education.school', 'leisure.park'];
+  // Filtra per scuole, parchi e trasporto pubblico
+  const categories = ['education.school', 'leisure.park', 'public_transport'];
 
   const places: Place[] = [];
 
@@ -26,12 +26,12 @@ export async function getNearbyPlaces(lat: number, lon: number, radius: number =
           places.push({
             name: f.properties.name || '',
             distance: f.properties.distance,
-            type: category
+            type: f.properties.categories?.[0] || category
           });
         });
       }
     } catch (err) {
-      console.error(`Errore chiamando Geoapify per categoria ${category}:`, err);
+      console.error(`Errore Geoapify per categoria ${category}:`, err);
     }
   }
 

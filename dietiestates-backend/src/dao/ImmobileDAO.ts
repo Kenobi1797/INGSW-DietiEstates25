@@ -9,7 +9,8 @@ export async function createImmobile(data: ImmobileDTO) {
   const scuoleVicine = nearbyPlaces.some(p => p.type === 'education.school');
   const parchiVicini = nearbyPlaces.some(p => p.type === 'leisure.park');
   const trasportiPubbliciVicini = nearbyPlaces.some(p => 
-    ['public_transport.stop_position', 'bus_stop', 'tram_stop', 'subway_entrance', 'railway.station'].includes(p.type)
+    p.type.startsWith('public_transport') ||
+    ['bus_stop', 'tram_stop', 'subway_entrance', 'railway.station'].includes(p.type)
   );
 
   const result = await pool.query(
@@ -99,18 +100,29 @@ export async function searchImmobili(filters: any) {
   let distanceSelect = '';
   if (latitudine && longitudine && raggioKm) {
     const [lat, lng, raggio] = [+latitudine, +longitudine, +raggioKm];
+
+    // Snapshot degli indici PRIMA di pushare
+    const iLat = i;
+    const iLng = i + 1;
+    const iRaggio = i + 2;
+
+    values.push(lat, lng, raggio);
+    i += 3;
+
     distanceSelect = `,
-      (6371 * acos(
-        cos(radians($${i})) * cos(radians(Latitudine)) *
-        cos(radians(Longitudine) - radians($${i+1})) +
-        sin(radians($${i})) * sin(radians(Latitudine))
-      )) AS distanza`;
-    values.push(lat, lng); i += 2;
-    add(`(6371 * acos(
-      cos(radians($${i-2})) * cos(radians(Latitudine)) *
-      cos(radians(Longitudine) - radians($${i-1})) +
-      sin(radians($${i-2})) * sin(radians(Latitudine))
-    )) <= $${i}`, raggio);
+      (6371 * acos(LEAST(1.0,
+        cos(radians($${iLat})) * cos(radians(Latitudine)) *
+        cos(radians(Longitudine) - radians($${iLng})) +
+        sin(radians($${iLat})) * sin(radians(Latitudine))
+      ))) AS distanza`;
+
+    conditions.push(`
+      (6371 * acos(LEAST(1.0,
+        cos(radians($${iLat})) * cos(radians(Latitudine)) *
+        cos(radians(Longitudine) - radians($${iLng})) +
+        sin(radians($${iLat})) * sin(radians(Latitudine))
+      ))) <= $${iRaggio}`
+    );
   }
 
   const where = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';

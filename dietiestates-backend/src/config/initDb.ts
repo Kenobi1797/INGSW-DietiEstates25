@@ -85,6 +85,8 @@ async function initDb(): Promise<void> {
     console.log('Database inizializzato (tabelle create se non esistono)');
   }
 
+  await pool.query(`ALTER TABLE Utente ADD COLUMN IF NOT EXISTS IdAgenzia INT REFERENCES Agenzia(IdAgenzia) ON DELETE SET NULL;`);
+
   await createDefaultAdmin();
   await createDefaultAgency();
 

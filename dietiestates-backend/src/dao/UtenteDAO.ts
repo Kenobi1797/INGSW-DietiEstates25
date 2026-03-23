@@ -46,12 +46,12 @@ export async function createAgent(
 ): Promise<UtenteDTO & { idAgenzia: number }> {
   const passwordHash = await bcrypt.hash(data.password, 10);
   const result = await pool.query(
-    `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
-     VALUES ($1, $2, $3, $4, 'Agente')
+    `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo, IdAgenzia)
+     VALUES ($1, $2, $3, $4, 'Agente', $5)
      RETURNING *`,
-    [data.nome, data.cognome, data.email, passwordHash]
+    [data.nome, data.cognome, data.email, passwordHash, data.idAgenzia]
   );
-  return { ...mapRowToUtente(result.rows[0]), idAgenzia: data.idAgenzia };
+  return { ...mapRowToUtente(result.rows[0]), idAgenzia: result.rows[0].idagenzia };
 }
 
 // Crea supporto
@@ -77,6 +77,7 @@ function mapRowToUtente(row: any): UtenteDTO {
     email: row.email,
     ruolo: row.ruolo,
     passwordHash: row.passwordhash,
-    dataCreazione: row.datacreazione
+    dataCreazione: row.datacreazione,
+    // idAgenzia non è nel DTO base; in createAgent viene comunque restituito via spread.
   };
 }

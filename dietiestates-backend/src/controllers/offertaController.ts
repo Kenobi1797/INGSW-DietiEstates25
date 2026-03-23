@@ -79,6 +79,31 @@ export async function getOffertePerUtente(req: AuthRequest, res: Response) {
   }
 }
 
+// Ritiro offerta (solo il cliente proprietario)
+export async function ritiraOfferta(req: AuthRequest, res: Response) {
+  try {
+    const idOfferta = Number(req.params.idOfferta);
+    if (!Number.isInteger(idOfferta) || idOfferta <= 0)
+      return res.status(400).json({ error: 'Id offerta non valido' });
+
+    const offerta = await OffertaDAO.getOffertaById(idOfferta);
+    if (!offerta)
+      return res.status(404).json({ error: 'Offerta non trovata' });
+
+    if (offerta.idUtente !== req.user.id)
+      return res.status(403).json({ error: 'Non autorizzato' });
+
+    if (offerta.stato !== 'InAttesa')
+      return res.status(400).json({ error: `Non puoi ritirare un'offerta in stato "${offerta.stato}"` });
+
+    const aggiornata = await OffertaDAO.updateStatoOfferta(idOfferta, 'Ritirata');
+    res.json(aggiornata);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Errore durante il ritiro dell'offerta" });
+  }
+}
+
 // Aggiornamento stato offerta (agente/admin)
 export async function updateOfferta(req: AuthRequest, res: Response) {
   const parsed = z.object({
