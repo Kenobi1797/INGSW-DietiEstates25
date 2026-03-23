@@ -30,7 +30,10 @@ export async function createImmobile(data: ImmobileDTO) {
       data.classeEnergetica || null, data.tipologia, data.latitudine, data.longitudine, data.fotoUrls || null
     ]
   );
-  return result.rows[0];
+
+  const saved = result.rows[0];
+  const serviziVicinati = scuoleVicine || parchiVicini || trasportiPubbliciVicini;
+  return { ...saved, serviziVicinati };
 }
 
 export async function searchImmobili(filters: any) {
@@ -91,5 +94,8 @@ export async function searchImmobili(filters: any) {
     LIMIT $${i++} OFFSET $${i++}`;
   
   const result = await pool.query(query, values);
-  return result.rows;
+  return result.rows.map((immobile: any) => ({
+    ...immobile,
+    serviziVicinati: immobile.scuolevicine || immobile.parchivicini || immobile.trasportipubblicivicini
+  }));
 }

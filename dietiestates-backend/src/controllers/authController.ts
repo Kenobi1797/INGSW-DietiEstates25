@@ -52,6 +52,18 @@ export async function login(req: Request, res: Response) {
   }
 }
 
+// Profilo utente corrente
+export async function me(req: AuthRequest, res: Response) {
+  try {
+    const user = await UtenteDAO.getUtenteById(req.user.id);
+    if (!user) return res.status(404).json({ error: 'Utente non trovato' });
+    res.json({ id: user.idUtente, nome: user.nome, ruolo: user.ruolo });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore durante il recupero del profilo' });
+  }
+}
+
 // Creazione agente
 export async function createAgent(req: AuthRequest, res: Response) {
   const parsed = UtenteSchema.omit({

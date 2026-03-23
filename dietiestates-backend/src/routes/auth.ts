@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { register, login, createAgent, changePassword, createSupport } from '../controllers/authController';
+import { register, login, me, createAgent, changePassword, createSupport } from '../controllers/authController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
 const router = express.Router();
@@ -20,6 +20,9 @@ router.get(
 // Rotte pubbliche
 router.post('/register', register);
 router.post('/login', login);
+
+// Rotta protetta: ottieni utenti correnti con id, nome, ruolo
+router.get('/me', authMiddleware, me);
 
 // Rotta protetta: cambia password (qualsiasi utente loggato)
 router.put('/change-password', authMiddleware, changePassword);
