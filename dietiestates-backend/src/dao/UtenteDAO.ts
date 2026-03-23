@@ -20,6 +20,10 @@ export async function getUtenteById(id: number): Promise<UtenteDTO | null> {
   return result.rows[0] ? mapRowToUtente(result.rows[0]) : null;
 }
 
+type CreateUserData = Omit<UtenteDTO, 'idUtente' | 'ruolo' | 'dataCreazione' | 'passwordHash'> & { password: string };
+
+type CreateAgentData = CreateUserData & { idAgenzia: number };
+
 // Cambia password
 export async function changePassword(id: number, newPassword: string): Promise<void> {
   const passwordHash = await bcrypt.hash(newPassword, 10);
@@ -28,7 +32,7 @@ export async function changePassword(id: number, newPassword: string): Promise<v
 
 // Crea cliente
 export async function createCliente(
-  data: Omit<UtenteDTO, 'idUtente' | 'ruolo' | 'dataCreazione' | 'passwordHash'> & { password: string }
+  data: CreateUserData
 ): Promise<UtenteDTO> {
   const passwordHash = await bcrypt.hash(data.password, 10);
   const result = await pool.query(
@@ -42,7 +46,7 @@ export async function createCliente(
 
 // Crea agente
 export async function createAgent(
-  data: Omit<UtenteDTO, 'idUtente' | 'ruolo' | 'dataCreazione' | 'passwordHash'> & { password: string; idAgenzia: number }
+  data: CreateAgentData
 ): Promise<UtenteDTO & { idAgenzia: number }> {
   const passwordHash = await bcrypt.hash(data.password, 10);
   const result = await pool.query(

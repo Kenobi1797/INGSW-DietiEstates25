@@ -2,7 +2,6 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/authMiddleware';
 import * as OffertaDAO from '../dao/OffertaDAO';
 import { z } from 'zod';
-import { OffertaSchema } from '../dto/OffertaDTO';
 
 // Creazione nuova offerta (cliente)
 export async function createOfferta(req: AuthRequest, res: Response) {
