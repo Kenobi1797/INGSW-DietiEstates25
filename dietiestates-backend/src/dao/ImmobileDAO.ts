@@ -33,7 +33,40 @@ export async function createImmobile(data: ImmobileDTO) {
 
   const saved = result.rows[0];
   const serviziVicinati = scuoleVicine || parchiVicini || trasportiPubbliciVicini;
-  return { ...saved, serviziVicinati };
+
+  return {
+    idImmobile: saved.idimmobile,
+    idAgente: saved.idagente,
+    titolo: saved.titolo,
+    descrizione: saved.descrizione,
+    prezzo: parseFloat(saved.prezzo),
+    dimensioni: saved.dimensioni !== null ? parseFloat(saved.dimensioni) : null,
+    indirizzo: saved.indirizzo,
+    numeroStanze: saved.numerostanze,
+    numeroBagni: saved.numerobagni,
+    piano: saved.piano,
+    ascensore: saved.ascensore,
+    balcone: saved.balcone,
+    terrazzo: saved.terrazzo,
+    giardino: saved.giardino,
+    postoAuto: saved.postoauto,
+    cantina: saved.cantina,
+    portineria: saved.portineria,
+    climatizzazione: saved.climatizzazione,
+    riscaldamento: saved.riscaldamento,
+    scuoleVicine: saved.scuolevicine,
+    parchiVicini: saved.parchivicini,
+    trasportiPubbliciVicini: saved.trasportipubblicivicini,
+    classeEnergetica: saved.classeenergetica,
+    tipologia: saved.tipologia,
+    latitudine: parseFloat(saved.latitudine),
+    longitudine: parseFloat(saved.longitudine),
+    fotoUrls: saved.fotourls || [],
+    dataCreazione: saved.datacreazione,
+    venduto: saved.venduto,
+    dataVendita: saved.datavendita,
+    serviziVicinati
+  };
 }
 
 export async function searchImmobili(filters: any) {

@@ -43,10 +43,15 @@ export async function updateAgenzia(req: AuthRequest, res: Response) {
   if (!parsed.success) return res.status(400).json({ error: parsed.error });
 
   try {
-    const agenziaEsistente = await AgenzieDAO.getAgenziaById(Number(idAgenzia));
+    const id = Number(idAgenzia);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: 'Id agenzia non valido' });
+    }
+
+    const agenziaEsistente = await AgenzieDAO.getAgenziaById(id);
     if (!agenziaEsistente) return res.status(404).json({ error: 'Agenzia non trovata' });
 
-    const agenziaAggiornata = await AgenzieDAO.updateAgenziaDB(Number(idAgenzia), parsed.data);
+    const agenziaAggiornata = await AgenzieDAO.updateAgenziaDB(id, parsed.data);
     res.json(agenziaAggiornata);
   } catch (err) {
     console.error(err);

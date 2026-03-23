@@ -57,6 +57,9 @@ export async function createManualOfferta(req: AuthRequest, res: Response) {
 export async function getOffertePerImmobile(req: AuthRequest, res: Response) {
   try {
     const idImmobile = Number(req.params.idImmobile);
+    if (!Number.isInteger(idImmobile) || idImmobile <= 0) {
+      return res.status(400).json({ error: 'Id immobile non valido' });
+    }
     const offerte = await OffertaDAO.getOffertePerImmobile(idImmobile);
     res.json(offerte);
   } catch (err) {
@@ -87,6 +90,9 @@ export async function updateOfferta(req: AuthRequest, res: Response) {
 
   try {
     const idOfferta = Number(req.params.idOfferta);
+    if (!Number.isInteger(idOfferta) || idOfferta <= 0) {
+      return res.status(400).json({ error: 'Id offerta non valido' });
+    }
     const offerta = await OffertaDAO.getOffertaById(idOfferta);
     if (!offerta) return res.status(404).json({ error: 'Offerta non trovata' });
 
