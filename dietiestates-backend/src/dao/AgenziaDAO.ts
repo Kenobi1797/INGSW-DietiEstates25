@@ -39,6 +39,14 @@ export const updateAgenziaDB = async (idAgenzia: number, fields: Partial<Agenzia
   return mapRowToAgenzia(result.rows[0]);
 };
 
+export async function getAgenziaByAdminId(idAmministratore: number): Promise<AgenziaDTO | null> {
+  const result = await pool.query(
+    'SELECT * FROM Agenzia WHERE IdAmministratore = $1 LIMIT 1',
+    [idAmministratore]
+  );
+  return result.rows[0] ? mapRowToAgenzia(result.rows[0]) : null;
+}
+
 export async function checkAdminExists(idAmministratore: number): Promise<boolean> {
   const result = await pool.query(
     'SELECT IdUtente FROM Utente WHERE IdUtente = $1 AND Ruolo = $2',

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { generateToken } from '../utils/jwt';
 import { AuthRequest } from '../middleware/authMiddleware';
 import * as UtenteDAO from '../dao/UtenteDAO';
+import * as AgenziaDAO from '../dao/AgenziaDAO';
 import { UtenteSchema } from '../dto/UtenteDTO';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
@@ -34,6 +35,19 @@ const parsed = UtenteSchema.omit({
   }
 }
 
+async function resolveUserAgencyId(user: any): Promise<number | null> {
+  if (user.idAgenzia) {
+    return user.idAgenzia;
+  }
+
+  if (user.ruolo === 'AmministratoreAgenzia') {
+    const agency = await AgenziaDAO.getAgenziaByAdminId(user.idUtente);
+    return agency?.idAgenzia ?? null;
+  }
+
+  return null;
+}
+
 // Login
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
@@ -45,7 +59,19 @@ export async function login(req: Request, res: Response) {
     if (!match) return res.status(400).json({ error: 'Credenziali non valide' });
 
     const token = generateToken({ id: user.idUtente, ruolo: user.ruolo });
-    res.json({ token, user: { id: user.idUtente, nome: user.nome, ruolo: user.ruolo } });
+    const idAgenzia = await resolveUserAgencyId(user);
+
+    const responseUser: any = {
+      id: user.idUtente,
+      nome: user.nome,
+      ruolo: user.ruolo,
+    };
+
+    if (idAgenzia) {
+      responseUser.idAgenzia = idAgenzia;
+    }
+
+    res.json({ token, user: responseUser });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Errore durante il login' });
@@ -57,7 +83,19 @@ export async function me(req: AuthRequest, res: Response) {
   try {
     const user = await UtenteDAO.getUtenteById(req.user.id);
     if (!user) return res.status(404).json({ error: 'Utente non trovato' });
-    res.json({ id: user.idUtente, nome: user.nome, ruolo: user.ruolo });
+
+    const idAgenzia = await resolveUserAgencyId(user);
+    const responseUser: any = {
+      id: user.idUtente,
+      nome: user.nome,
+      ruolo: user.ruolo,
+    };
+
+    if (idAgenzia) {
+      responseUser.idAgenzia = idAgenzia;
+    }
+
+    res.json(responseUser);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Errore durante il recupero del profilo' });

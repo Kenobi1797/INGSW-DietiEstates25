@@ -82,6 +82,6 @@ function mapRowToUtente(row: any): UtenteDTO {
     ruolo: row.ruolo,
     passwordHash: row.passwordhash,
     dataCreazione: row.datacreazione,
-    // idAgenzia non è nel DTO base; in createAgent viene comunque restituito via spread.
+    idAgenzia: row.idagenzia || null,
   };
 }

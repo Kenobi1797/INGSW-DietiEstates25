@@ -8,6 +8,7 @@ export const UtenteSchema = z.object({
   passwordHash: z.string().optional(),
   ruolo: z.enum(["AmministratoreAgenzia", "Supporto", "Agente", "Cliente"]),
   dataCreazione: z.date().optional(),
+  idAgenzia: z.number().int().nullable().optional(),
 });
 
 export type UtenteDTO = z.infer<typeof UtenteSchema>;
