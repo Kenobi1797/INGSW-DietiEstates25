@@ -1,0 +1,119 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import RicercaIndirizzo from '@/components/SearchInd';
+import FiltriAvanzati from './Filtri';
+import { AvanzatiFilterState } from './Filtri';
+
+export interface StatoRicerca {
+  contratto: 'vendita' | 'affitto';
+  posizione: { lat: number; lon: number; indirizzo: string } | null;
+  filtri: AvanzatiFilterState;
+}
+
+export default function Barraricerca() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [showFiltri, setShowFiltri] = useState(false);
+
+  const [ricerca, setRicerca] = useState<StatoRicerca>(() => ({
+    contratto: (searchParams.get('type') as 'vendita' | 'affitto') || 'vendita',
+    posizione: searchParams.get('lat') ? {
+      lat: Number(searchParams.get('lat')),
+      lon: Number(searchParams.get('lon')),
+      indirizzo: searchParams.get('address') || '',
+    } : null,
+    filtri: {
+      prezzoMin: searchParams.get('prezzoMin') || '',
+      prezzoMax: searchParams.get('prezzoMax') || '',
+      stanzeMin: searchParams.get('stanzeMin') || '',
+      stanzeMax: searchParams.get('stanzeMax') || '',
+      bagni: searchParams.get('bagni') || '',
+      classeEnergetica: (searchParams.get('classeEnergetica') as AvanzatiFilterState['classeEnergetica']) || '',
+    }
+  }));
+
+  const isSearchDisabled = !ricerca.posizione;
+
+  const updateRicerca = (key: keyof StatoRicerca, value: any) => {
+    setRicerca(prev => ({ ...prev, [key]: value }));
+    // Non aggiorniamo l'URL qui  solo al click di "Cerca"
+  };
+
+  const handleCerca = () => {
+    if (isSearchDisabled) return;
+
+    const params = new URLSearchParams();
+    params.set('type', ricerca.contratto);
+    params.set('lat', ricerca.posizione!.lat.toString());
+    params.set('lon', ricerca.posizione!.lon.toString());
+    params.set('address', ricerca.posizione!.indirizzo);
+
+    Object.entries(ricerca.filtri).forEach(([key, value]) => {
+      if (value) params.set(key, value);
+    });
+
+    router.push(`/Search?${params.toString()}`);
+  };
+
+  return (
+    <div className="search-bar-inner">
+
+      <div className="search-address-wrapper">
+        <RicercaIndirizzo 
+          initialValue={ricerca.posizione?.indirizzo || ''} 
+          soloIndirizziPrecisi={false}
+          onIndirizzoSelezionato={(lat, lon, ind) => 
+            updateRicerca('posizione', { lat, lon, indirizzo: ind })
+          } 
+        />
+      </div>
+
+      <span className="search-divider">|</span>
+        <select 
+        className="search-input-reset"
+        value={ricerca.contratto}
+        onChange={(e) => updateRicerca('contratto', e.target.value as 'vendita' | 'affitto')}
+      >
+        <option value="vendita">Vendita</option>
+        <option value="affitto">Affitto</option>
+      </select>
+
+      <span className="search-divider">|</span>
+
+      <div style={{ position: 'relative' }}>
+        <button 
+          className="search-input-reset"
+          style={{ fontWeight: 500 }}
+          onClick={(e) => { e.stopPropagation(); setShowFiltri(!showFiltri); }}
+        >
+          Filtri {Object.values(ricerca.filtri).some(v => v !== '') && '●'}
+        </button>
+
+        {showFiltri && (
+          <FiltriAvanzati 
+            currentFiltri={ricerca.filtri} 
+            onFiltriChange={(f) => {
+              updateRicerca('filtri', f);
+              setShowFiltri(false);
+            }} 
+            onClose={() => setShowFiltri(false)} 
+          />
+        )}
+      </div>
+
+      <button 
+        className="btn-cerca-main" 
+        onClick={handleCerca}
+        disabled={isSearchDisabled}
+        style={{
+          opacity: isSearchDisabled ? 0.6 : 1,
+          cursor: isSearchDisabled ? 'not-allowed' : 'pointer'
+        }}
+      >
+        Cerca
+      </button>
+    </div>
+  );
+}

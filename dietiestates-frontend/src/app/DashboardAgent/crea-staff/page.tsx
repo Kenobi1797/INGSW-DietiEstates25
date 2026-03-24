@@ -26,7 +26,7 @@ export default function CreaStaffPage() {
       ) : (
         <div className="form">
           <h1 style={{ textTransform: 'uppercase', marginBottom: '20px' }}>
-            Crea nuovo profilo
+            Crea Staff
           </h1>
           
           <button 
@@ -36,15 +36,17 @@ export default function CreaStaffPage() {
           >
             CREA AGENTE IMMOBILIARE
           </button>
-
+        {authuser?.ruolo === "AmministratoreAgenzia" && (
           <button 
             onClick={() => setTargetRole("Supporto")}
             className="form button"
             style={{ padding: '30px' }}
           >
-            CREA SUPPORTO TECNICO
+            CREA SUPPORTO
           </button>
+        )}
         </div>
+        
       )}
       
     </div>

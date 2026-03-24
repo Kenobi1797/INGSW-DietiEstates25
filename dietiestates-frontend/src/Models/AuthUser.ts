@@ -5,4 +5,5 @@ export interface AuthUser {
   idUtente: number;
   nome: string;
   ruolo: UserRole;
+  idAgenzia?: number;
 }

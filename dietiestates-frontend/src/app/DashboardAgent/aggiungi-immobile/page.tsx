@@ -1,26 +1,44 @@
 import React, { useState } from 'react';
+import { Immobile } from '@/Models/Immobili';
+import { EstateMap } from '@/components/MapsWrapper';
+import RicercaIndirizzo from '@/components/SearchInd';
 
 export default function PaginaCaricamentoImmobile() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [foto, setFoto] = useState<File[]>([]);
+  
 
-  const [formData, setFormData] = useState({
-    titolo: '',
-    descrizione: '',
-    prezzo: 0,
-    tipologia: '', 
-    classeEnergetica: '',
-    dimensioni: 0,
-    numeroStanze: 0,
-    numeroBagni: 0,
-    piano: 0,
-    riscaldamento: '',
-    ascensore: false,
-    balcone: false,
-    terrazzo: false,
-    giardino: false,
-    postoAuto: false,
-    climatizzazione: false,
-  });
+  const [formData, setFormData] = useState<Immobile>({
+  titolo: '',
+  descrizione: '',
+  prezzo: 0,
+  tipologia: 'Vendita',
+  classeEnergetica: 'A',
+  dimensioni: 0,
+  numeroStanze: 0,
+  numeroBagni: 0,
+  piano: 0,
+  riscaldamento: '',
+  ascensore: false,
+  balcone: false,
+  terrazzo: false,
+  giardino: false,
+  postoAuto: false,
+  climatizzazione: false,
+  cantina: false,
+  portineria: false,
+  indirizzo: '',
+  latitudine: 0,
+  longitudine: 0,
+  fotoUrls: [],
+});
+
+const handleFoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (e.target.files) {
+    setFoto(Array.from(e.target.files));
+  }
+};
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const target = e.target as HTMLInputElement;
@@ -98,8 +116,14 @@ export default function PaginaCaricamentoImmobile() {
             <label><input type="checkbox" name="giardino" checked={formData.giardino} onChange={handleChange} /> Giardino</label>
             <label><input type="checkbox" name="postoAuto" checked={formData.postoAuto} onChange={handleChange} /> Posto Auto</label>
             <label><input type="checkbox" name="climatizzazione" checked={formData.climatizzazione} onChange={handleChange} /> Climatizzazione</label>
+            <label><input type="checkbox" name="cantina" checked={formData.cantina} onChange={handleChange} /> Cantina</label>
+            <label><input type="checkbox" name="portineria" checked={formData.portineria} onChange={handleChange} /> Portineria</label>
           </div>
-
+          <div>
+            <label>Foto immobile</label>
+            <input type="file" multiple accept="image/*" onChange={handleFoto} />
+            {foto.length > 0 && <p>{foto.length} foto selezionate</p>}
+          </div>
           <button onClick={() => setCurrentStep(1)}>Indietro</button>
           <button onClick={() => setCurrentStep(3)}>Continua alla posizione</button>
         </section>
@@ -107,9 +131,17 @@ export default function PaginaCaricamentoImmobile() {
 
       {currentStep === 3 && (
         <div>
-          <h2>Posizione e Foto</h2>
+          <h2>Posizione</h2>
+            <RicercaIndirizzo
+            soloIndirizziPrecisi={true}
+            onIndirizzoSelezionato={(lat, lon, indirizzo) => {
+            setFormData(prev => ({ ...prev, latitudine: lat, longitudine: lon, indirizzo }));
+          }}
+        />
+
+         <EstateMap lat={formData.latitudine} lon={formData.longitudine} />
           <button onClick={() => setCurrentStep(2)}>Indietro</button>
-          <button onClick={() => console.log("Dati finali:", formData)}>Invia al Backend</button>
+          <button onClick={() => console.log("Dati finali:", formData)}>Crea</button>
         </div>
       )}
     </main>

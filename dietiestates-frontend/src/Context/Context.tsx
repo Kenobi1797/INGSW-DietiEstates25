@@ -2,7 +2,6 @@
 "use client";
 
 import { createContext  ,useState, ReactNode, useContext} from "react";
-import { UserRole } from "@/Types/Ruoli";
 import { AuthUser } from "@/Models/AuthUser";
 
 export interface UserContextData {

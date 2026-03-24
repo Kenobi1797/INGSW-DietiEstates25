@@ -4,11 +4,11 @@ import { UserRole } from "@/Types/Ruoli";
 export interface MenuLink {
   label: string;
   path: string;
-  roles: UserRole[]; // solo chi può vedere la voce
+  roles: UserRole[];
 }
 
 export const navbarLinks: MenuLink[] = [
-  // Link visibili a tutti
+
   {
     label: "Home",
     path: "/",
@@ -49,6 +49,11 @@ export const navbarLinks: MenuLink[] = [
   path: "/crea-staff",
   roles: ["Supporto", "AmministratoreAgenzia"],
 },
+{
+    label: "Gestisci Immobili",
+    path: "/dashboard", 
+    roles: ["Agente", "Supporto", "AmministratoreAgenzia"],
+  },
 ];
 
 

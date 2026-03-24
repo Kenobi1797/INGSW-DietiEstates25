@@ -1,0 +1,1 @@
+export type classeEner = "A+"| "A" | "B" |"C" | "D" | "E" | "F" | "G";

@@ -11,7 +11,7 @@ import { useUser } from "@/Context/Context";
 export default function LoginForm() {
   const router = useRouter();
   const { setAuthUser } = useUser();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +19,7 @@ export default function LoginForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      const data = await login(username, password);
+      const data = await login(email, password);
       localStorage.setItem('token', data.token);
       setAuthUser(data.user);       
       router.push('/');
@@ -49,10 +49,10 @@ export default function LoginForm() {
     <p className='divider'>oppure</p>
       <form className= 'form'onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Email o username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
 
