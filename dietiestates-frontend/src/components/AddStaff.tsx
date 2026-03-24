@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-
+import { useUser } from "@/Context/Context";
+import { createAgente, createSupporto } from "@/Services/CreaStaff";
 interface Props {
   targetRole: "Agente" | "Supporto";
   onCancel: () => void;
@@ -10,12 +11,28 @@ export default function AddStaff({ targetRole, onCancel }: Props) {
   const [formData, setFormData] = useState({
     nome: "",
     cognome: "",
-    email: ""
+    email: "",
+    password: ""
   });
+  const { authuser } = useUser();
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(`Registrazione ${targetRole} in corso...`, formData);
+    setError(null);
+
+    try {
+      if (targetRole === "Agente") {
+        if (!authuser?.idAgenzia) return setError("ID agenzia mancante");
+        await createAgente(formData, authuser.idAgenzia);
+      } else {
+        await createSupporto(formData);
+      }
+      setSuccess(true);
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -26,7 +43,9 @@ export default function AddStaff({ targetRole, onCancel }: Props) {
       <p style={{ color: '#666', marginBottom: '20px' }}>
         Inserisci i dati per creare il profilo di un nuovo collaboratore.
       </p>
-
+       
+       {error && <p style={{ color: 'red' }}>{error}</p>}
+       {success && <p style={{ color: 'green' }}>{targetRole} creato con successo!</p>}
       <form className="form" onSubmit={handleSubmit}>
         <input 
           type="text" 
@@ -50,6 +69,13 @@ export default function AddStaff({ targetRole, onCancel }: Props) {
           required
           value={formData.email}
           onChange={(e) => setFormData({...formData, email: e.target.value})}
+        />
+        <input 
+          type="password" 
+          placeholder="Password"
+          required
+          value={formData.password}
+          onChange={(e) => setFormData({...formData, password: e.target.value})}
         />
 
         <button type="submit" className="btn-primary">
