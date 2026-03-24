@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import initDb from './config/initDb';
 import pool from './config/db';
 import authRoutes from './routes/auth';
@@ -17,6 +18,14 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware per parse JSON
 app.use(express.json());
+
+// CORS per il frontend
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+  })
+);
 
 // Configurazione session
 app.use(
