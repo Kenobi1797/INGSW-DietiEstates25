@@ -5,6 +5,8 @@ import authRoutes from './routes/auth';
 import immobileRoutes from './routes/immobileRoutes';
 import offertaRoutes from './routes/offertaRoutes';
 import agenziaRoutes from './routes/agenziaRoutes';
+import { searchImmobili } from './controllers/immobileController';
+import { authMiddleware } from './middleware/authMiddleware';
 import session from 'express-session';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
@@ -49,7 +51,7 @@ app.use(passport.session());
 // Rotte
 app.use('/auth', authRoutes);
 app.use('/immobili', immobileRoutes);
-app.use('/search', immobileRoutes);
+app.get('/search', authMiddleware, searchImmobili);
 app.use('/offerte', offertaRoutes);
 app.use('/agenzie', agenziaRoutes);
 
