@@ -7,9 +7,9 @@ import offertaRoutes from './routes/offertaRoutes';
 import agenziaRoutes from './routes/agenziaRoutes';
 import { searchImmobili } from './controllers/immobileController';
 import { authMiddleware } from './middleware/authMiddleware';
+import './config/passport';
 import session from 'express-session';
 import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 // Creazione dell'app PRIMA di usarla
 const app = express();
@@ -27,21 +27,7 @@ app.use(
   })
 );
 
-// Configurazione Passport
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      callbackURL: 'http://localhost:5000/auth/google/callback',
-    },
-    function (accessToken, refreshToken, profile, done) {
-      // Logica per trovare/creare utente nel DB
-      return done(null, profile);
-    }
-  )
-);
-
+// Configurazione Passport (strategy definita in src/config/passport.ts)
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user: any, done) => done(null, user));
 

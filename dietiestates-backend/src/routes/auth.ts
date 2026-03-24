@@ -12,8 +12,16 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    // Redirect dopo login riuscito
-    res.redirect('/profile');
+    const oauthResult = req.user as any;
+    if (!oauthResult || !oauthResult.token || !oauthResult.user) {
+      return res.status(400).json({ error: 'Errore login Google' });
+    }
+
+    // Se si vuole gestire il redirect frontend, si può usare:
+    // res.redirect(`${process.env.FRONTEND_URL}/google-callback?token=${oauthResult.token}`);
+
+    // Risposta JSON con token e user
+    res.json({ token: oauthResult.token, user: oauthResult.user });
   }
 );
 

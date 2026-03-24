@@ -4,6 +4,11 @@ import * as UtenteDAO from '../dao/UtenteDAO';
 import * as OAuthDAO from '../dao/OAuthDAO';
 import { generateToken } from '../utils/jwt';
 
+console.log('Passport Google OAuth init');
+console.log('GOOGLE_CLIENT_ID=', process.env.GOOGLE_CLIENT_ID);
+console.log('GOOGLE_CLIENT_SECRET=', process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET.slice(0, 8) + '...' : undefined);
+console.log('GOOGLE_CALLBACK_URL=', '/auth/google/callback');
+
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID!,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
