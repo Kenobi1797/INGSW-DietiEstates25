@@ -2,6 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import { register, login, me, createAgent, changePassword, createSupport } from '../controllers/authController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
+import { authRateLimit } from '../middleware/rateLimitMiddleware';
 
 const router = express.Router();
 
@@ -23,9 +24,9 @@ router.get(
   }
 );
 
-// Rotte pubbliche
-router.post('/register', register);
-router.post('/login', login);
+// Rotte pubbliche (con rate limiting anti-brute-force)
+router.post('/register', authRateLimit, register);
+router.post('/login', authRateLimit, login);
 
 // Rotta protetta: ottieni utenti correnti con id, nome, ruolo
 router.get('/me', authMiddleware, me);

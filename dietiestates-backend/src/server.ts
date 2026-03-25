@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import initDb from './config/initDb';
 import pool from './config/db';
 import authRoutes from './routes/auth';
@@ -9,10 +10,19 @@ import agenziaRoutes from './routes/agenziaRoutes';
 import './config/passport';
 import session from 'express-session';
 import passport from 'passport';
+import { loggerMiddleware } from './middleware/loggerMiddleware';
+import { apiRateLimit } from './middleware/rateLimitMiddleware';
+import { errorMiddleware } from './middleware/errorMiddleware';
 
 // Creazione dell'app PRIMA di usarla
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Sicurezza: header HTTP sicuri
+app.use(helmet());
+
+// Logging delle richieste
+app.use(loggerMiddleware);
 
 // Middleware per parse JSON
 app.use(express.json());
@@ -25,12 +35,20 @@ app.use(
   })
 );
 
+// Rate limiting globale
+app.use(apiRateLimit);
+
 // Configurazione session
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'change_me_in_production',
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    },
   })
 );
 
@@ -57,6 +75,9 @@ app.get('/', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Errore nel server' });
   }
 });
+
+// Gestore errori centralizzato (deve essere l'ultimo middleware)
+app.use(errorMiddleware);
 
 // Inizializza il database e avvia il server
 initDb()
