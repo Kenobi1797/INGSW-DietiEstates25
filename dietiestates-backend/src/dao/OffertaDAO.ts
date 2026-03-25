@@ -62,6 +62,18 @@ export const getOffertePerAgente = async (idAgente: number): Promise<OffertaDTO[
   return result.rows.map(mapRowToOfferta);
 };
 
+export const getControffertePerCliente = async (idUtente: number): Promise<OffertaDTO[]> => {
+  const result = await pool.query(
+    `SELECT o.*, i.titolo, i.indirizzo
+     FROM offerta o
+     JOIN immobile i ON o.idimmobile = i.idimmobile
+     WHERE o.idutente = $1 AND o.idoffertaoriginale IS NOT NULL
+     ORDER BY o.dataofferta DESC`,
+    [idUtente]
+  );
+  return result.rows.map(mapRowToOfferta);
+};
+
 export const getOffertaById = async (idOfferta: number): Promise<OffertaDTO | null> => {
   const result = await pool.query('SELECT * FROM offerta WHERE idofferta = $1', [idOfferta]);
   return result.rows[0] ? mapRowToOfferta(result.rows[0]) : null;

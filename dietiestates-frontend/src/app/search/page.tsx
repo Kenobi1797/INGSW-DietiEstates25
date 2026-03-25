@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, Suspense } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ import { ImmobileS } from "@/Models/ImmobileS";
 
 const EstateMap = dynamic(() => import("@/components/EstateMap"), { ssr: false });
 
-export default function Search() {
+function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchParamsKey = searchParams.toString();
@@ -117,5 +117,17 @@ export default function Search() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Search() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-gray-500 animate-pulse">Caricamento ricerca...</p>
+      </div>
+    }>
+      <SearchContent />
+    </Suspense>
   );
 }

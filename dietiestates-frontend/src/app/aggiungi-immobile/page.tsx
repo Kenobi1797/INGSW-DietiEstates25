@@ -60,7 +60,7 @@ export default function PaginaCaricamentoImmobile() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!authuser?.id) {
+    if (!authuser?.idUtente) {
       setError('Utente non autenticato');
       return;
     }
@@ -78,7 +78,7 @@ export default function PaginaCaricamentoImmobile() {
           ...formData,
           fotoUrls,
         },
-        authuser.id
+        authuser.idUtente
       );
 
       alert('Immobile creato con successo!');
@@ -234,7 +234,7 @@ export default function PaginaCaricamentoImmobile() {
                       <input
                         type="checkbox"
                         name={name}
-                        checked={(formData as Record<string, boolean>)[name] ?? false}
+                        checked={(formData as unknown as Record<string, boolean>)[name] ?? false}
                         onChange={handleChange}
                       />
                       {label}
@@ -257,7 +257,7 @@ export default function PaginaCaricamentoImmobile() {
                       <input
                         type="checkbox"
                         name={name}
-                        checked={(formData as Record<string, boolean>)[name] ?? false}
+                        checked={(formData as unknown as Record<string, boolean>)[name] ?? false}
                         onChange={handleChange}
                       />
                       {label}

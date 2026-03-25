@@ -2,10 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import BaseButton from './BaseButton';
 import { register } from '@/Services/authservice';
 import Link from 'next/link';
-
 
 export interface SignUpData {
   nome: string;
@@ -15,117 +13,131 @@ export interface SignUpData {
 }
 
 export default function SignUpForm() {
-    const router = useRouter();
-    const [loading, setLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-    const [formData, setFormData] = useState<SignUpData>({
-       nome: "",
-       cognome: "",
-       email: "",
-       password: "",
-    });
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState<SignUpData>({
+    nome: '',
+    cognome: '',
+    email: '',
+    password: '',
+  });
 
-     const handleGoogleLogin = () => {
-           alert('Registrazione con Google (da implementare)');
-        };
-
-     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          const { name, value } = e.target;
-          setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-          }));
-      };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-  setLoading(true);
-
-  try {
-    await register(formData); 
-  
-    alert('Registrazione completata!');
-    router.push('/login'); 
-    
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Errore durante la registrazione';
-    alert(message);
-  } finally {
-    setLoading(false); 
-  }
+  const handleGoogleLogin = () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (!apiUrl) { setError('URL API non configurato'); return; }
+    window.location.href = `${apiUrl}/auth/google`;
   };
-    return (
-   <div>
-     <div className='form'>
-      <h2 className='divider'>DietiEstates</h2>
-      <p className='divider'>Registrazione</p>
-       {/* Google login da implementare*/}
-            <BaseButton action={handleGoogleLogin} className='btn-default'>
-               <img src="/GoogleLogo.svg" alt="Google" width={20} height={20} />
-               <span>Continua con Google</span>
-            </BaseButton> 
-      <div />   
-        <p className='divider'>oppure</p>
-      <form className='form' onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome"
-          value={formData.nome}
-          onChange={handleChange}
-          required
-        />
 
-        <input
-          type="text"
-          name="cognome"
-          placeholder="Cognome"
-          value={formData.cognome}
-          onChange={handleChange}
-          required
-        />
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      await register(formData);
+      router.push('/login');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Errore durante la registrazione');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-red-600">DietiEstates</h1>
+        <p className="text-gray-500 text-sm mt-1">Crea il tuo account</p>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleGoogleLogin}
+        className="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-xl py-2.5 px-4 text-sm font-medium hover:bg-gray-50 transition-colors"
+      >
+        <img src="/GoogleLogo.svg" alt="Google" width={18} height={18} />
+        Continua con Google
+      </button>
+
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-px bg-gray-200" />
+        <span className="text-xs text-gray-400">oppure</span>
+        <div className="flex-1 h-px bg-gray-200" />
+      </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-2.5 text-sm">
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 gap-3">
+          <input
+            type="text"
+            name="nome"
+            placeholder="Nome"
+            value={formData.nome}
+            onChange={handleChange}
+            className="border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:border-red-400 focus:outline-none"
+            required
+          />
+          <input
+            type="text"
+            name="cognome"
+            placeholder="Cognome"
+            value={formData.cognome}
+            onChange={handleChange}
+            className="border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:border-red-400 focus:outline-none"
+            required
+          />
+        </div>
         <input
           type="email"
           name="email"
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
+          className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:border-red-400 focus:outline-none"
           required
         />
-
-        <div style={{ position: 'relative' }}>
+        <div className="relative">
           <input
             type={showPassword ? 'text' : 'password'}
             name="password"
-            placeholder="Password"
+            placeholder="Password (min. 6 caratteri)"
             value={formData.password}
             onChange={handleChange}
+            className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:border-red-400 focus:outline-none pr-20"
             required
           />
-          <p onClick={() => setShowPassword(!showPassword)}
-                     className="text-blue-500 text-sm whitespace-nowrap cursor-pointer">
-                      {showPassword ? 'Nascondi' : 'Mostra'}
-             </p>
+          <button type="button" onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-gray-600">
+            {showPassword ? 'Nascondi' : 'Mostra'}
+          </button>
         </div>
-
-        <BaseButton
+        <button
           type="submit"
-          className='btn-primary btn-default-pos'
-          loading={loading}
           disabled={loading}
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors disabled:opacity-60"
         >
-          Registrati
-        </BaseButton>
+          {loading ? 'Registrazione...' : 'Registrati'}
+        </button>
       </form>
-        
+
+      <p className="text-center text-sm text-gray-500">
+        Hai già un account?{' '}
+        <Link href="/login" className="text-red-600 font-medium hover:underline">
+          Accedi
+        </Link>
+      </p>
     </div>
-    <p className='divider'>
-             Sei già registrato?{' '}
-             <Link href="/Login" className="text-blue-500 underline">
-              clicca qui
-            </Link>
-          </p>
-    </div>
-    )
+  );
 }
+

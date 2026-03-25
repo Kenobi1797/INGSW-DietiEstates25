@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function GoogleCallbackPage() {
+function GoogleCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -27,5 +27,17 @@ export default function GoogleCallbackPage() {
       <h1 className="text-2xl font-bold text-red-600 mb-3">Login Google</h1>
       <p className="text-gray-700">{message}</p>
     </main>
+  );
+}
+
+export default function GoogleCallbackPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-white flex flex-col items-center justify-center text-center p-6">
+        <p className="text-gray-500">Verifica autenticazione...</p>
+      </main>
+    }>
+      <GoogleCallbackContent />
+    </Suspense>
   );
 }

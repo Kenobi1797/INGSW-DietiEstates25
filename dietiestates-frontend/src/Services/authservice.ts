@@ -1,5 +1,6 @@
 
-import { SignUpData } from "@/components/SignUpForm";
+import { AuthUser } from '@/Models/AuthUser';
+import { SignUpData } from '@/components/SignUpForm';
 const API_URL = process.env.NEXT_PUBLIC_API_URL 
 
 export async function register(userData: SignUpData) {
@@ -53,5 +54,5 @@ export async function login(email: string, password: string) {
     throw new Error(message);
   }
 
-  return data;
+  return data as { token: string; user: AuthUser };
 }

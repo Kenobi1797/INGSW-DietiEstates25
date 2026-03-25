@@ -6,8 +6,6 @@ import authRoutes from './routes/auth';
 import immobileRoutes from './routes/immobileRoutes';
 import offertaRoutes from './routes/offertaRoutes';
 import agenziaRoutes from './routes/agenziaRoutes';
-import { searchImmobili } from './controllers/immobileController';
-import { authMiddleware } from './middleware/authMiddleware';
 import './config/passport';
 import session from 'express-session';
 import passport from 'passport';
@@ -30,7 +28,7 @@ app.use(
 // Configurazione session
 app.use(
   session({
-    secret: 'keyboard cat',
+    secret: process.env.SESSION_SECRET || 'change_me_in_production',
     resave: false,
     saveUninitialized: false,
   })
@@ -46,7 +44,6 @@ app.use(passport.session());
 // Rotte
 app.use('/auth', authRoutes);
 app.use('/immobili', immobileRoutes);
-app.get('/search', authMiddleware, searchImmobili);
 app.use('/offerte', offertaRoutes);
 app.use('/agenzie', agenziaRoutes);
 

@@ -5,8 +5,10 @@ import {
   getOffertePerImmobile,
   getOffertePerUtente,
   getOffertePerAgente,
+  getControffertePerCliente,
   updateOfferta,
-  ritiraOfferta
+  ritiraOfferta,
+  rispondiControproposta
 } from '../controllers/offertaController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
@@ -27,8 +29,14 @@ router.get('/utente', authMiddleware, roleMiddleware('Cliente'), getOffertePerUt
 // Offerte per agente (tutte le offerte sugli immobili dell'agente)
 router.get('/agente', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), getOffertePerAgente);
 
+// Controfferte ricevute dal cliente
+router.get('/controfferte', authMiddleware, roleMiddleware('Cliente'), getControffertePerCliente);
+
 // Ritiro offerta (solo il cliente proprietario)
 router.patch('/:idOfferta/ritira', authMiddleware, roleMiddleware('Cliente'), ritiraOfferta);
+
+// Risposta del cliente a una controfferta
+router.patch('/:idOfferta/rispondi', authMiddleware, roleMiddleware('Cliente'), rispondiControproposta);
 
 // Aggiornamento stato offerta (solo agente/admin)
 router.put('/:idOfferta', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), updateOfferta);

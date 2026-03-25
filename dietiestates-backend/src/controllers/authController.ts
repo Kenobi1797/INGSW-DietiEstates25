@@ -36,10 +36,8 @@ const parsed = UtenteSchema.omit({
     res.status(201).json({
       token,
       user: {
-        id: user.idUtente,
+        idUtente: user.idUtente,
         nome: user.nome,
-        cognome: user.cognome,
-        email: user.email,
         ruolo: user.ruolo
       }
     });
@@ -76,7 +74,7 @@ export async function login(req: Request, res: Response) {
     const idAgenzia = await resolveUserAgencyId(user);
 
     const responseUser: any = {
-      id: user.idUtente,
+      idUtente: user.idUtente,
       nome: user.nome,
       ruolo: user.ruolo,
     };
@@ -100,7 +98,7 @@ export async function me(req: AuthRequest, res: Response) {
 
     const idAgenzia = await resolveUserAgencyId(user);
     const responseUser: any = {
-      id: user.idUtente,
+      idUtente: user.idUtente,
       nome: user.nome,
       ruolo: user.ruolo,
     };
