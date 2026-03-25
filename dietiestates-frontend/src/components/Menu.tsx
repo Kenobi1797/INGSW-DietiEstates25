@@ -22,20 +22,24 @@ export default function Menu({ items, buttonLabel = "Menu" }: MenuProps) {
       )}
 
       <button
-        className="bg-transparent px-4 py-2 rounded focus:outline-none"
+        className="inline-flex items-center gap-2 border border-red-200 bg-white text-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-red-50 transition-colors focus:outline-none focus:ring-2 focus:ring-red-200"
         onClick={() => setIsOpen(prev => !prev)}
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
       >
-        {buttonLabel}
+        <span>{buttonLabel}</span>
+        <span className={`text-xs transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
       </button>
 
       {isOpen && (
-        <ul className="absolute right-0 top-full mt-1 bg-white border-2 border-black text-black w-44 shadow-lg rounded-md z-50">
+        <ul className="absolute right-0 top-full mt-2 bg-white border border-gray-200 text-black min-w-52 shadow-lg rounded-xl z-50 py-2" role="menu">
           {items.map(item => (
-            <li key={item.path} className="px-0 py-0">
+            <li key={item.path} className="px-2 py-0" role="none">
               <Link
                 href={item.path}
-                className="block px-4 py-2 hover:bg-gray-100"
+                className="block px-3 py-2 rounded-lg hover:bg-red-50 hover:text-red-700 font-medium"
                 onClick={() => setIsOpen(false)}
+                role="menuitem"
               >
                 {item.label}
               </Link>

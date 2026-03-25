@@ -150,22 +150,42 @@ async function createDefaultAgency(): Promise<void> {
 
 async function createDemoData(): Promise<void> {
   try {
-    const { rows: immobileRows } = await pool.query('SELECT IdImmobile FROM Immobile LIMIT 1');
-    if (immobileRows.length > 0) {
-      console.log('Dati dimostrativi già presenti nel database');
-      return;
-    }
+    const getOrCreateUser = async (
+      nome: string,
+      cognome: string,
+      email: string,
+      passwordPlain: string,
+      ruolo: 'AmministratoreAgenzia' | 'Supporto' | 'Agente' | 'Cliente'
+    ): Promise<number> => {
+      const { rows: existing } = await pool.query('SELECT IdUtente FROM Utente WHERE Email = $1', [email]);
+      if (existing.length > 0) return existing[0].idutente;
 
-    // Assicuriamoci che esistano almeno un agente e un cliente
-    const { rows: agenti } = await pool.query("SELECT IdUtente FROM Utente WHERE Ruolo = 'Agente' LIMIT 1");
-    let agenteId = agenti.length > 0 ? agenti[0].idutente : null;
-    if (!agenteId) {
-      const hashed = await bcrypt.hash('Agente123!', 10);
-      const result = await pool.query(
-        `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo) VALUES ($1,$2,$3,$4,$5) RETURNING IdUtente`,
-        ['Mario', 'Rossi', 'agente@dietiestates.com', hashed, 'Agente']
+      const passwordHash = await bcrypt.hash(passwordPlain, 10);
+      const { rows: inserted } = await pool.query(
+        `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING IdUtente`,
+        [nome, cognome, email, passwordHash, ruolo]
       );
-      agenteId = result.rows[0].idutente;
+      return inserted[0].idutente;
+    };
+
+    const { rows: agencyRows } = await pool.query('SELECT IdAgenzia FROM Agenzia LIMIT 1');
+    const idAgenzia = agencyRows.length > 0 ? agencyRows[0].idagenzia : null;
+
+    const agenteMarioId = await getOrCreateUser('Mario', 'Rossi', 'agente@dietiestates.com', 'Agente123!', 'Agente');
+    const agenteLuciaId = await getOrCreateUser('Lucia', 'Bianchi', 'agente2@dietiestates.com', 'Agente123!', 'Agente');
+    const clienteAnnaId = await getOrCreateUser('Anna', 'Verdi', 'cliente1@dietiestates.com', 'Cliente123!', 'Cliente');
+    const clientePaoloId = await getOrCreateUser('Paolo', 'Neri', 'cliente2@dietiestates.com', 'Cliente123!', 'Cliente');
+    await getOrCreateUser('Sofia', 'Gialli', 'supporto@dietiestates.com', 'Supporto123!', 'Supporto');
+
+    if (idAgenzia) {
+      await pool.query(
+        `UPDATE Utente
+         SET IdAgenzia = $1
+         WHERE IdUtente = ANY($2::int[]) AND (IdAgenzia IS NULL OR IdAgenzia <> $1)`,
+        [idAgenzia, [agenteMarioId, agenteLuciaId]]
+      );
     }
 
     const estateImagesA = [
@@ -178,73 +198,236 @@ async function createDemoData(): Promise<void> {
       'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80'
     ];
 
-    await pool.query(
-      `INSERT INTO Immobile (IdAgente,Titolo,Descrizione,Prezzo,Dimensioni,Indirizzo,NumeroStanze,NumeroBagni,Piano,Ascensore,Balcone,Terrazzo,Giardino,PostoAuto,Cantina,Portineria,Climatizzazione,Riscaldamento,ScuoleVicine,ParchiVicini,TrasportiPubbliciVicini,ClasseEnergetica,Tipologia,Latitudine,Longitudine,FotoUrls)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26)`,
-      [
-        agenteId,
-        'Attico con terrazzo',
-        'Attico con vista panoramica e terrazzo di 50mq',
-        520000,
-        140,
-        'Via Toledo 34, Napoli',
-        5,
-        3,
-        6,
-        true,
-        true,
-        true,
-        false,
-        false,
-        true,
-        false,
-        true,
-        'Centralizzato',
-        true,
-        true,
-        true,
-        'A',
-        'Vendita',
-        40.8522,
-        14.2681,
-        estateImagesA
-      ]
+    const { rows: immobileRows } = await pool.query('SELECT IdImmobile, Titolo FROM Immobile ORDER BY IdImmobile ASC');
+    const immobiliMap = new Map<string, number>(immobileRows.map((r) => [r.titolo, r.idimmobile]));
+
+    const ensureImmobile = async (
+      idAgente: number,
+      titolo: string,
+      descrizione: string,
+      prezzo: number,
+      dimensioni: number,
+      indirizzo: string,
+      numeroStanze: number,
+      numeroBagni: number,
+      piano: number,
+      ascensore: boolean,
+      balcone: boolean,
+      terrazzo: boolean,
+      giardino: boolean,
+      postoAuto: boolean,
+      cantina: boolean,
+      portineria: boolean,
+      climatizzazione: boolean,
+      riscaldamento: string,
+      scuoleVicine: boolean,
+      parchiVicini: boolean,
+      trasportiPubbliciVicini: boolean,
+      classeEnergetica: string,
+      tipologia: 'Vendita' | 'Affitto',
+      latitudine: number,
+      longitudine: number,
+      fotoUrls: string[]
+    ): Promise<number> => {
+      if (immobiliMap.has(titolo)) return immobiliMap.get(titolo)!;
+
+      const { rows } = await pool.query(
+        `INSERT INTO Immobile (IdAgente,Titolo,Descrizione,Prezzo,Dimensioni,Indirizzo,NumeroStanze,NumeroBagni,Piano,Ascensore,Balcone,Terrazzo,Giardino,PostoAuto,Cantina,Portineria,Climatizzazione,Riscaldamento,ScuoleVicine,ParchiVicini,TrasportiPubbliciVicini,ClasseEnergetica,Tipologia,Latitudine,Longitudine,FotoUrls)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26)
+         RETURNING IdImmobile`,
+        [
+          idAgente,
+          titolo,
+          descrizione,
+          prezzo,
+          dimensioni,
+          indirizzo,
+          numeroStanze,
+          numeroBagni,
+          piano,
+          ascensore,
+          balcone,
+          terrazzo,
+          giardino,
+          postoAuto,
+          cantina,
+          portineria,
+          climatizzazione,
+          riscaldamento,
+          scuoleVicine,
+          parchiVicini,
+          trasportiPubbliciVicini,
+          classeEnergetica,
+          tipologia,
+          latitudine,
+          longitudine,
+          fotoUrls
+        ]
+      );
+      const idImmobile = rows[0].idimmobile;
+      immobiliMap.set(titolo, idImmobile);
+      return idImmobile;
+    };
+
+    const immobileAtticoId = await ensureImmobile(
+      agenteMarioId,
+      'Attico con terrazzo',
+      'Attico con vista panoramica e terrazzo di 50mq',
+      520000,
+      140,
+      'Via Toledo 34, Napoli',
+      5,
+      3,
+      6,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      false,
+      true,
+      'Centralizzato',
+      true,
+      true,
+      true,
+      'A',
+      'Vendita',
+      40.8522,
+      14.2681,
+      estateImagesA
     );
 
-    await pool.query(
-      `INSERT INTO Immobile (IdAgente,Titolo,Descrizione,Prezzo,Dimensioni,Indirizzo,NumeroStanze,NumeroBagni,Piano,Ascensore,Balcone,Terrazzo,Giardino,PostoAuto,Cantina,Portineria,Climatizzazione,Riscaldamento,ScuoleVicine,ParchiVicini,TrasportiPubbliciVicini,ClasseEnergetica,Tipologia,Latitudine,Longitudine,FotoUrls)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26)`,
-      [
-        agenteId,
-        'Appartamento con giardino privato',
-        'Appartamento in residenza con giardino privato e parcheggio',
-        280000,
-        95,
-        'Via delle Gardenie 21, Caserta',
-        4,
-        2,
-        1,
-        false,
-        true,
-        false,
-        true,
-        true,
-        false,
-        false,
-        false,
-        'Autonomo',
-        true,
-        true,
-        false,
-        'B',
-        'Vendita',
-        41.0737,
-        14.3349,
-        estateImagesB
-      ]
+    const immobileGiardinoId = await ensureImmobile(
+      agenteMarioId,
+      'Appartamento con giardino privato',
+      'Appartamento in residenza con giardino privato e parcheggio',
+      280000,
+      95,
+      'Via delle Gardenie 21, Caserta',
+      4,
+      2,
+      1,
+      false,
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      'Autonomo',
+      true,
+      true,
+      false,
+      'B',
+      'Vendita',
+      41.0737,
+      14.3349,
+      estateImagesB
     );
 
-    console.log('Dati dimostrativi inseriti nel database.');
+    const immobileAffittoId = await ensureImmobile(
+      agenteLuciaId,
+      'Bilocale in centro storico',
+      'Bilocale ristrutturato ideale per professionisti, vicino metro e servizi',
+      900,
+      62,
+      'Via Roma 12, Napoli',
+      2,
+      1,
+      3,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      'Autonomo',
+      true,
+      false,
+      true,
+      'C',
+      'Affitto',
+      40.8495,
+      14.2582,
+      estateImagesA
+    );
+
+    const immobileTrilocaleId = await ensureImmobile(
+      agenteLuciaId,
+      'Trilocale con posto auto',
+      'Trilocale luminoso in zona residenziale con posto auto coperto',
+      345000,
+      110,
+      'Viale Europa 87, Salerno',
+      3,
+      2,
+      2,
+      true,
+      true,
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      'Pompa di calore',
+      false,
+      true,
+      true,
+      'A+',
+      'Vendita',
+      40.6824,
+      14.7681,
+      estateImagesB
+    );
+
+    const { rows: offerteRows } = await pool.query('SELECT IdOfferta FROM Offerta LIMIT 1');
+    if (offerteRows.length === 0) {
+      const { rows: inAttesaRows } = await pool.query(
+        `INSERT INTO Offerta (IdImmobile, IdUtente, PrezzoOfferto, Stato, OffertaManuale)
+         VALUES ($1, $2, $3, 'InAttesa', false)
+         RETURNING IdOfferta`,
+        [immobileAtticoId, clienteAnnaId, 495000]
+      );
+
+      const offertaOriginaleId = inAttesaRows[0].idofferta;
+
+      await pool.query(
+        `INSERT INTO Offerta (IdImmobile, IdUtente, PrezzoOfferto, Stato, OffertaManuale)
+         VALUES ($1, $2, $3, 'Accettata', false)`,
+        [immobileGiardinoId, clientePaoloId, 275000]
+      );
+
+      await pool.query(
+        `INSERT INTO Offerta (IdImmobile, IdUtente, PrezzoOfferto, Stato, OffertaManuale)
+         VALUES ($1, $2, $3, 'Rifiutata', false)`,
+        [immobileTrilocaleId, clienteAnnaId, 320000]
+      );
+
+      await pool.query(
+        `INSERT INTO Offerta (IdImmobile, IdUtente, PrezzoOfferto, Stato, OffertaManuale, IdOffertaOriginale)
+         VALUES ($1, $2, $3, 'Controproposta', false, $4)`,
+        [immobileAtticoId, clienteAnnaId, 505000, offertaOriginaleId]
+      );
+
+      await pool.query(
+        `INSERT INTO Offerta (IdImmobile, IdUtente, PrezzoOfferto, Stato, OffertaManuale)
+         VALUES ($1, $2, $3, 'Ritirata', false)`,
+        [immobileAffittoId, clientePaoloId, 850]
+      );
+
+      await pool.query(
+        `INSERT INTO Offerta (IdImmobile, IdUtente, PrezzoOfferto, Stato, OffertaManuale)
+         VALUES ($1, $2, $3, 'InAttesa', true)`,
+        [immobileAffittoId, clienteAnnaId, 890]
+      );
+    }
+
+    console.log('Dati dimostrativi completi (utenti, agenti, immobili e offerte) pronti.');
   } catch (error) {
     console.error('Errore creazione dati dimostrativi:', error);
     throw error;
