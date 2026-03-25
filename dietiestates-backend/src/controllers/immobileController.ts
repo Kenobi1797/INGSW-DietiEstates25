@@ -42,12 +42,15 @@ export async function createImmobile(req: AuthRequest, res: Response) {
 // Ricerca avanzata immobili
 export async function searchImmobili(req: Request, res: Response) {
   try {
+    const hasCoordinates = Boolean(req.query.latitudine || req.query.lat) && Boolean(req.query.longitudine || req.query.lon);
     const filters = {
       ...req.query,
       tipologia: req.query.tipologia || (req.query.type === 'vendita' ? 'Vendita' : req.query.type === 'affitto' ? 'Affitto' : undefined),
       latitudine: req.query.latitudine || req.query.lat,
       longitudine: req.query.longitudine || req.query.lon,
-      citta: req.query.citta || req.query.address
+      // Se abbiamo coordinate, evitiamo il filtro testuale completo sull'indirizzo
+      // per non restringere eccessivamente i risultati.
+      citta: req.query.citta || (!hasCoordinates ? req.query.address : undefined)
     };
     const immobili = await ImmobileDAO.searchImmobili(filters);
     res.json(immobili);
