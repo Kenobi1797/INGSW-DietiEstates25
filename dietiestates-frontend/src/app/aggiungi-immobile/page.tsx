@@ -13,7 +13,7 @@ export default function PaginaCaricamentoImmobile() {
   const router = useRouter();
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [foto, setFoto] = useState<File[]>([]);
+  const [fotoUrlsText, setFotoUrlsText] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -42,12 +42,6 @@ export default function PaginaCaricamentoImmobile() {
     fotoUrls: [],
   });
 
-  const handleFoto = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFoto(Array.from(e.target.files));
-    }
-  };
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -75,7 +69,9 @@ export default function PaginaCaricamentoImmobile() {
     setLoading(true);
 
     try {
-      const fotoUrls = foto.length > 0 ? foto.map((f) => URL.createObjectURL(f)) : [];
+      const fotoUrls = fotoUrlsText.trim()
+        ? fotoUrlsText.split('\n').map((u) => u.trim()).filter(Boolean)
+        : [];
 
       await createImmobile(
         {
@@ -219,7 +215,6 @@ export default function PaginaCaricamentoImmobile() {
                     <option value="Autonomo">Autonomo</option>
                     <option value="Centralizzato">Centralizzato</option>
                     <option value="Pompa di calore">Pompa di calore</option>
-                    <option value="Stufa">Stufa</option>
                     <option value="Altro">Altro</option>
                   </select>
                 </div>
@@ -239,7 +234,7 @@ export default function PaginaCaricamentoImmobile() {
                       <input
                         type="checkbox"
                         name={name}
-                        checked={(formData as any)[name] || false}
+                        checked={(formData as Record<string, boolean>)[name] ?? false}
                         onChange={handleChange}
                       />
                       {label}
@@ -262,7 +257,7 @@ export default function PaginaCaricamentoImmobile() {
                       <input
                         type="checkbox"
                         name={name}
-                        checked={(formData as any)[name] || false}
+                        checked={(formData as Record<string, boolean>)[name] ?? false}
                         onChange={handleChange}
                       />
                       {label}
@@ -271,55 +266,24 @@ export default function PaginaCaricamentoImmobile() {
                 </div>
               </div>
 
-              {/* Vicinanza a servizi */}
+              {/* Foto dell&apos;immobile: inserisci URL per riga */}
               <div className="caratteristiche-group">
-                <h3 className="group-title">🚶 Vicinanza a Servizi</h3>
-                <div className="checkbox-grid">
-                  {[
-                    { name: 'scuoleVicine', label: 'Scuole vicine' },
-                    { name: 'parchiVicini', label: 'Parchi/giardini' },
-                    { name: 'trasportiPubbliciVicini', label: 'Trasporti pubblici' },
-                  ].map(({ name, label }) => (
-                    <label key={name} className="check-item">
-                      <input
-                        type="checkbox"
-                        name={name}
-                        checked={(formData as any)[name] || false}
-                        onChange={handleChange}
-                      />
-                      {label}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Foto */}
-              <div className="caratteristiche-group">
-                <h3 className="group-title">📸 Foto dell'immobile</h3>
-                <div>
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={handleFoto}
-                    className="file-input"
-                  />
-                  {foto.length > 0 && (
-                    <div className="file-info">
-                      <small>📎 {foto.length} foto selezionate</small>
-                    </div>
-                  )}
-                  <small className="file-hint">
-                    Puoi selezionare più foto. Formati supportati: JPG, PNG, WebP
-                  </small>
-                </div>
+                <h3 className="group-title">📸 Foto dell&apos;immobile</h3>
+                <textarea
+                  rows={4}
+                  placeholder="Inserisci un URL immagine per riga (es. https://images.unsplash.com/...)"
+                  value={fotoUrlsText}
+                  onChange={(e) => setFotoUrlsText(e.target.value)}
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                />
+                <small className="text-gray-400">Le immagini devono essere URL pubblici accessibili (JPEG, PNG, WebP). Il sistema rileva automaticamente i servizi nelle vicinanze tramite Geoapify.</small>
               </div>
             </div>
           )}
 
           {currentStep === 3 && (
             <div className="map-block">
-              <p>Seleziona l'indirizzo o utilizza la ricerca mappa</p>
+              <p>Seleziona l&apos;indirizzo o utilizza la ricerca mappa</p>
               <RicercaIndirizzo
                 soloIndirizziPrecisi={true}
                 onIndirizzoSelezionato={(lat, lon, indirizzo) => {

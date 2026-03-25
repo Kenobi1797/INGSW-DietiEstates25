@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -18,14 +18,25 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [errore, setErrore] = useState<string | null>(null);
 
-  const lat = Number(searchParams.get("lat"));
-  const lon = Number(searchParams.get("lon"));
+  // Number(null) === 0, quindi controlliamo esplicitamente la presenza
+  const rawLat = searchParams.get("lat");
+  const rawLon = searchParams.get("lon");
+  const lat = rawLat !== null ? Number(rawLat) : 0;
+  const lon = rawLon !== null ? Number(rawLon) : 0;
   const address = searchParams.get("address") || "";
+
+  // Centro mappa: coordinate esplicite → primo risultato → centro Italia
+  const mapCenter = useMemo(() => {
+    if (lat !== 0 && lon !== 0) return { lat, lon };
+    if (immobili.length > 0) return { lat: immobili[0].latitudine, lon: immobili[0].longitudine };
+    return { lat: 41.9028, lon: 12.4964 };
+  }, [lat, lon, immobili]);
 
   useEffect(() => {
     async function fetchImmobili() {
-      const hasCoords = !isNaN(lat) && !isNaN(lon);
-      const hasAddress = address.trim().length > 1;
+      // Bug fix: Number(null)===0, quindi lat=0/lon=0 NON significa coordinate valide
+      const hasCoords = lat !== 0 && lon !== 0 && !isNaN(lat) && !isNaN(lon);
+      const hasAddress = address.trim().length > 0;
 
       if (!hasCoords && !hasAddress) {
         setImmobili([]);
@@ -102,7 +113,7 @@ export default function Search() {
             />
           </div>
           <div className="lg:col-span-1">
-            <EstateMap lat={isNaN(lat) ? 0 : lat} lon={isNaN(lon) ? 0 : lon} immobili={immobili} />
+            <EstateMap lat={mapCenter.lat} lon={mapCenter.lon} immobili={immobili} />
           </div>
         </div>
       </div>
