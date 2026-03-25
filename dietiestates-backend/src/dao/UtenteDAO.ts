@@ -72,6 +72,26 @@ export async function createSupport(
   return mapRowToUtente(result.rows[0]);
 }
 
+// Recupera o crea un cliente tecnico da usare per offerte manuali senza idCliente esplicito
+export async function getOrCreateManualCliente(): Promise<number> {
+  const manualEmail = 'cliente.manuale@dietiestates.com';
+
+  const existing = await pool.query('SELECT IdUtente FROM Utente WHERE Email = $1', [manualEmail]);
+  if (existing.rows.length > 0) {
+    return existing.rows[0].idutente;
+  }
+
+  const passwordHash = await bcrypt.hash('ClienteManuale123!', 10);
+  const created = await pool.query(
+    `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
+     VALUES ($1, $2, $3, $4, 'Cliente')
+     RETURNING IdUtente`,
+    ['Cliente', 'Manuale', manualEmail, passwordHash]
+  );
+
+  return created.rows[0].idutente;
+}
+
 // Funzione di mappatura database → DTO
 function mapRowToUtente(row: any): UtenteDTO {
   return {

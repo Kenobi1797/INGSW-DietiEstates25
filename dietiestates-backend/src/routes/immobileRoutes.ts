@@ -1,5 +1,5 @@
 import express from 'express';
-import { createImmobile, searchImmobili, getImmobileById } from '../controllers/immobileController';
+import { createImmobile, searchImmobili, getImmobileById, getMyImmobili } from '../controllers/immobileController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
 const router = express.Router();
@@ -13,9 +13,12 @@ router.post(
 );
 
 // Ricerca immobili (solo utenti registrati)
-router.get('/search', authMiddleware, searchImmobili);   
+router.get('/search', searchImmobili);   
+
+// Immobili dell'agente autenticato
+router.get('/miei', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), getMyImmobili);
 
 // Dettaglio immobile (solo utenti registrati)
-router.get('/:idImmobile', authMiddleware, getImmobileById);
+router.get('/:idImmobile', getImmobileById);
 
 export default router;

@@ -168,6 +168,16 @@ async function createDemoData(): Promise<void> {
       agenteId = result.rows[0].idutente;
     }
 
+    const estateImagesA = [
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80'
+    ];
+
+    const estateImagesB = [
+      'https://images.unsplash.com/photo-1572120360610-d971b9d7767c?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80'
+    ];
+
     await pool.query(
       `INSERT INTO Immobile (IdAgente,Titolo,Descrizione,Prezzo,Dimensioni,Indirizzo,NumeroStanze,NumeroBagni,Piano,Ascensore,Balcone,Terrazzo,Giardino,PostoAuto,Cantina,Portineria,Climatizzazione,Riscaldamento,ScuoleVicine,ParchiVicini,TrasportiPubbliciVicini,ClasseEnergetica,Tipologia,Latitudine,Longitudine,FotoUrls)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26)`,
@@ -197,7 +207,7 @@ async function createDemoData(): Promise<void> {
         'Vendita',
         40.8522,
         14.2681,
-        ['https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1200']
+        estateImagesA
       ]
     );
 
@@ -230,7 +240,7 @@ async function createDemoData(): Promise<void> {
         'Vendita',
         41.0737,
         14.3349,
-        ['https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1200']
+        estateImagesB
       ]
     );
 

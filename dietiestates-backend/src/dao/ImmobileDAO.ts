@@ -157,3 +157,12 @@ export async function getImmobileById(idImmobile: number) {
   if (result.rows.length === 0) return null;
   return mapRowToImmobile(result.rows[0]);
 }
+
+export async function getImmobiliByAgente(idAgente: number) {
+  const result = await pool.query(
+    `SELECT * FROM Immobile WHERE IdAgente = $1 ORDER BY DataCreazione DESC`,
+    [idAgente]
+  );
+
+  return result.rows.map(mapRowToImmobile);
+}

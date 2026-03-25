@@ -24,7 +24,10 @@ export default function Search() {
 
   useEffect(() => {
     async function fetchImmobili() {
-      if (isNaN(lat) || isNaN(lon)) {
+      const hasCoords = !isNaN(lat) && !isNaN(lon);
+      const hasAddress = address.trim().length > 1;
+
+      if (!hasCoords && !hasAddress) {
         setImmobili([]);
         setErrore("Inserisci una posizione per avviare la ricerca.");
         return;
@@ -36,10 +39,12 @@ export default function Search() {
         const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
         const currentParams = new URLSearchParams(searchParamsKey);
         const query = new URLSearchParams();
-        query.set('lat', lat.toString());
-        query.set('lon', lon.toString());
+        if (hasCoords) {
+          query.set('lat', lat.toString());
+          query.set('lon', lon.toString());
+          query.set('raggioKm', currentParams.get('raggioKm') || '20');
+        }
         if (address) query.set('address', address);
-        query.set('raggioKm', currentParams.get('raggioKm') || '20');
 
         const passThroughParams = [
           'tipologia', 'prezzoMin', 'prezzoMax', 'numeroStanzeMin', 'numeroStanzeMax', 'numeroBagni',

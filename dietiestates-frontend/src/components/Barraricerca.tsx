@@ -9,6 +9,7 @@ import { AvanzatiFilterState } from './Filtri';
 export interface StatoRicerca {
   contratto: 'vendita' | 'affitto';
   posizione: { lat: number; lon: number; indirizzo: string } | null;
+  indirizzoTestuale: string;
   filtri: AvanzatiFilterState;
 }
 
@@ -24,6 +25,7 @@ export default function Barraricerca() {
       lon: Number(searchParams.get('lon')),
       indirizzo: searchParams.get('address') || '',
     } : null,
+    indirizzoTestuale: searchParams.get('address') || '',
     filtri: {
       prezzoMin: searchParams.get('prezzoMin') || '',
       prezzoMax: searchParams.get('prezzoMax') || '',
@@ -34,7 +36,8 @@ export default function Barraricerca() {
     }
   }));
 
-  const isSearchDisabled = !ricerca.posizione;
+  const hasAddressText = ricerca.indirizzoTestuale.trim().length >= 2;
+  const isSearchDisabled = !ricerca.posizione && !hasAddressText;
 
   const updateRicerca = (key: keyof StatoRicerca, value: StatoRicerca[keyof StatoRicerca]) => {
     setRicerca(prev => ({ ...prev, [key]: value }));
@@ -47,9 +50,14 @@ export default function Barraricerca() {
     const params = new URLSearchParams();
     params.set('type', ricerca.contratto);
     params.set('tipologia', ricerca.contratto === 'vendita' ? 'Vendita' : 'Affitto');
-    params.set('lat', ricerca.posizione!.lat.toString());
-    params.set('lon', ricerca.posizione!.lon.toString());
-    params.set('address', ricerca.posizione!.indirizzo);
+
+    if (ricerca.posizione) {
+      params.set('lat', ricerca.posizione.lat.toString());
+      params.set('lon', ricerca.posizione.lon.toString());
+      params.set('address', ricerca.posizione.indirizzo);
+    } else if (hasAddressText) {
+      params.set('address', ricerca.indirizzoTestuale.trim());
+    }
 
     const filtri = ricerca.filtri;
     if (filtri.prezzoMin) params.set('prezzoMin', filtri.prezzoMin);
@@ -67,11 +75,18 @@ export default function Barraricerca() {
 
       <div className="search-address-wrapper">
         <RicercaIndirizzo 
-          initialValue={ricerca.posizione?.indirizzo || ''} 
+          initialValue={ricerca.indirizzoTestuale} 
           soloIndirizziPrecisi={false}
           onIndirizzoSelezionato={(lat, lon, ind) => 
-            updateRicerca('posizione', { lat, lon, indirizzo: ind })
-          } 
+            setRicerca(prev => ({ ...prev, posizione: { lat, lon, indirizzo: ind }, indirizzoTestuale: ind }))
+          }
+          onQueryChange={(value) => {
+            setRicerca(prev => ({
+              ...prev,
+              indirizzoTestuale: value,
+              posizione: prev.posizione && prev.posizione.indirizzo === value ? prev.posizione : null,
+            }));
+          }}
         />
       </div>
 

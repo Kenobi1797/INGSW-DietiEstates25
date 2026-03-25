@@ -15,7 +15,10 @@ const parsed = UtenteSchema.omit({
   dataCreazione: true,
   passwordHash: true
 })
-.extend({ password: z.string().min(6) }) 
+.extend({
+  email: z.string().email('Email non valida'),
+  password: z.string().min(6, 'La password deve avere almeno 6 caratteri')
+}) 
 .safeParse(req.body);
 
   if (!parsed.success) return res.status(400).json({ error: parsed.error });
@@ -28,7 +31,18 @@ const parsed = UtenteSchema.omit({
     }
 
     const user = await UtenteDAO.createCliente({ nome, cognome, email, password });
-    res.status(201).json(user);
+    const token = generateToken({ id: user.idUtente, ruolo: user.ruolo });
+
+    res.status(201).json({
+      token,
+      user: {
+        id: user.idUtente,
+        nome: user.nome,
+        cognome: user.cognome,
+        email: user.email,
+        ruolo: user.ruolo
+      }
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Errore durante la registrazione' });

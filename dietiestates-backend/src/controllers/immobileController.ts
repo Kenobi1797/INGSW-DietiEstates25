@@ -75,3 +75,13 @@ export async function getImmobileById(req: Request, res: Response) {
     return res.status(500).json({ error: 'Errore durante il recupero dell\'immobile' });
   }
 }
+
+export async function getMyImmobili(req: AuthRequest, res: Response) {
+  try {
+    const immobili = await ImmobileDAO.getImmobiliByAgente(req.user.id);
+    return res.json(immobili);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Errore durante il recupero degli immobili dell\'agente' });
+  }
+}

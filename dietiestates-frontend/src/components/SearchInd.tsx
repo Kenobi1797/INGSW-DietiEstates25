@@ -6,6 +6,7 @@ interface RicercaIndirizzoProps {
   onIndirizzoSelezionato: (lat: number, lon: number, indirizzo: string) => void;
   soloIndirizziPrecisi?: boolean;
   initialValue?: string;
+  onQueryChange?: (value: string) => void;
 }
 
 interface NominatimResult {
@@ -22,7 +23,8 @@ interface NominatimResult {
 export default function RicercaIndirizzo({ 
   onIndirizzoSelezionato, 
   soloIndirizziPrecisi = false,
-  initialValue = ''
+  initialValue = '',
+  onQueryChange
 }: RicercaIndirizzoProps) {
   const [query, setQuery] = useState(initialValue);
   const [risultati, setRisultati] = useState<NominatimResult[]>([]);
@@ -43,9 +45,11 @@ export default function RicercaIndirizzo({
 
   useEffect(() => {
     if (!query.trim() || query.length < 3) {
-      setRisultati([]);
-      setErrore('');
-      return;
+      const clearTimer = setTimeout(() => {
+        setRisultati([]);
+        setErrore('');
+      }, 0);
+      return () => clearTimeout(clearTimer);
     }
 
     const timer = setTimeout(async () => {
@@ -73,7 +77,7 @@ export default function RicercaIndirizzo({
         } else {
           setRisultati(risultatiFiltrati);
         }
-      } catch (err) {
+      } catch {
         setErrore('Errore durante la ricerca. Riprova.');
       }
     }, 400);
@@ -94,7 +98,11 @@ export default function RicercaIndirizzo({
         className="search-input-reset"
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          setQuery(value);
+          onQueryChange?.(value);
+        }}
         onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}
         placeholder={soloIndirizziPrecisi ? "Via, Numero, Città" : "Cerca città o indirizzo..."}
       />

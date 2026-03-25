@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/authMiddleware';
 import * as OffertaDAO from '../dao/OffertaDAO';
+import * as UtenteDAO from '../dao/UtenteDAO';
 import { z } from 'zod';
 
 // Creazione nuova offerta (cliente)
@@ -31,7 +32,7 @@ export async function createOfferta(req: AuthRequest, res: Response) {
 export async function createManualOfferta(req: AuthRequest, res: Response) {
   const parsed = z.object({
     idImmobile: z.number().int(),
-    idCliente: z.number().int(),
+    idCliente: z.number().int().optional(),
     prezzoOfferto: z.number().positive(),
     offertaOriginaleId: z.number().int().optional()
   }).safeParse(req.body);
@@ -39,9 +40,11 @@ export async function createManualOfferta(req: AuthRequest, res: Response) {
   if (!parsed.success) return res.status(400).json({ error: parsed.error });
 
   try {
+    const idCliente = parsed.data.idCliente ?? await UtenteDAO.getOrCreateManualCliente();
+
     const offerta = await OffertaDAO.createManualOfferta(
       parsed.data.idImmobile,
-      parsed.data.idCliente,
+      idCliente,
       parsed.data.prezzoOfferto,
       parsed.data.offertaOriginaleId
     );
