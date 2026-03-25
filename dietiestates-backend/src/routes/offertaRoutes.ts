@@ -4,6 +4,7 @@ import {
   createManualOfferta,
   getOffertePerImmobile,
   getOffertePerUtente,
+  getOffertePerAgente,
   updateOfferta,
   ritiraOfferta
 } from '../controllers/offertaController';
@@ -22,6 +23,9 @@ router.get('/immobile/:idImmobile', authMiddleware, roleMiddleware('Agente', 'Am
 
 // Storico offerte utente (cliente)
 router.get('/utente', authMiddleware, roleMiddleware('Cliente'), getOffertePerUtente);
+
+// Offerte per agente (tutte le offerte sugli immobili dell'agente)
+router.get('/agente', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), getOffertePerAgente);
 
 // Ritiro offerta (solo il cliente proprietario)
 router.patch('/:idOfferta/ritira', authMiddleware, roleMiddleware('Cliente'), ritiraOfferta);

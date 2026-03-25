@@ -28,7 +28,7 @@ export default function StoricoOffertePage() {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('Token mancante');
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/storico`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/utente`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
 

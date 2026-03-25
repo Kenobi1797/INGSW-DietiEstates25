@@ -140,3 +140,14 @@ export async function updateOfferta(req: AuthRequest, res: Response) {
     res.status(500).json({ error: 'Errore durante l\'aggiornamento dell\'offerta' });
   }
 }
+
+// Offerte per agente (tutte le offerte sugli immobili dell'agente)
+export async function getOffertePerAgente(req: AuthRequest, res: Response) {
+  try {
+    const offerte = await OffertaDAO.getOffertePerAgente(req.user.id);
+    res.json(offerte);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore nel recupero delle offerte' });
+  }
+}
