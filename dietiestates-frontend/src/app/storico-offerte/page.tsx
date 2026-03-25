@@ -4,13 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '@/Context/Context';
 
 interface Offerta {
-  id: number;
+  idOfferta: number;
   idImmobile: number;
-  idCliente: number;
-  importo: number;
+  idUtente: number;
+  prezzoOfferto: number;
+  stato: string;
   dataOfferta: string;
-  stato: 'Pendente' | 'Accettata' | 'Rifiutata';
-  titoloImmobile?: string;
+  offertaManuale?: boolean;
+  idOffertaOriginale?: number | null;
+  titolo?: string;
+  indirizzo?: string;
 }
 
 export default function StoricoOffertePage() {
@@ -56,10 +59,11 @@ export default function StoricoOffertePage() {
         ) : (
           <ul>
             {offerte.map((offerta) => (
-              <li key={offerta.id} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
-                <p>Immobile: {offerta.titoloImmobile || `ID ${offerta.idImmobile}`}</p>
-                <p>Importo: €{offerta.importo}</p>
-                <p>Data: {new Date(offerta.dataOfferta).toLocaleDateString()}</p>
+              <li key={offerta.idOfferta} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
+                <p>Immobile: {offerta.titolo || `ID ${offerta.idImmobile}`}</p>
+                <p>Indirizzo: {offerta.indirizzo || 'N/A'}</p>
+                <p>Importo: €{offerta.prezzoOfferto?.toLocaleString()}</p>
+                <p>Data: {new Date(offerta.dataOfferta).toLocaleDateString('it-IT')}</p>
                 <p>Stato: {offerta.stato}</p>
               </li>
             ))}

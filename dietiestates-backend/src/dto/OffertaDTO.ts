@@ -9,6 +9,8 @@ export const OffertaSchema = z.object({
   dataOfferta: z.date().optional(), 
   offertaManuale: z.boolean().optional(), 
   idOffertaOriginale: z.number().int().nullable().optional(),
+  titolo: z.string().optional(), // Titolo dell'immobile
+  indirizzo: z.string().optional(), // Indirizzo dell'immobile
 });
 
 export type OffertaDTO = z.infer<typeof OffertaSchema>;

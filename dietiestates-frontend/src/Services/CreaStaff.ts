@@ -12,7 +12,7 @@ interface CreateStaffData {
 }
 
 export async function createAgente(formData: CreateStaffData, idAgenzia: number) {
-  const res = await fetch('/api/utenti/agente', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/create-agent`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export async function createAgente(formData: CreateStaffData, idAgenzia: number)
 }
 
 export async function createSupporto(formData: CreateStaffData) {
-  const res = await fetch('/api/utenti/supporto', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/create-support`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 /*
 type LogoProps = {
   color?: string; // colore del testo
@@ -9,9 +10,9 @@ type LogoProps = {
 */
 export default function Logo() {
   return (
-    <span className="logo">
+    <Link href="/" className="logo">
       <Image src="/logo.svg" alt="Logo del sito" width={40} height={40} />
       <span className="logo-text">DietiEstate</span>
-    </span>
+    </Link>
   );
 }

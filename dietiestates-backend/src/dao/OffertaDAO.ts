@@ -51,7 +51,7 @@ export const getOffertePerUtente = async (idUtente: number): Promise<OffertaDTO[
 
 export const getOffertePerAgente = async (idAgente: number): Promise<OffertaDTO[]> => {
   const result = await pool.query(
-    `SELECT o.*, i.titolo, u.nome, u.cognome, u.email
+    `SELECT o.*, i.titolo, i.indirizzo, u.nome, u.cognome, u.email
      FROM offerta o
      JOIN immobile i ON o.idimmobile = i.idimmobile
      JOIN utente u ON o.idutente = u.idutente
@@ -85,6 +85,8 @@ function mapRowToOfferta(row: any): OffertaDTO {
     stato: row.stato,
     dataOfferta: row.dataofferta,
     offertaManuale: row.offertamanuale,
-    idOffertaOriginale: row.idoffertaoriginale ?? null
+    idOffertaOriginale: row.idoffertaoriginale ?? null,
+    titolo: row.titolo,
+    indirizzo: row.indirizzo
   });
 }

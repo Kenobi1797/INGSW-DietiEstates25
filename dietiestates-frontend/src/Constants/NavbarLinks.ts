@@ -12,47 +12,22 @@ export const navbarLinks: MenuLink[] = [
   {
     label: "Home",
     path: "/",
-    roles: ["Cliente"],
+    roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
   },
   {
     label: "Ricerca Immobile",
     path: "/search",
-    roles: ["Cliente"],
+    roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
+  },
+  {
+    label: "Dashboard",
+    path: "/dashboard",
+    roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
   },
   {
     label: "Storico Offerte",
     path: "/storico-offerte",
     roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
-  },
-  {
-    label: "Controfferte",
-    path: "/controfferte",
-    roles: ["Cliente"],
-  },
-  {
-    label: "Aggiungi Immobile",
-    path: "/aggiungi-immobile",
-    roles: ["Agente", "Supporto", "AmministratoreAgenzia"],
-  },
-  {
-    label: "Valuta Offerte",
-    path: "/valuta-offerte",
-    roles: ["Agente", "Supporto", "AmministratoreAgenzia"],
-  },
-  {
-    label: "Inserisci Offerta Manuale",
-    path: "/inserisci-offerta",
-    roles: ["Agente", "Supporto", "AmministratoreAgenzia"],
-  },
-  {
-  label: "Crea Staff",
-  path: "/crea-staff",
-  roles: ["Supporto", "AmministratoreAgenzia"],
-},
-{
-    label: "Gestisci Immobili",
-    path: "/dashboard", 
-    roles: ["Agente", "Supporto", "AmministratoreAgenzia"],
   },
 ];
 
