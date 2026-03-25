@@ -171,81 +171,150 @@ export default function PaginaCaricamentoImmobile() {
           )}
 
           {currentStep === 2 && (
-            <>
-              <div className="grid-2">
-                <input
-                  type="number"
-                  name="dimensioni"
-                  placeholder="Mq"
-                  min="0"
-                  value={formData.dimensioni || ''}
-                  onChange={handleChange}
-                />
-                <input
-                  type="number"
-                  name="numeroStanze"
-                  placeholder="N. stanze"
-                  min="0"
-                  value={formData.numeroStanze || ''}
-                  onChange={handleChange}
-                />
+            <div className="caratteristiche-section">
+              {/* Dimensioni e Stanze */}
+              <div className="caratteristiche-group">
+                <h3 className="group-title">🏠 Dimensioni e Stanze</h3>
+                <div className="grid-3">
+                  <input
+                    type="number"
+                    name="dimensioni"
+                    placeholder="Superficie (mq)"
+                    min="1"
+                    value={formData.dimensioni || ''}
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="number"
+                    name="numeroStanze"
+                    placeholder="N. stanze"
+                    min="1"
+                    value={formData.numeroStanze || ''}
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="number"
+                    name="numeroBagni"
+                    placeholder="N. bagni"
+                    min="1"
+                    value={formData.numeroBagni || ''}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
 
-              <div className="grid-2">
-                <input
-                  type="number"
-                  name="numeroBagni"
-                  placeholder="N. bagni"
-                  min="0"
-                  value={formData.numeroBagni || ''}
-                  onChange={handleChange}
-                />
-                <input
-                  type="number"
-                  name="piano"
-                  placeholder="Piano"
-                  value={formData.piano || ''}
-                  onChange={handleChange}
-                />
+              {/* Posizione nell'edificio */}
+              <div className="caratteristiche-group">
+                <h3 className="group-title">🏢 Posizione</h3>
+                <div className="grid-2">
+                  <input
+                    type="number"
+                    name="piano"
+                    placeholder="Piano (0 per piano terra)"
+                    value={formData.piano || ''}
+                    onChange={handleChange}
+                  />
+                  <select name="riscaldamento" value={formData.riscaldamento || ''} onChange={handleChange}>
+                    <option value="">Tipo di riscaldamento</option>
+                    <option value="Autonomo">Autonomo</option>
+                    <option value="Centralizzato">Centralizzato</option>
+                    <option value="Pompa di calore">Pompa di calore</option>
+                    <option value="Stufa">Stufa</option>
+                    <option value="Altro">Altro</option>
+                  </select>
+                </div>
               </div>
 
-              <select name="riscaldamento" value={formData.riscaldamento} onChange={handleChange}>
-                <option value="">Riscaldamento</option>
-                <option value="Autonomo">Autonomo</option>
-                <option value="Centralizzato">Centralizzato</option>
-                <option value="Pompa di calore">Pompa di calore</option>
-                <option value="Altro">Altro</option>
-              </select>
-
-              <div className="checkbox-grid">
-                {[
-                  'ascensore',
-                  'balcone',
-                  'terrazzo',
-                  'giardino',
-                  'postoAuto',
-                  'climatizzazione',
-                  'cantina',
-                  'portineria'
-                ].map((name) => (
-                  <label key={name} className="check-item">
-                    <input
-                      type="checkbox"
-                      name={name}
-                      checked={(formData as any)[name] || false}
-                      onChange={handleChange}
-                    />
-                    {name.replace(/([A-Z])/g, ' $1')}
-                  </label>
-                ))}
+              {/* Dotazioni interne */}
+              <div className="caratteristiche-group">
+                <h3 className="group-title">🛋️ Dotazioni Interne</h3>
+                <div className="checkbox-grid">
+                  {[
+                    { name: 'ascensore', label: 'Ascensore' },
+                    { name: 'climatizzazione', label: 'Climatizzazione' },
+                    { name: 'cantina', label: 'Cantina/Solaio' },
+                    { name: 'portineria', label: 'Portineria' },
+                  ].map(({ name, label }) => (
+                    <label key={name} className="check-item">
+                      <input
+                        type="checkbox"
+                        name={name}
+                        checked={(formData as any)[name] || false}
+                        onChange={handleChange}
+                      />
+                      {label}
+                    </label>
+                  ))}
+                </div>
               </div>
 
-              <div>
-                <label className="label">Foto</label>
-                <input type="file" multiple accept="image/*" onChange={handleFoto} />
-                {foto.length > 0 && <small>{foto.length} file selezionati</small>}
+              {/* Spazi esterni */}
+              <div className="caratteristiche-group">
+                <h3 className="group-title">🌳 Spazi Esterni</h3>
+                <div className="checkbox-grid">
+                  {[
+                    { name: 'balcone', label: 'Balcone' },
+                    { name: 'terrazzo', label: 'Terrazzo' },
+                    { name: 'giardino', label: 'Giardino' },
+                    { name: 'postoAuto', label: 'Posto auto/garage' },
+                  ].map(({ name, label }) => (
+                    <label key={name} className="check-item">
+                      <input
+                        type="checkbox"
+                        name={name}
+                        checked={(formData as any)[name] || false}
+                        onChange={handleChange}
+                      />
+                      {label}
+                    </label>
+                  ))}
+                </div>
               </div>
-            </>
+
+              {/* Vicinanza a servizi */}
+              <div className="caratteristiche-group">
+                <h3 className="group-title">🚶 Vicinanza a Servizi</h3>
+                <div className="checkbox-grid">
+                  {[
+                    { name: 'scuoleVicine', label: 'Scuole vicine' },
+                    { name: 'parchiVicini', label: 'Parchi/giardini' },
+                    { name: 'trasportiPubbliciVicini', label: 'Trasporti pubblici' },
+                  ].map(({ name, label }) => (
+                    <label key={name} className="check-item">
+                      <input
+                        type="checkbox"
+                        name={name}
+                        checked={(formData as any)[name] || false}
+                        onChange={handleChange}
+                      />
+                      {label}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Foto */}
+              <div className="caratteristiche-group">
+                <h3 className="group-title">📸 Foto dell'immobile</h3>
+                <div>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleFoto}
+                    className="file-input"
+                  />
+                  {foto.length > 0 && (
+                    <div className="file-info">
+                      <small>📎 {foto.length} foto selezionate</small>
+                    </div>
+                  )}
+                  <small className="file-hint">
+                    Puoi selezionare più foto. Formati supportati: JPG, PNG, WebP
+                  </small>
+                </div>
+              </div>
+            </div>
           )}
 
           {currentStep === 3 && (
@@ -257,7 +326,7 @@ export default function PaginaCaricamentoImmobile() {
                   setFormData((prev) => ({ ...prev, latitudine: lat, longitudine: lon, indirizzo }));
                 }}
               />
-              <EstateMap immobili={[]} center={[formData.latitudine, formData.longitudine]} />
+              <EstateMap lat={formData.latitudine} lon={formData.longitudine} />
             </div>
           )}
 

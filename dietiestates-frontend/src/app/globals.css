@@ -197,6 +197,91 @@ body {
 }
 /*PER LE CARD DI IMMOBILI */
 
+/* ── Sezione caratteristiche immobile ── */
+.caratteristiche-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.caratteristiche-group {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  background: #f9fafb;
+}
+
+.group-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.check-item:hover {
+  border-color: #9ca3af;
+  background: #f3f4f6;
+}
+
+.check-item input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #3b82f6;
+}
+
+.file-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background: white;
+  cursor: pointer;
+}
+
+.file-input:hover {
+  border-color: #9ca3af;
+}
+
+.file-info {
+  margin-top: 0.5rem;
+  color: #059669;
+  font-weight: 500;
+}
+
+.file-hint {
+  display: block;
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
 
 .card-immobileS {
   display: flex;

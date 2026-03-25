@@ -26,13 +26,13 @@ function AutoCenter({ lat, lon }: { lat: number, lon: number }) {
 }
 
 interface MapPreviewProps {
-  lat: number;
-  lon: number;
+  lat?: number;
+  lon?: number;
 }
 
-export default function EstateMap({ lat, lon }: MapPreviewProps) {
+export default function EstateMap({ lat = 0, lon = 0 }: MapPreviewProps) {
   const defaultPos: [number, number] = [41.9028, 12.4964];
-  const hasCoords = lat !== 0 && lon !== 0;
+  const hasCoords = lat && lon && lat !== 0 && lon !== 0 && !isNaN(lat) && !isNaN(lon);
 
   return (
     <div className="w-full rounded-lg overflow-hidden border border-gray-300 shadow-inner">
@@ -46,7 +46,7 @@ export default function EstateMap({ lat, lon }: MapPreviewProps) {
           attribution='&copy; OpenStreetMap'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <AutoCenter lat={lat} lon={lon} />
+        <AutoCenter lat={lat || 0} lon={lon || 0} />
         {hasCoords && <Marker position={[lat, lon]} icon={casettaIcon} />}
       </MapContainer>
 
