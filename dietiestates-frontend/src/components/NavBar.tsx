@@ -34,7 +34,7 @@ export default function Navbar({ className = "" }) {
       ) : (
         <div className="flex items-center gap-4">
           <Link href="/immobili" className="text-red-600 hover:underline font-medium">Immobili</Link>
-          <Link href="/Login">Accedi</Link>
+          <Link href="/login">Accedi</Link>
         </div>
       )}
     </nav>

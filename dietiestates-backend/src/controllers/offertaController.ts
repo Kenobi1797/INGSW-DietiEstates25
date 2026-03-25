@@ -127,6 +127,9 @@ export async function updateOfferta(req: AuthRequest, res: Response) {
       if (!parsed.data.prezzoControproposta) {
         return res.status(400).json({ error: 'Prezzo della controproposta obbligatorio' });
       }
+      // Segna l'offerta originale come "Controproposta" per il tracciamento
+      await OffertaDAO.updateStatoOfferta(idOfferta, 'Controproposta');
+      // Crea la nuova offerta-controfferta dell'agente per il cliente
       const nuovaOfferta = await OffertaDAO.createOfferta(
         offerta.idImmobile,
         offerta.idUtente,
@@ -141,6 +144,50 @@ export async function updateOfferta(req: AuthRequest, res: Response) {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Errore durante l\'aggiornamento dell\'offerta' });
+  }
+}
+
+// Controfferte ricevute dal cliente (offerte con idOffertaOriginale != null)
+export async function getControffertePerCliente(req: AuthRequest, res: Response) {
+  try {
+    const offerte = await OffertaDAO.getControffertePerCliente(req.user.id);
+    res.json(offerte);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore nel recupero delle controfferte' });
+  }
+}
+
+// Cliente risponde a una controfferta (Accettata / Rifiutata)
+export async function rispondiControproposta(req: AuthRequest, res: Response) {
+  const parsed = z.object({
+    risposta: z.enum(['Accettata', 'Rifiutata'])
+  }).safeParse(req.body);
+
+  if (!parsed.success) return res.status(400).json({ error: parsed.error });
+
+  try {
+    const idOfferta = Number(req.params.idOfferta);
+    if (!Number.isInteger(idOfferta) || idOfferta <= 0)
+      return res.status(400).json({ error: 'Id offerta non valido' });
+
+    const offerta = await OffertaDAO.getOffertaById(idOfferta);
+    if (!offerta) return res.status(404).json({ error: 'Offerta non trovata' });
+
+    if (offerta.idUtente !== req.user.id)
+      return res.status(403).json({ error: 'Non autorizzato' });
+
+    if (!offerta.idOffertaOriginale)
+      return res.status(400).json({ error: 'Non è una controfferta' });
+
+    if (offerta.stato !== 'InAttesa')
+      return res.status(400).json({ error: `Non puoi rispondere a una controfferta in stato "${offerta.stato}"` });
+
+    const aggiornata = await OffertaDAO.updateStatoOfferta(idOfferta, parsed.data.risposta);
+    res.json(aggiornata);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore durante la risposta alla controfferta' });
   }
 }
 

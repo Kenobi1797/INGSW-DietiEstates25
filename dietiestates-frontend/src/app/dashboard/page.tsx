@@ -64,6 +64,12 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
         icon: "📋",
         className: "bg-green-500 hover:bg-green-700",
       },
+      {
+        href: "/controfferte",
+        label: "Controfferte",
+        icon: "↩",
+        className: "bg-blue-500 hover:bg-blue-700",
+      },
     ];
   }
 
@@ -260,44 +266,53 @@ export default function DashboardAgent() {
       ];
 
   return (
-    <div className="centerGrid">
-      <div className="box">
-        <h1>Dashboard {authuser.ruolo}</h1>
-        <p>Benvenuto, {authuser.nome} {authuser.cognome}!</p>
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+          <p className="text-gray-500 mt-1">Benvenuto, <span className="font-semibold text-red-600">{authuser.nome}</span>
+            <span className="ml-2 text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{authuser.ruolo}</span>
+          </p>
+        </div>
 
-        <div className="mt-6 mb-8">
+        {/* Statistiche */}
+        <div className="mb-8">
           {statsLoading ? (
-            <p className="text-sm text-gray-500">Caricamento statistiche...</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {[...Array(3)].map((_, i) => <div key={i} className="h-20 bg-gray-100 rounded-xl animate-pulse" />)}
+            </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {cards.map((card) => (
-                <div key={card.title} className={`p-4 rounded-lg border text-center ${card.colors}`}>
+                <div key={card.title} className={`p-4 rounded-xl border text-center ${card.colors}`}>
                   <div className="text-2xl font-bold">{card.value}</div>
-                  <div className="text-sm">{card.title}</div>
+                  <div className="text-xs mt-0.5 leading-tight">{card.title}</div>
                 </div>
               ))}
             </div>
           )}
+          {statsError && <p className="text-sm text-red-600 mt-3">{statsError}</p>}
         </div>
 
-        {statsError && <p className="text-sm text-red-600 mb-4">{statsError}</p>}
-
-        <h2 className="text-xl font-semibold mb-4">Azioni Rapide</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {actions.map((action) => (
-            <Link
-              key={action.href}
-              href={action.href}
-              className={`${action.className} text-white font-bold py-4 px-6 rounded text-center transition-colors`}
-            >
-              <span className="mr-2">{action.icon}</span>
-              {action.label}
-            </Link>
-          ))}
+        {/* Azioni rapide */}
+        <div>
+          <h2 className="text-base font-semibold text-gray-700 mb-3">Azioni Rapide</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {actions.map((action) => (
+              <Link
+                key={action.href}
+                href={action.href}
+                className={`${action.className} text-white font-semibold py-4 px-5 rounded-xl text-sm flex items-center gap-2.5 transition-colors shadow-sm`}
+              >
+                <span className="text-xl">{action.icon}</span>
+                {action.label}
+              </Link>
+            ))}
+          </div>
         </div>
 
-        <p className="text-xs text-gray-500 mt-6">
-          Statistiche aggiornate in base al ruolo corrente e ai dati reali disponibili nella piattaforma.
+        <p className="text-xs text-gray-400 mt-8">
+          Statistiche aggiornate in base al ruolo e ai dati reali della piattaforma.
         </p>
       </div>
     </div>
