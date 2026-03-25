@@ -2,7 +2,11 @@ FROM node:22 AS dev
 
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm install \
+    && npm update \
+    && npm dedupe \
+    && npm audit fix \
+    && npm cache clean --force
 
 COPY . .
 EXPOSE 3000
