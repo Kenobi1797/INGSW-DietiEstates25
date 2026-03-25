@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install \
     && npm update \
     && npm dedupe \
-    && npm audit fix \
+    && npm audit fix --force \
     && npm cache clean --force
 
 COPY . .
