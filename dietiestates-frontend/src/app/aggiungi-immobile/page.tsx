@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { Immobile } from '@/Models/Immobili';
 import { EstateMap } from '@/components/MapsWrapper';

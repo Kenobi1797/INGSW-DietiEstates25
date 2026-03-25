@@ -1,13 +1,13 @@
 "use client";
-import LoginForm from "@/components/LoginForm";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function Login() {
-    
-  return (
-    <div className="centerGrid">
-      <div className="box">
-         <LoginForm />
-      </div>
-    </div>
-  );
+export default function LoginRedirect() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace('/login');
+  }, [router]);
+
+  return <p>Reindirizzamento a login...</p>;
 }

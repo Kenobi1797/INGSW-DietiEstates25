@@ -1,14 +1,13 @@
-'use client';
+"use client";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
+export default function SignUpRedirect() {
+  const router = useRouter();
 
-import SignUpForm from "@/components/SignUpForm";
-export default function SignUp() {
- 
-  return (
-  <div className="centerGrid">
-        <div className="box">
-           <SignUpForm />
-        </div>
-      </div>
-  )
+  useEffect(() => {
+    router.replace('/signup');
+  }, [router]);
+
+  return <p>Reindirizzamento a registrazione...</p>;
 }
