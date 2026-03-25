@@ -36,13 +36,7 @@ export default function Search() {
     async function fetchImmobili() {
       // Bug fix: Number(null)===0, quindi lat=0/lon=0 NON significa coordinate valide
       const hasCoords = lat !== 0 && lon !== 0 && !isNaN(lat) && !isNaN(lon);
-      const hasAddress = address.trim().length > 0;
 
-      if (!hasCoords && !hasAddress) {
-        setImmobili([]);
-        setErrore("Inserisci una posizione per avviare la ricerca.");
-        return;
-      }
       setLoading(true);
       setErrore(null);
 
@@ -56,6 +50,11 @@ export default function Search() {
           query.set('raggioKm', currentParams.get('raggioKm') || '20');
         }
         if (address) query.set('address', address);
+
+        // Se non ci sono filtri, mostriamo comunque una lista immobili
+        query.set('limit', currentParams.get('limit') || '100');
+        query.set('orderBy', currentParams.get('orderBy') || 'DataCreazione');
+        query.set('orderDir', currentParams.get('orderDir') || 'DESC');
 
         const passThroughParams = [
           'tipologia', 'prezzoMin', 'prezzoMax', 'numeroStanzeMin', 'numeroStanzeMax', 'numeroBagni',

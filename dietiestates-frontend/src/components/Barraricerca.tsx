@@ -36,8 +36,8 @@ export default function Barraricerca() {
     }
   }));
 
-  const hasAddressText = ricerca.indirizzoTestuale.trim().length >= 2;
-  const isSearchDisabled = !ricerca.posizione && !hasAddressText;
+  const hasAddressText = ricerca.indirizzoTestuale.trim().length >= 1;
+  const isSearchDisabled = false;
 
   const updateRicerca = (key: keyof StatoRicerca, value: StatoRicerca[keyof StatoRicerca]) => {
     setRicerca(prev => ({ ...prev, [key]: value }));
@@ -45,8 +45,6 @@ export default function Barraricerca() {
   };
 
   const handleCerca = () => {
-    if (isSearchDisabled) return;
-
     const params = new URLSearchParams();
     params.set('type', ricerca.contratto);
     params.set('tipologia', ricerca.contratto === 'vendita' ? 'Vendita' : 'Affitto');
