@@ -3,8 +3,15 @@ function getToken(): string {
   if (!token) throw new Error("Utente non autenticato");
   return token;
 }
-    // per ora any per formData
-export async function createAgente(formData: any, idAgenzia: number) {
+
+interface CreateStaffData {
+  nome: string;
+  cognome: string;
+  email: string;
+  password: string;
+}
+
+export async function createAgente(formData: CreateStaffData, idAgenzia: number) {
   const res = await fetch('/api/utenti/agente', {
     method: 'POST',
     headers: {
@@ -19,7 +26,7 @@ export async function createAgente(formData: any, idAgenzia: number) {
   return data;
 }
 
-export async function createSupporto(formData: any) {
+export async function createSupporto(formData: CreateStaffData) {
   const res = await fetch('/api/utenti/supporto', {
     method: 'POST',
     headers: {

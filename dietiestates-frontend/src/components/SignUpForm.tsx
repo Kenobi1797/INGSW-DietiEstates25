@@ -4,9 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BaseButton from './BaseButton';
 import { register } from '@/Services/authservice';
-import Logo from './Logo';
 import Link from 'next/link';
-import { UserRole } from '@/Types/Ruoli';
 
 
 export interface SignUpData {
@@ -49,9 +47,9 @@ export default function SignUpForm() {
     alert('Registrazione completata!');
     router.push('/login'); 
     
-  } catch (err: any) {
-    // Se c'è un errore (es. email già usata), il codice salta qui:
-    alert(err.message);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Errore durante la registrazione';
+    alert(message);
   } finally {
     setLoading(false); 
   }

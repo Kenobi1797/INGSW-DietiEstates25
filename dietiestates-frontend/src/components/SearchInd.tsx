@@ -8,13 +8,24 @@ interface RicercaIndirizzoProps {
   initialValue?: string;
 }
 
+interface NominatimResult {
+  display_name: string;
+  lat: string;
+  lon: string;
+  address?: {
+    road?: string;
+    pedestrian?: string;
+    house_number?: string;
+  };
+}
+
 export default function RicercaIndirizzo({ 
   onIndirizzoSelezionato, 
   soloIndirizziPrecisi = false,
   initialValue = ''
 }: RicercaIndirizzoProps) {
   const [query, setQuery] = useState(initialValue);
-  const [risultati, setRisultati] = useState<any[]>([]);
+  const [risultati, setRisultati] = useState<NominatimResult[]>([]);
   const [errore, setErrore] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -45,10 +56,11 @@ export default function RicercaIndirizzo({
           { headers: { 'Accept-Language': 'it' } }
         );
         const data = await res.json();
-        let risultatiFiltrati = data;
+        const risultatiDto = data as NominatimResult[];
+        let risultatiFiltrati = risultatiDto;
 
         if (soloIndirizziPrecisi) {
-          risultatiFiltrati = data.filter((r: any) =>
+          risultatiFiltrati = risultatiDto.filter((r) =>
             r.address?.road || r.address?.pedestrian || r.address?.house_number
           );
         }
@@ -69,7 +81,7 @@ export default function RicercaIndirizzo({
     return () => clearTimeout(timer);
   }, [query, soloIndirizziPrecisi]);
 
-  const seleziona = (r: any) => {
+  const seleziona = (r: NominatimResult) => {
     const nomeVisualizzato = r.display_name;
     setQuery(nomeVisualizzato);
     setRisultati([]);

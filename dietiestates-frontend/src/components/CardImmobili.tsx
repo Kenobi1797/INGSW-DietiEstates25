@@ -44,6 +44,19 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
           </div>
         </div>
 
+        {/* Indicatori Geoapify */}
+        <div className="card-indicators">
+          {immobile.scuoleVicine && (
+            <span className="indicator">🏫 Vicino a scuole</span>
+          )}
+          {immobile.parchiVicini && (
+            <span className="indicator">🌳 Vicino a parchi</span>
+          )}
+          {immobile.trasportiPubbliciVicini && (
+            <span className="indicator">🚇 Vicina a trasporto pubblico</span>
+          )}
+        </div>
+
         {footer && (
           <div 
             className="card-footer-actions" 

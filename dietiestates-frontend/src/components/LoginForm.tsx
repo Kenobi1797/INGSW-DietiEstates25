@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BaseButton from './BaseButton';
-import Logo from './Logo';
 import Link from 'next/link';
 import { login } from '@/Services/authservice';
 import { useUser } from "@/Context/Context";
@@ -23,8 +22,9 @@ export default function LoginForm() {
       localStorage.setItem('token', data.token);
       setAuthUser(data.user);       
       router.push('/');
-    } catch (error: any) {
-      alert(error.message || 'Credenziali non valide');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Credenziali non valide';
+      alert(message);
     } finally {
       setLoading(false);
     }

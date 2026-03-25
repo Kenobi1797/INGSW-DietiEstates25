@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { Immobile } from '@/Models/Immobili';
 import { EstateMap } from '@/components/MapsWrapper';
 import RicercaIndirizzo from '@/components/SearchInd';
+import { createImmobile } from '@/Services/immobileService';
+import { useUser } from '@/Context/Context';
+import { useRouter } from 'next/navigation';
 
 export default function PaginaCaricamentoImmobile() {
+  const { authuser } = useUser();
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [foto, setFoto] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   
 
   const [formData, setFormData] = useState<Immobile>({
@@ -66,6 +73,7 @@ const handleFoto = (e: React.ChangeEvent<HTMLInputElement>) => {
   return (
     <main>
       <h1>Aggiungi Nuovo Immobile</h1>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <p>Step {currentStep} di 3</p>
 
       {currentStep === 1 && (
@@ -141,9 +149,43 @@ const handleFoto = (e: React.ChangeEvent<HTMLInputElement>) => {
 
          <EstateMap lat={formData.latitudine} lon={formData.longitudine} />
           <button onClick={() => setCurrentStep(2)}>Indietro</button>
-          <button onClick={() => console.log("Dati finali:", formData)}>Crea</button>
+          <button onClick={handleSubmit} disabled={loading}>
+            {loading ? 'Creando...' : 'Crea Immobile'}
+          </button>
         </div>
       )}
     </main>
   );
+}
+
+async function handleSubmit() {
+  if (!authuser?.id) {
+    setError('Utente non autenticato');
+    return;
+  }
+
+  setLoading(true);
+  setError('');
+
+  try {
+    // Upload foto se presenti
+    let fotoUrls: string[] = [];
+    if (foto.length > 0) {
+      // Per ora, simula upload - in realtà servirebbe un endpoint per upload
+      fotoUrls = foto.map(f => URL.createObjectURL(f)); // Placeholder
+    }
+
+    const immobileData = {
+      ...formData,
+      fotoUrls,
+    };
+
+    await createImmobile(immobileData, authuser.id);
+    alert('Immobile creato con successo!');
+    router.push('/dashboard');
+  } catch (err: any) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
 }
