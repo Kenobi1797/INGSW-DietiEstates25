@@ -600,4 +600,151 @@ body {
 .area-mappa {
   overflow: hidden;
   height: 100%;
+}/* Aggiornamenti UI aggiungi-immobile */
+.immobile-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(130deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+}
+
+.immobile-card {
+  width: min(100%, 1100px);
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 12px 30px rgba(15,23,42,.14);
+  padding: 1.5rem;
+  border: 1px solid #dbeafe;
+}
+
+.immobile-card h1 {
+  margin: 0 0 1rem 0;
+  color: #0f172a;
+}
+
+.stepper {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.step {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .75rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.step.active {
+  background: #1d4ed8;
+  color: white;
+}
+
+.step-number {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: .8rem;
+  border: 1px solid #94a3b8;
+}
+
+.step.active .step-number {
+  background: #93c5fd;
+  border-color: #bfdbfe;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 1rem;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: .75rem;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .9rem;
+}
+
+.label {
+  font-weight: 700;
+  margin-bottom: .25rem;
+  display: block;
+}
+
+.error-message {
+  margin-bottom: .75rem;
+  color: #b91c1c;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  padding: .7rem .8rem;
+  border-radius: 10px;
+}
+
+.map-block {
+  display: grid;
+  gap: .8rem;
+  min-height: 420px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: .8rem 1rem;
+  border-radius: .75rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #1d4ed8;
+  color: white;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.btn-secondary:hover,
+.btn-primary:hover {
+  opacity: .9;
+}
+
+@media (max-width: 768px) {
+  .grid-2,
+  .checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }

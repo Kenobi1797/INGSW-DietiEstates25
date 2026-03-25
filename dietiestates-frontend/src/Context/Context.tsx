@@ -7,6 +7,7 @@ import { AuthUser } from "@/Models/AuthUser";
 export interface UserContextData {
   authuser: AuthUser | null;
   setAuthUser: (Authuser: AuthUser | null) => void;
+  logout: () => void;
 
 }
 
@@ -15,8 +16,15 @@ const UserContext = createContext<UserContextData | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const [authuser, setAuthUser] = useState<AuthUser | null>(null);
 
+  const logout = () => {
+    setAuthUser(null);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem('token');
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ authuser, setAuthUser }}>
+    <UserContext.Provider value={{ authuser, setAuthUser, logout }}>
       {children}
     </UserContext.Provider>
   );
