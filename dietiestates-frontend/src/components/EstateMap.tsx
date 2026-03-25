@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
+import { ImmobileS } from '@/Models/ImmobileS';
 
 const casettaIcon = L.divIcon({
   className: '',
@@ -28,9 +29,10 @@ function AutoCenter({ lat, lon }: { lat: number, lon: number }) {
 interface MapPreviewProps {
   lat?: number;
   lon?: number;
+  immobili?: ImmobileS[];
 }
 
-export default function EstateMap({ lat = 0, lon = 0 }: MapPreviewProps) {
+export default function EstateMap({ lat = 0, lon = 0, immobili = [] }: MapPreviewProps) {
   const defaultPos: [number, number] = [41.9028, 12.4964];
   const safeLat = Number(lat);
   const safeLon = Number(lon);
@@ -42,7 +44,7 @@ export default function EstateMap({ lat = 0, lon = 0 }: MapPreviewProps) {
       <MapContainer
         center={center}
         zoom={hasCoords ? 16 : 5}
-        style={{ height: '300px', width: '100%' }}
+        style={{ height: '440px', width: '100%' }}
         scrollWheelZoom={false}
       >
         <TileLayer
@@ -50,7 +52,16 @@ export default function EstateMap({ lat = 0, lon = 0 }: MapPreviewProps) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <AutoCenter lat={lat || 0} lon={lon || 0} />
-        {hasCoords && <Marker position={[lat, lon]} icon={casettaIcon} />}
+        {hasCoords && <Marker position={[safeLat, safeLon]} icon={casettaIcon} />}
+        {immobili
+          .filter((immobile) => Number.isFinite(Number(immobile.latitudine)) && Number.isFinite(Number(immobile.longitudine)))
+          .map((immobile) => (
+            <Marker
+              key={`immobile-map-${immobile.id}`}
+              position={[Number(immobile.latitudine), Number(immobile.longitudine)]}
+              icon={casettaIcon}
+            />
+          ))}
       </MapContainer>
 
       {!hasCoords && (

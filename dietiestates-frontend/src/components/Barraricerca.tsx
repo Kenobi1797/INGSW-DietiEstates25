@@ -27,9 +27,9 @@ export default function Barraricerca() {
     filtri: {
       prezzoMin: searchParams.get('prezzoMin') || '',
       prezzoMax: searchParams.get('prezzoMax') || '',
-      stanzeMin: searchParams.get('stanzeMin') || '',
-      stanzeMax: searchParams.get('stanzeMax') || '',
-      bagni: searchParams.get('bagni') || '',
+      stanzeMin: searchParams.get('numeroStanzeMin') || '',
+      stanzeMax: searchParams.get('numeroStanzeMax') || '',
+      bagni: searchParams.get('numeroBagni') || '',
       classeEnergetica: (searchParams.get('classeEnergetica') as AvanzatiFilterState['classeEnergetica']) || '',
     }
   }));
@@ -46,6 +46,7 @@ export default function Barraricerca() {
 
     const params = new URLSearchParams();
     params.set('type', ricerca.contratto);
+    params.set('tipologia', ricerca.contratto === 'vendita' ? 'Vendita' : 'Affitto');
     params.set('lat', ricerca.posizione!.lat.toString());
     params.set('lon', ricerca.posizione!.lon.toString());
     params.set('address', ricerca.posizione!.indirizzo);
@@ -53,9 +54,9 @@ export default function Barraricerca() {
     const filtri = ricerca.filtri;
     if (filtri.prezzoMin) params.set('prezzoMin', filtri.prezzoMin);
     if (filtri.prezzoMax) params.set('prezzoMax', filtri.prezzoMax);
-    if (filtri.stanzeMin) params.set('stanzeMin', filtri.stanzeMin);
-    if (filtri.stanzeMax) params.set('stanzeMax', filtri.stanzeMax);
-    if (filtri.bagni) params.set('bagni', filtri.bagni);
+    if (filtri.stanzeMin) params.set('numeroStanzeMin', filtri.stanzeMin);
+    if (filtri.stanzeMax) params.set('numeroStanzeMax', filtri.stanzeMax);
+    if (filtri.bagni) params.set('numeroBagni', filtri.bagni);
     if (filtri.classeEnergetica) params.set('classeEnergetica', filtri.classeEnergetica);
 
     router.push(`/search?${params.toString()}`);

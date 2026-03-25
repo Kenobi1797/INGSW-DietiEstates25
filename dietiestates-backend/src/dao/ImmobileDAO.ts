@@ -2,6 +2,44 @@ import pool from '../config/db';
 import { ImmobileDTO } from '../dto/ImmobileDTO';
 import { getNearbyPlaces } from '../utils/geoapify';
 
+function mapRowToImmobile(row: any) {
+  return {
+    id: row.idimmobile,
+    idImmobile: row.idimmobile,
+    idAgente: row.idagente,
+    titolo: row.titolo,
+    descrizione: row.descrizione,
+    prezzo: Number.parseFloat(row.prezzo),
+    dimensioni: row.dimensioni == null ? null : Number.parseFloat(row.dimensioni),
+    indirizzo: row.indirizzo,
+    numeroStanze: row.numerostanze,
+    numeroBagni: row.numerobagni,
+    piano: row.piano,
+    ascensore: row.ascensore,
+    balcone: row.balcone,
+    terrazzo: row.terrazzo,
+    giardino: row.giardino,
+    postoAuto: row.postoauto,
+    cantina: row.cantina,
+    portineria: row.portineria,
+    climatizzazione: row.climatizzazione,
+    riscaldamento: row.riscaldamento,
+    scuoleVicine: row.scuolevicine,
+    parchiVicini: row.parchivicini,
+    trasportiPubbliciVicini: row.trasportipubblicivicini,
+    classeEnergetica: row.classeenergetica,
+    tipologia: row.tipologia,
+    latitudine: Number.parseFloat(row.latitudine),
+    longitudine: Number.parseFloat(row.longitudine),
+    fotoUrls: row.fotourls || [],
+    dataCreazione: row.datacreazione,
+    venduto: row.venduto,
+    dataVendita: row.datavendita,
+    distanza: row.distanza == null ? null : Number.parseFloat(row.distanza),
+    serviziVicinati: row.scuolevicine || row.parchivicini || row.trasportipubblicivicini
+  };
+}
+
 export async function createImmobile(data: ImmobileDTO) {
   // Determina luoghi vicini
   const nearbyPlaces = await getNearbyPlaces(data.latitudine, data.longitudine);
@@ -32,47 +70,12 @@ export async function createImmobile(data: ImmobileDTO) {
     ]
   );
 
-  const saved = result.rows[0];
-  const serviziVicinati = scuoleVicine || parchiVicini || trasportiPubbliciVicini;
-
-  return {
-    idImmobile: saved.idimmobile,
-    idAgente: saved.idagente,
-    titolo: saved.titolo,
-    descrizione: saved.descrizione,
-    prezzo: Number.parseFloat(saved.prezzo),
-    dimensioni: saved.dimensioni == null ? null : Number.parseFloat(saved.dimensioni),
-    indirizzo: saved.indirizzo,
-    numeroStanze: saved.numerostanze,
-    numeroBagni: saved.numerobagni,
-    piano: saved.piano,
-    ascensore: saved.ascensore,
-    balcone: saved.balcone,
-    terrazzo: saved.terrazzo,
-    giardino: saved.giardino,
-    postoAuto: saved.postoauto,
-    cantina: saved.cantina,
-    portineria: saved.portineria,
-    climatizzazione: saved.climatizzazione,
-    riscaldamento: saved.riscaldamento,
-    scuoleVicine: saved.scuolevicine,
-    parchiVicini: saved.parchivicini,
-    trasportiPubbliciVicini: saved.trasportipubblicivicini,
-    classeEnergetica: saved.classeenergetica,
-    tipologia: saved.tipologia,
-    latitudine: Number.parseFloat(saved.latitudine),
-    longitudine: Number.parseFloat(saved.longitudine),
-    fotoUrls: saved.fotourls || [],
-    dataCreazione: saved.datacreazione,
-    venduto: saved.venduto,
-    dataVendita: saved.datavendita,
-    serviziVicinati
-  };
+  return mapRowToImmobile(result.rows[0]);
 }
 
 export async function searchImmobili(filters: any) {
   const {
-    tipologia, prezzoMin, prezzoMax, numeroStanze, classeEnergetica,
+    tipologia, prezzoMin, prezzoMax, numeroStanze, numeroStanzeMin, numeroStanzeMax, numeroBagni, classeEnergetica,
     balcone, terrazzo, giardino, ascensore, postoAuto, cantina,
     portineria, climatizzazione, scuoleVicine, parchiVicini, trasportiPubbliciVicini,
     citta, latitudine, longitudine, raggioKm,
@@ -89,6 +92,9 @@ export async function searchImmobili(filters: any) {
   if (prezzoMin) add(`Prezzo >= $${i}`, +prezzoMin);
   if (prezzoMax) add(`Prezzo <= $${i}`, +prezzoMax);
   if (numeroStanze) add(`NumeroStanze >= $${i}`, +numeroStanze);
+  if (numeroStanzeMin) add(`NumeroStanze >= $${i}`, +numeroStanzeMin);
+  if (numeroStanzeMax) add(`NumeroStanze <= $${i}`, +numeroStanzeMax);
+  if (numeroBagni) add(`NumeroBagni >= $${i}`, +numeroBagni);
   if (classeEnergetica) add(`ClasseEnergetica = $${i}`, classeEnergetica);
 
   const bools = { balcone, terrazzo, giardino, ascensore, postoAuto, cantina,
@@ -139,8 +145,15 @@ export async function searchImmobili(filters: any) {
     LIMIT $${i++} OFFSET $${i++}`;
   
   const result = await pool.query(query, values);
-  return result.rows.map((immobile: any) => ({
-    ...immobile,
-    serviziVicinati: immobile.scuolevicine || immobile.parchivicini || immobile.trasportipubblicivicini
-  }));
+  return result.rows.map(mapRowToImmobile);
+}
+
+export async function getImmobileById(idImmobile: number) {
+  const result = await pool.query(
+    `SELECT * FROM Immobile WHERE IdImmobile = $1`,
+    [idImmobile]
+  );
+
+  if (result.rows.length === 0) return null;
+  return mapRowToImmobile(result.rows[0]);
 }

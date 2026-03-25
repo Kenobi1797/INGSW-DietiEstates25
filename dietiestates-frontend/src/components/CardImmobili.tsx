@@ -16,7 +16,7 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
     >
       <div className="card-image-container">
         <Image
-          src={immobile.fotoUrls && immobile.fotoUrls.length > 0 ? immobile.fotoUrls[0] : '/placeholder.jpg'}
+          src={immobile.fotoUrls && immobile.fotoUrls.length > 0 ? immobile.fotoUrls[0] : '/placeholder.svg'}
           alt={immobile.titolo}
           width={400}
           height={240}

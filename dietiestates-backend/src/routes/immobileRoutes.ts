@@ -1,5 +1,5 @@
 import express from 'express';
-import { createImmobile, searchImmobili } from '../controllers/immobileController';
+import { createImmobile, searchImmobili, getImmobileById } from '../controllers/immobileController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
 const router = express.Router();
@@ -14,5 +14,8 @@ router.post(
 
 // Ricerca immobili (solo utenti registrati)
 router.get('/search', authMiddleware, searchImmobili);   
+
+// Dettaglio immobile (solo utenti registrati)
+router.get('/:idImmobile', authMiddleware, getImmobileById);
 
 export default router;

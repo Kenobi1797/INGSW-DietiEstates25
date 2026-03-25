@@ -42,11 +42,36 @@ export async function createImmobile(req: AuthRequest, res: Response) {
 // Ricerca avanzata immobili
 export async function searchImmobili(req: Request, res: Response) {
   try {
-    const filters = req.query;
+    const filters = {
+      ...req.query,
+      tipologia: req.query.tipologia || (req.query.type === 'vendita' ? 'Vendita' : req.query.type === 'affitto' ? 'Affitto' : undefined),
+      latitudine: req.query.latitudine || req.query.lat,
+      longitudine: req.query.longitudine || req.query.lon,
+      citta: req.query.citta || req.query.address
+    };
     const immobili = await ImmobileDAO.searchImmobili(filters);
     res.json(immobili);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Errore durante la ricerca degli immobili' });
+  }
+}
+
+export async function getImmobileById(req: Request, res: Response) {
+  try {
+    const idImmobile = Number(req.params.idImmobile);
+    if (!Number.isInteger(idImmobile) || idImmobile <= 0) {
+      return res.status(400).json({ error: 'Id immobile non valido' });
+    }
+
+    const immobile = await ImmobileDAO.getImmobileById(idImmobile);
+    if (!immobile) {
+      return res.status(404).json({ error: 'Immobile non trovato' });
+    }
+
+    return res.json(immobile);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Errore durante il recupero dell\'immobile' });
   }
 }
