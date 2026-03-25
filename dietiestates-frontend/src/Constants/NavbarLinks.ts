@@ -20,6 +20,11 @@ export const navbarLinks: MenuLink[] = [
     roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
   },
   {
+    label: "Lista Immobili",
+    path: "/immobili",
+    roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
+  },
+  {
     label: "Dashboard",
     path: "/dashboard",
     roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],

@@ -1,4 +1,5 @@
 import Barraricerca from "@/components/Barraricerca";
+import Link from "next/link";
 export default function Home() {
   return (
     <div className="sfondoHome min-h-screen bg-white text-black py-24 px-4">
@@ -11,6 +12,11 @@ export default function Home() {
         </p>
         <div className="mx-auto max-w-3xl">
           <Barraricerca />
+        </div>
+        <div className="mt-6">
+          <Link href="/immobili" className="inline-flex items-center px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 font-semibold transition-colors">
+            Visualizza tutti gli immobili
+          </Link>
         </div>
       </main>
     </div>
