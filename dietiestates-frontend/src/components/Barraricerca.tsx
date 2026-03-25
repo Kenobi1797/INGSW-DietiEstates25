@@ -36,7 +36,7 @@ export default function Barraricerca() {
 
   const isSearchDisabled = !ricerca.posizione;
 
-  const updateRicerca = (key: keyof StatoRicerca, value: any) => {
+  const updateRicerca = (key: keyof StatoRicerca, value: StatoRicerca[keyof StatoRicerca]) => {
     setRicerca(prev => ({ ...prev, [key]: value }));
     // Non aggiorniamo l'URL qui  solo al click di "Cerca"
   };
@@ -50,11 +50,15 @@ export default function Barraricerca() {
     params.set('lon', ricerca.posizione!.lon.toString());
     params.set('address', ricerca.posizione!.indirizzo);
 
-    Object.entries(ricerca.filtri).forEach(([key, value]) => {
-      if (value) params.set(key, value);
-    });
+    const filtri = ricerca.filtri;
+    if (filtri.prezzoMin) params.set('prezzoMin', filtri.prezzoMin);
+    if (filtri.prezzoMax) params.set('prezzoMax', filtri.prezzoMax);
+    if (filtri.stanzeMin) params.set('stanzeMin', filtri.stanzeMin);
+    if (filtri.stanzeMax) params.set('stanzeMax', filtri.stanzeMax);
+    if (filtri.bagni) params.set('bagni', filtri.bagni);
+    if (filtri.classeEnergetica) params.set('classeEnergetica', filtri.classeEnergetica);
 
-    router.push(`/Search?${params.toString()}`);
+    router.push(`/search?${params.toString()}`);
   };
 
   return (

@@ -32,12 +32,15 @@ interface MapPreviewProps {
 
 export default function EstateMap({ lat = 0, lon = 0 }: MapPreviewProps) {
   const defaultPos: [number, number] = [41.9028, 12.4964];
-  const hasCoords = lat && lon && lat !== 0 && lon !== 0 && !isNaN(lat) && !isNaN(lon);
+  const safeLat = Number(lat);
+  const safeLon = Number(lon);
+  const hasCoords = Number.isFinite(safeLat) && Number.isFinite(safeLon) && safeLat !== 0 && safeLon !== 0;
+  const center: [number, number] = hasCoords ? [safeLat, safeLon] : defaultPos;
 
   return (
     <div className="w-full rounded-lg overflow-hidden border border-gray-300 shadow-inner">
       <MapContainer
-        center={hasCoords ? [lat, lon] : defaultPos}
+        center={center}
         zoom={hasCoords ? 16 : 5}
         style={{ height: '300px', width: '100%' }}
         scrollWheelZoom={false}

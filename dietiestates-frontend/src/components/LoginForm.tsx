@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { login } from '@/Services/authservice';
 import { useUser } from "@/Context/Context";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function LoginForm() {
   const router = useRouter();
   const { setAuthUser } = useUser();
@@ -31,7 +33,11 @@ export default function LoginForm() {
   };
 
   const handleGoogleLogin = () => {
-    alert('Login con Google (da implementare)');
+    if (!API_URL) {
+      alert('Indirizzo API non configurato');
+      return;
+    }
+    window.location.href = `${API_URL}/auth/google`;
   };
 
   return (

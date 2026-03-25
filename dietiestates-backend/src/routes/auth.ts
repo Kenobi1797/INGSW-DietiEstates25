@@ -17,11 +17,9 @@ router.get(
       return res.status(400).json({ error: 'Errore login Google' });
     }
 
-    // Se si vuole gestire il redirect frontend, si può usare:
-    // res.redirect(`${process.env.FRONTEND_URL}/google-callback?token=${oauthResult.token}`);
-
-    // Risposta JSON con token e user
-    res.json({ token: oauthResult.token, user: oauthResult.user });
+    // Redirect al frontend con token per login con Google.
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    res.redirect(`${frontendUrl}/google-callback?token=${oauthResult.token}`);
   }
 );
 
