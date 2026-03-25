@@ -89,6 +89,7 @@ async function initDb(): Promise<void> {
 
   await createDefaultAdmin();
   await createDefaultAgency();
+  await createDemoData();
 
 }
 
@@ -143,6 +144,99 @@ async function createDefaultAgency(): Promise<void> {
     }
   } catch (error) {
     console.error(' Errore durante la creazione/verifica dell\'agenzia predefinita:', error);
+    throw error;
+  }
+}
+
+async function createDemoData(): Promise<void> {
+  try {
+    const { rows: immobileRows } = await pool.query('SELECT IdImmobile FROM Immobile LIMIT 1');
+    if (immobileRows.length > 0) {
+      console.log('Dati dimostrativi già presenti nel database');
+      return;
+    }
+
+    // Assicuriamoci che esistano almeno un agente e un cliente
+    const { rows: agenti } = await pool.query("SELECT IdUtente FROM Utente WHERE Ruolo = 'Agente' LIMIT 1");
+    let agenteId = agenti.length > 0 ? agenti[0].idutente : null;
+    if (!agenteId) {
+      const hashed = await bcrypt.hash('Agente123!', 10);
+      const result = await pool.query(
+        `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo) VALUES ($1,$2,$3,$4,$5) RETURNING IdUtente`,
+        ['Mario', 'Rossi', 'agente@dietiestates.com', hashed, 'Agente']
+      );
+      agenteId = result.rows[0].idutente;
+    }
+
+    await pool.query(
+      `INSERT INTO Immobile (IdAgente,Titolo,Descrizione,Prezzo,Dimensioni,Indirizzo,NumeroStanze,NumeroBagni,Piano,Ascensore,Balcone,Terrazzo,Giardino,PostoAuto,Cantina,Portineria,Climatizzazione,Riscaldamento,ScuoleVicine,ParchiVicini,TrasportiPubbliciVicini,ClasseEnergetica,Tipologia,Latitudine,Longitudine,FotoUrls)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26)`,
+      [
+        agenteId,
+        'Attico con terrazzo',
+        'Attico con vista panoramica e terrazzo di 50mq',
+        520000,
+        140,
+        'Via Toledo 34, Napoli',
+        5,
+        3,
+        6,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        'Centralizzato',
+        true,
+        true,
+        true,
+        'A',
+        'Vendita',
+        40.8522,
+        14.2681,
+        ['https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1200']
+      ]
+    );
+
+    await pool.query(
+      `INSERT INTO Immobile (IdAgente,Titolo,Descrizione,Prezzo,Dimensioni,Indirizzo,NumeroStanze,NumeroBagni,Piano,Ascensore,Balcone,Terrazzo,Giardino,PostoAuto,Cantina,Portineria,Climatizzazione,Riscaldamento,ScuoleVicine,ParchiVicini,TrasportiPubbliciVicini,ClasseEnergetica,Tipologia,Latitudine,Longitudine,FotoUrls)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26)`,
+      [
+        agenteId,
+        'Appartamento con giardino privato',
+        'Appartamento in residenza con giardino privato e parcheggio',
+        280000,
+        95,
+        'Via delle Gardenie 21, Caserta',
+        4,
+        2,
+        1,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        'Autonomo',
+        true,
+        true,
+        false,
+        'B',
+        'Vendita',
+        41.0737,
+        14.3349,
+        ['https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1200']
+      ]
+    );
+
+    console.log('Dati dimostrativi inseriti nel database.');
+  } catch (error) {
+    console.error('Errore creazione dati dimostrativi:', error);
     throw error;
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { ImmobileS } from '@/Models/ImmobileS';
 
 interface Props {
@@ -14,10 +15,13 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
       onClick={onClick}
     >
       <div className="card-image-container">
-        <img 
-          src={immobile.fotoUrls[0] || '/placeholder.jpg'} 
+        <Image
+          src={immobile.fotoUrls && immobile.fotoUrls.length > 0 ? immobile.fotoUrls[0] : '/placeholder.jpg'}
           alt={immobile.titolo}
-          className="card-image"
+          width={400}
+          height={240}
+          className="card-image object-cover rounded-t-lg"
+          unoptimized
         />
       </div>
       <div className="card-info-container">

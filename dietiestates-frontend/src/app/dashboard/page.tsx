@@ -2,7 +2,9 @@
 
 import { useUser } from "@/Context/Context";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import ListaImmobili from "@/components/ListImmobili";
+import { ImmobileS } from "@/Models/ImmobileS";
 
 interface DashboardStats {
   immobiliTotali?: number;
@@ -11,22 +13,89 @@ interface DashboardStats {
   agentiTotali?: number;
 }
 
+const sampleImmobili: ImmobileS[] = [
+  {
+    id: 1001,
+    idAgente: 1,
+    titolo: "Attico panoramico in centro",
+    descrizione: "Splendido attico ristrutturato con vista sul Duomo.",
+    prezzo: 425000,
+    dimensioni: 135,
+    indirizzo: "Via Roma 12, Napoli",
+    numeroStanze: 4,
+    numeroBagni: 2,
+    piano: 5,
+    ascensore: true,
+    balcone: true,
+    terrazzo: true,
+    giardino: false,
+    postoAuto: false,
+    cantina: true,
+    portineria: false,
+    climatizzazione: true,
+    riscaldamento: "Centralizzato",
+    classeEnergetica: "A",
+    tipologia: "Vendita",
+    latitudine: 40.8399,
+    longitudine: 14.2500,
+    fotoUrls: [
+      "https://images.pexels.com/photos/248769/pexels-photo-248769.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=1200"
+    ],
+    dataCreazione: new Date(),
+    venduto: false,
+    dataVendita: null,
+    scuoleVicine: true,
+    parchiVicini: false,
+    trasportiPubbliciVicini: true,
+    serviziVicinati: true
+  },
+  {
+    id: 1002,
+    idAgente: 2,
+    titolo: "Appartamento con giardino privato",
+    descrizione: "Luminoso appartamento con giardino esclusivo in zona residenziale.",
+    prezzo: 265000,
+    dimensioni: 90,
+    indirizzo: "Via delle Gardenie 21, Caserta",
+    numeroStanze: 3,
+    numeroBagni: 1,
+    piano: 1,
+    ascensore: false,
+    balcone: true,
+    terrazzo: false,
+    giardino: true,
+    postoAuto: true,
+    cantina: false,
+    portineria: false,
+    climatizzazione: false,
+    riscaldamento: "Autonomo",
+    classeEnergetica: "B",
+    tipologia: "Vendita",
+    latitudine: 41.0737,
+    longitudine: 14.3349,
+    fotoUrls: [
+      "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1200"
+    ],
+    dataCreazione: new Date(),
+    venduto: false,
+    dataVendita: null,
+    scuoleVicine: true,
+    parchiVicini: true,
+    trasportiPubbliciVicini: false,
+    serviziVicinati: true
+  }
+];
+
 export default function DashboardAgent() {
   const { authuser } = useUser();
-  const [stats, setStats] = useState<DashboardStats>({});
-
-  useEffect(() => {
-    // Qui potremmo caricare statistiche dal backend in futuro
-    // Per ora mostriamo dati di esempio
-    if (authuser?.ruolo === 'Agente' || authuser?.ruolo === 'Supporto' || authuser?.ruolo === 'AmministratoreAgenzia') {
-      setStats({
-        immobiliTotali: 15,
-        offerteAttive: 8,
-        offerteAccettate: 12,
-        agentiTotali: 5
-      });
-    }
-  }, [authuser]);
+  const [immobili] = useState<ImmobileS[]>(sampleImmobili);
+  const stats: DashboardStats = {
+    immobiliTotali: immobili.length,
+    offerteAttive: 8,
+    offerteAccettate: 12,
+    agentiTotali: 5
+  };
 
   if (!authuser) {
     return <p>Devi essere loggato per accedere alla dashboard.</p>;
@@ -100,17 +169,9 @@ export default function DashboardAgent() {
         {/* Sezioni aggiuntive per staff/admin */}
         {(authuser.ruolo === 'Supporto' || authuser.ruolo === 'AmministratoreAgenzia') && (
           <div className="mt-8">
-            <h2 className="text-xl font-semibold mb-4">Gestione Sistema</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-gray-100 p-4 rounded-lg">
-                <h3 className="font-semibold mb-2">📊 Report</h3>
-                <p className="text-sm text-gray-600">Visualizza statistiche e report di sistema</p>
-              </div>
-              <div className="bg-gray-100 p-4 rounded-lg">
-                <h3 className="font-semibold mb-2">⚙️ Configurazioni</h3>
-                <p className="text-sm text-gray-600">Gestisci impostazioni di sistema</p>
-              </div>
-            </div>
+            <h2 className="text-xl font-semibold mb-4">Prezenti Immobili di Prova</h2>
+            <p className="text-sm text-gray-700 mb-4">Esempi di annunci immobiliari per mostrare l’interfaccia completa.</p>
+            <ListaImmobili immobili={immobili} loading={false} />
           </div>
         )}
       </div>
