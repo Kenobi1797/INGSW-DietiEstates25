@@ -43,26 +43,12 @@ a {
   background-color: var(--accent-dark);
 }
 
-.navbar.default {
-  background: #ffffff;
-  color: #000000;
-  border-bottom: 2px solid var(--accent);
-}
-
-.navbar.trasparente {
-  background: rgba(255, 255, 255, 0.8);
-  color: #900;
-  border-bottom: 2px solid rgba(220, 38, 38, 0.7);
-  backdrop-filter: blur(6px);
-}
-
 .sfondoHome {
   background-image: url('/casa01.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
-  background-color: rgba(255, 255, 255, 0.75);
 }
 
 .box {
@@ -213,6 +199,12 @@ a {
   background: transparent;
   color: white;
   border-bottom: none;
+}
+
+.navbar.trasparente .btn-secondary {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1.5px solid rgba(255,255,255,0.6);
 }
 
 /* ── logo ── */

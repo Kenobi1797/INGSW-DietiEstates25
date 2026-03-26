@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { LucideIcon } from 'lucide-react';
 import {
-  MapPinHouse, Search, ClipboardList, Undo2, Home,
+  Search, ClipboardList, Undo2, Home,
   CircleCheck, User, Users,
 } from 'lucide-react';
 
@@ -45,24 +45,16 @@ function countByStatus(offerte: OffertaLite[], stato: string) {
 }
 
 function getActionsByRole(ruolo: Ruolo): ActionItem[] {
-  const common: ActionItem[] = [
-    {
-      href: "/immobili",
-      label: "Lista Immobili",
-      Icon: MapPinHouse,
-      className: "bg-blue-500 hover:bg-blue-700",
-    },
-    {
-      href: "/search",
-      label: "Ricerca Immobili",
-      Icon: Search,
-      className: "bg-sky-500 hover:bg-sky-700",
-    },
-  ];
+  const ricerca: ActionItem = {
+    href: "/search",
+    label: "Ricerca Immobili",
+    Icon: Search,
+    className: "bg-sky-500 hover:bg-sky-700",
+  };
 
   if (ruolo === "Cliente") {
     return [
-      ...common,
+      ricerca,
       {
         href: "/storico-offerte",
         label: "Storico Offerte",
@@ -80,7 +72,6 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
 
   if (ruolo === "Agente") {
     return [
-      ...common,
       {
         href: "/aggiungi-immobile",
         label: "Aggiungi Immobile",
@@ -104,7 +95,6 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
 
   if (ruolo === "Supporto") {
     return [
-      ...common,
       {
         href: "/crea-staff",
         label: "Crea Agente",
@@ -128,7 +118,6 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
 
   if (ruolo === "AmministratoreAgenzia") {
     return [
-      ...common,
       {
         href: "/aggiungi-immobile",
         label: "Aggiungi Immobile",
@@ -156,9 +145,8 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
     ];
   }
 
-  // Cliente
   return [
-    ...common,
+    ricerca,
     {
       href: "/profilo",
       label: "Profilo",
@@ -340,7 +328,13 @@ export default function DashboardAgent() {
               <Link
                 key={action.href}
                 href={action.href}
-                className={`${action.className} text-white font-semibold py-4 px-5 rounded-xl text-sm flex items-center gap-2.5 transition-colors shadow-sm`}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                  padding: '16px 20px', borderRadius: '12px',
+                  border: '1.5px solid #111827', backgroundColor: '#ffffff',
+                  color: '#111827', fontSize: '0.875rem', fontWeight: 600,
+                  textDecoration: 'none', boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                }}
               >
                 <action.Icon size={20} />
                 {action.label}
