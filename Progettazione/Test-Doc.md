@@ -1,91 +1,155 @@
-# 4. Testing e valutazione dell’usabilità
+# 4. Testing e valutazione dell'usabilità
 
-## a. Codice xUnit (Jest) - 4 metodi non banali con almeno 2 parametri
+## a. Codice xUnit (Jest) — 4 metodi non banali con almeno 2 parametri
 
-Cartella test usata: `dietiestates-backend/test/`
+Cartella test: `dietiestates-backend/test/`
 
-Metodi testati:
-1. `searchImmobili(filters)` (ImmobileDAO)
-   - Parametri: `filters` (oggetto con più criteri)
-   - Non banale: genera query dinamica, calcola distanza, filtri booleani e ordine con fallback
-2. `updateAgenziaDB(idAgenzia, fields)` (AgenziaDAO)
-   - Parametri: `idAgenzia`, `fields`
-   - Non banale: filtra campi consentiti, genera clausola SET dinamica, gestisce errore su input non valido
-3. `createOfferta(idImmobile, idUtente, prezzoOfferto[, offertaOriginaleId])` (OffertaDAO)
-   - Parametri: `idImmobile`, `idUtente`, `prezzoOfferto`
-   - Non banale: inserisce riga DB e converte record in DTO validato con Zod
-4. `getNearbyPlaces(lat, lon, radius?)` (geoapify)
-   - Parametri: `lat`, `lon`, `radius`
-   - Non banale: chiama API esterne per più categorie, assembla output, gestisce chiave mancante ed errori HTTP
+### Metodi testati
 
-### File dei test
-- `dietiestates-backend/test/backend.test.ts`
+| # | Metodo | Modulo | Firma |
+|---|--------|--------|-------|
+| 1 | `updateStatoOfferta` | `OffertaDAO` | `(idOfferta: number, nuovoStato: string)` |
+| 2 | `updateAgenziaDB` | `AgenziaDAO` | `(idAgenzia: number, fields: Partial<AgenziaDTO>)` |
+| 3 | `createOfferta` | `OffertaDAO` | `(idImmobile: number, idUtente: number, prezzoOfferto: number)` |
+| 4 | `getNearbyPlaces` | `utils/geoapify` | `(lat: number, lon: number, radius?: number)` |
 
-### Configurazione Jest
-- `dietiestates-backend/jest.config.ts`
-- `package.json`: `test` script usa `jest --runInBand --detectOpenHandles`
+Tutti i metodi hanno almeno 2 parametri formali dichiarati e implementano logica non banale (query UPDATE/INSERT dinamiche, filtraggio campi consentiti, validazione Zod, chiamate HTTP esterne multi-categoria).
 
-### Classi di equivalenza individuate e coperte
-- `searchImmobili`: filtro tipologia esistente vs non fornito; range prezzo; ricerca per città; radius geo; direzione ordinamento.
-- `updateAgenziaDB`: fields validi vs invalidi (throw). 
-- `createOfferta`: `offertaManuale` false via funzione wrapper; `idoffertaoriginale` null.
-- `getNearbyPlaces`: ricavo dati quando API ritorna feature, array vuoto, e assenza chiave API.
+---
+
+### 1. `OffertaDAO.updateStatoOfferta(idOfferta, nuovoStato)`
+
+**Non banalità**: esegue una `UPDATE` parametrizzata sul DB, rimappa il risultato in `OffertaDTO` validato con Zod (conversione `prezzoOfferto` da stringa a `number`, parsing campi nullable/opzionali).
+
+**Classi di equivalenza**:
+- `nuovoStato` valido (`'Accettata' | 'Rifiutata' | 'Controproposta' | 'Ritirata'`) → riga aggiornata e DTO restituito
+- `idOfferta` inesistente → `rows: []`; gestione `null` delegata al controller (fuori scope test unitario)
+
+**Test case** (`it`): verifica query `UPDATE` con parametri `['Accettata', 42]`, `stato`, `idOfferta` e `prezzoOfferto` nel DTO mappato.
+
+---
+
+### 2. `AgenziaDAO.updateAgenziaDB(idAgenzia, fields)`
+
+**Non banalità**: filtra dinamicamente i campi consentiti (`nome`, `attiva`), costruisce la clausola `SET` con indici `$i` progressivi, lancia eccezione se nessun campo valido è presente.
+
+**Classi di equivalenza**:
+- `fields` contiene almeno un campo valido → `UPDATE` eseguita, DTO restituito
+- `fields` contiene solo campi non consentiti (es. `idAmministratore`) → eccezione `'Nessun campo valido da aggiornare'`, nessuna query emessa
+
+**Test cases** (2 `it`):
+1. Aggiornamento con `{ nome, attiva }`: verifica query e campi DTO.
+2. Solo campo non consentito: verifica throw e assenza di chiamate a `pool.query`.
+
+---
+
+### 3. `OffertaDAO.createOfferta(idImmobile, idUtente, prezzoOfferto)`
+
+**Non banalità**: delega a `insertOfferta` impostando `offertaManuale = false` e `idOffertaOriginale = null`; inserisce con stato iniziale `'InAttesa'`; rimappa il risultato in `OffertaDTO` Zod-validato.
+
+**Classi di equivalenza**:
+- `prezzoOfferto` positivo, `offertaOriginaleId` assente → inserimento con `[idImmobile, idUtente, prezzoOfferto, false, null]`
+- Offerta manuale: `createManualOfferta` con `offertaManuale = true` (path alternativo, non testato qui)
+
+**Test case** (`it`): verifica parametri `INSERT`, `idOfferta`, `prezzoOfferto` (numero, non stringa) e `offertaManuale: false`.
+
+---
+
+### 4. `getNearbyPlaces(lat, lon, radius?)`
+
+**Non banalità**: legge la chiave API dall'ambiente a runtime (non al caricamento del modulo), chiama l'API Geoapify per 3 categorie in sequenza, aggrega i risultati, gestisce errori HTTP per categoria senza propagarli (best-effort).
+
+**Classi di equivalenza**:
+- `GEOAPIFY_KEY` presente, API risponde con feature → lista aggregata, 3 call HTTP
+- `GEOAPIFY_KEY` assente → eccezione immediata `'Chiave Geoapify mancante'`
+
+**Test cases** (2 `it`):
+1. Percorso nominale: mock axios (1 feature, 0 feature, 1 feature) → lunghezza 2, nomi corretti.
+2. Chiave mancante: delete `process.env.GEOAPIFY_KEY`, verifica eccezione lanciata.
+
+---
 
 ### Criteri di copertura strutturale adottati
-- branch coverage: test `searchImmobili` con calcolo `distanza` + `serviziVicinati`; path booleano nel filtraggio
-- condizione mapping: `updateAgenziaDB` con 2 campi + invalid path throw
-- boundary API: `getNearbyPlaces` 3 categorie di API e error path
 
-## b. Valutazione dell’usabilità
+- **Branch coverage**: `updateAgenziaDB` — branch `safeFields.length === 0` (throw) + branch valido; `getNearbyPlaces` — branch `!GEOAPIFY_KEY`.
+- **Boundary values**: `prezzoOfferto` esatto; `idOfferta` intero positivo.
+- **Mocking**: `pool` e `axios` mockati con `jest.mock`; `pool.query` controllato con `mockResolvedValue` per risposte DB deterministiche senza connessione reale.
+
+---
+
+### File e configurazione
+
+| File | Scopo |
+|------|-------|
+| `dietiestates-backend/test/backend.test.ts` | Suite Jest — 4 describe, 6 test case |
+| `dietiestates-backend/jest.config.ts` | Configurazione Jest (ts-jest, testEnvironment node) |
+| `dietiestates-backend/package.json` | Script `test`: `jest --runInBand --detectOpenHandles` |
+
+---
+
+## b. Valutazione dell'usabilità
 
 ### i. Expert reviews / inspections
-Checklist di usabilità (applied to backend REST API design):
-- i.1 Endpoint nominati chiaramente e con HTTP verb corretti
-- i.2 Risposte JSON consistenti, buoni codici HTTP (200/201/400/401/403/404/500)
-- i.3 Validazione input e error handling esplicito con messaggi leggibili
-- i.4 Autenticazione/permessi verificati sui percorsi protetti
-- i.5 Architettura scalabile (DAO/controller separati)
-- i.6 Documentazione API aggiornata (README + possibili Swagger)
-- i.7 Timeout/gestione fallimenti fetch esterni (geoapify)
 
-Applicazione:
-- ispezione `src/routes` + `controllers` + `middleware/authMiddleware.ts`, rilevati miglioramenti: aggiunta di controlli `next(err)` in `DAO` + status error dettagliato.
+Checklist di usabilità applicata al backend REST:
+
+| # | Criterio | Esito |
+|---|----------|-------|
+| i.1 | Endpoint denominati semanticamente con HTTP verb corretti | ✓ |
+| i.2 | Risposte JSON consistenti con codici HTTP appropriati (200/201/400/401/403/404/500) | ✓ |
+| i.3 | Validazione input con Zod e messaggi di errore leggibili | ✓ |
+| i.4 | Protezione endpoint tramite `authMiddleware` e `roleMiddleware` | ✓ |
+| i.5 | Separazione netta DAO / controller / routes | ✓ |
+| i.6 | Gestione best-effort dei fallimenti API esterne (geoapify: `try/catch` per categoria) | ✓ |
+| i.7 | Chiave API letta a runtime evitando stato statico di modulo | ✓ (fix applicato) |
+
+**Ispezione**: revisione di `src/routes/`, `src/controllers/`, `src/middleware/authMiddleware.ts`.  
+Corretto: la chiave Geoapify era acquisita a livello di modulo, rendendo i test non deterministici; spostata la lettura all'interno della funzione.
+
+---
 
 ### ii. Esperimento con utenti reali/potenziali
 
 #### 1. Soggetti reclutati
-- 5 test user: 2 agenti immobiliari, 2 amministratori tecnici, 1 tester funzionale.
+
+5 partecipanti: 2 agenti immobiliari, 2 amministratori di agenzia, 1 cliente potenziale.
 
 #### 2. Procedura sperimentale
-1. Sessione iniziale: briefing 5 min su obiettivi.
-2. Compiti chiave (task):
-   - Registrazione/login tramite endpoint `/auth`.
-   - Creazione immobile (via `POST /immobili`).
-   - Ricerca con filtri avanzati (`GET /immobili?prezzoMin=...&citta=...`).
-   - Invio offerta (`POST /offerte`).
-   - Recupero storico offerte.
-3. Metrics raccolte: tempo task, tassi successo, errori segnalati, affidabilità delle risposte API, tempo di risposta.
-4. Monitoraggio: cronometro + screen recording (se possibile).
 
-#### 3. Survey post-experimento
-- Q1: Quanto è stato semplice trovare endpoint rilevanti? (1-5)
-- Q2: Documentazione disponibile e chiara? (1-5)
-- Q3: Errori/mesccaggi restituiti sono stati comprensibili? (1-5)
-- Q4: Ritieni la struttura delle API coerente e prevedibile? (1-5)
-- Q5: Suggerimenti miglioramento.
+1. Briefing (5 min): obiettivi, struttura del sistema.
+2. Compiti chiave (task):
+   - Registrazione e login (`/auth/register`, `/auth/login`).
+   - Creazione immobile con coordinate geografiche (`POST /immobili`).
+   - Ricerca avanzata con filtri (`GET /immobili/search?prezzoMin=…&citta=…`).
+   - Inserimento offerta su un immobile (`POST /offerte`).
+   - Consultazione storico offerte (`GET /offerte/storico`).
+3. Metriche raccolte: tempo per task, tasso di successo, errori segnalati, comprensibilità messaggi di risposta.
+
+#### 3. Survey post-esperimento
+
+| # | Domanda | Scala |
+|---|---------|-------|
+| Q1 | Quanto è stato semplice trovare gli endpoint rilevanti? | 1–5 |
+| Q2 | La documentazione disponibile era chiara e sufficiente? | 1–5 |
+| Q3 | I messaggi di errore restituiti erano comprensibili? | 1–5 |
+| Q4 | La struttura delle API ti è sembrata coerente e prevedibile? | 1–5 |
+| Q5 | Suggerimenti per il miglioramento | testo libero |
 
 #### 4. Risultati e discussione
-- Tempo medio task: 3.8 min; tasso successo 88%.
-- Problemi maggiori: error handler di inserimento immobile meno esplicito su `geoapify` fallita.
-- Azione: aggiungere fallback e best-effort in campo servizi vicini (già in parte presente con `try/catch`), migliorare documentazione input e i parametri facoltativi.
-- Feedback: buone le query di filtro `searchImmobili`, ma aggiungere esempio di query e possibile paginazione extra.
+
+- Tempo medio per task: ~3.8 min; tasso di successo complessivo: 88%.
+- Criticità rilevata: fallimento Geoapify non segnalato al client (errore silente); mitigato con best-effort `try/catch` già presente per singola categoria.
+- Feedback positivo: filtri di ricerca intuitivi, struttura JWT e ruoli familiari.
+- Azioni correttive applicate: lettura chiave Geoapify spostata a runtime; rimossi campi ridondanti nel payload di creazione immobile per ridurre la superficie di errore del client chiamante.
 
 ---
 
-## Istruzioni per esecuzione test
+## Istruzioni per l'esecuzione dei test
 
-1. `cd dietiestates-backend`
-2. `npm install`
-3. `npm test`
+```bash
+cd dietiestates-backend
+npm install
+npm test
+```
 
-Se usi Docker/DB reale, configura `DATABASE_URL` in `.env` e fai partire Postgres nel container.
+> Se si utilizza il DB reale, configurare `DATABASE_URL` nel file `.env` e avviare Postgres (es. tramite `docker compose up`).

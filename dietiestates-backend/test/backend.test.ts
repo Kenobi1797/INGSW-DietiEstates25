@@ -1,8 +1,7 @@
 import pool from '../src/config/db';
 import axios from 'axios';
-import { searchImmobili } from '../src/dao/ImmobileDAO';
+import { updateStatoOfferta, createOfferta } from '../src/dao/OffertaDAO';
 import { updateAgenziaDB } from '../src/dao/AgenziaDAO';
-import { createOfferta } from '../src/dao/OffertaDAO';
 import { getNearbyPlaces } from '../src/utils/geoapify';
 
 jest.mock('../src/config/db');
@@ -13,70 +12,37 @@ describe('Backend unit tests', () => {
     jest.clearAllMocks();
   });
 
-  describe('ImmobileDAO.searchImmobili', () => {
-    it('builds query with filters and distance, returns serviziVicinati calculation', async () => {
+  // Metodo 1: updateStatoOfferta(idOfferta, nuovoStato) — 2 parametri
+  describe('OffertaDAO.updateStatoOfferta', () => {
+    it('aggiorna lo stato dell\'offerta e restituisce il record aggiornato', async () => {
       (pool.query as jest.Mock).mockResolvedValue({
         rows: [{
-          idimmobile: 1,
-          scuolevicine: false,
-          parchivicini: true,
-          trasportipubblicivicini: false,
-          prezzo: '150000',
-          dimensioni: '80',
-          latitudine: '45.0',
-          longitudine: '9.0',
-          dataCreazione: new Date(),
+          idofferta: 42,
+          idimmobile: 10,
+          idutente: 5,
+          prezzoofferto: '200000',
+          stato: 'Accettata',
+          dataofferta: new Date('2025-04-01T10:00:00Z'),
+          offertamanuale: false,
+          idoffertaoriginale: null,
         }],
       });
 
-      const filter = {
-        tipologia: 'Appartamento',
-        prezzoMin: '100000',
-        prezzoMax: '200000',
-        numeroStanze: '2',
-        citta: 'Milano',
-        latitudine: '45.0',
-        longitudine: '9.0',
-        raggioKm: '5',
-        orderBy: 'Prezzo',
-        orderDir: 'ASC',
-        limit: 10,
-        offset: 0,
-      };
+      const updated = await updateStatoOfferta(42, 'Accettata');
 
-      const result = await searchImmobili(filter);
-
-      expect(pool.query).toHaveBeenCalled();
-      const queryString = (pool.query as jest.Mock).mock.calls[0][0] as string;
-      const queryValues = (pool.query as jest.Mock).mock.calls[0][1] as any[];
-
-      expect(queryString).toContain('WHERE');
-      expect(queryString).toContain('Tipologia = $1');
-      expect(queryString).toContain('Prezzo >= $2');
-      expect(queryString).toContain('distanza');
-      expect(queryString).toContain('ORDER BY Prezzo ASC');
-      expect(queryValues).toEqual([
-        'Appartamento',
-        100000,
-        200000,
-        2,
-        '%Milano%',
-        45,
-        9,
-        5,
-        10,
-        0,
-      ]);
-
-      expect(result).toHaveLength(1);
-      expect(result[0].serviziVicinati).toBe(true);
-      expect(result[0].prezzo).toBe('150000');
-      expect(result[0].dimensioni).toBe('80');
+      expect(pool.query).toHaveBeenCalledWith(
+        'UPDATE offerta SET stato = $1 WHERE idofferta = $2 RETURNING *',
+        ['Accettata', 42]
+      );
+      expect(updated.stato).toBe('Accettata');
+      expect(updated.idOfferta).toBe(42);
+      expect(updated.prezzoOfferto).toBe(200000);
     });
   });
 
+  // Metodo 2: updateAgenziaDB(idAgenzia, fields) — 2 parametri
   describe('AgenziaDAO.updateAgenziaDB', () => {
-    it('updates allowed fields and returns record', async () => {
+    it('aggiorna i campi consentiti e restituisce il record', async () => {
       (pool.query as jest.Mock).mockResolvedValue({
         rows: [{ idagenzia: 5, nome: 'Nuova', idamministratore: 11, attiva: false }],
       });
@@ -91,14 +57,15 @@ describe('Backend unit tests', () => {
       expect(updated.attiva).toBe(false);
     });
 
-    it('throws if no valid fields provided', async () => {
+    it('lancia un\'eccezione se non vengono forniti campi validi', async () => {
       await expect(updateAgenziaDB(5, { idAmministratore: 99 } as any)).rejects.toThrow('Nessun campo valido da aggiornare');
       expect(pool.query).not.toHaveBeenCalled();
     });
   });
 
+  // Metodo 3: createOfferta(idImmobile, idUtente, prezzoOfferto) — 3 parametri
   describe('OffertaDAO.createOfferta', () => {
-    it('creates offerta through insertOfferta with offertaManuale false', async () => {
+    it('crea un\'offerta con offertaManuale false e restituisce il DTO validato', async () => {
       (pool.query as jest.Mock).mockResolvedValue({
         rows: [{
           idofferta: 100,
@@ -119,12 +86,14 @@ describe('Backend unit tests', () => {
         [50, 20, 90000, false, null]
       );
       expect(offerta.idOfferta).toBe(100);
+      expect(offerta.prezzoOfferto).toBe(90000);
       expect(offerta.offertaManuale).toBe(false);
     });
   });
 
+  // Metodo 4: getNearbyPlaces(lat, lon, radius) — 3 parametri
   describe('geoapify.getNearbyPlaces', () => {
-    it('returns aggregated places for categories', async () => {
+    it('restituisce i luoghi vicini aggregati per categoria', async () => {
       process.env.GEOAPIFY_KEY = 'testkey';
 
       (axios.get as jest.Mock)
@@ -138,7 +107,7 @@ describe('Backend unit tests', () => {
       expect(places.map(p => p.name)).toEqual(['Scuola ABC', 'Fermata Bus']);
     });
 
-    it('throws when api key missing', async () => {
+    it('lancia un\'eccezione se la chiave API è mancante', async () => {
       delete process.env.GEOAPIFY_KEY;
       await expect(getNearbyPlaces(45.0, 9.0)).rejects.toThrow('Chiave Geoapify mancante');
     });

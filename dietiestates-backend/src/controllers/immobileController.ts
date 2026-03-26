@@ -35,12 +35,6 @@ export async function createImmobile(req: AuthRequest, res: Response) {
       terrazzo, giardino, postoAuto, cantina, portineria,
       climatizzazione, riscaldamento, classeEnergetica, tipologia,
       latitudine, longitudine, fotoUrls,
-      idImmobile: 0,
-      scuoleVicine: false,
-      parchiVicini: false,
-      trasportiPubbliciVicini: false,
-      dataCreazione: new Date(),
-      venduto: false
     });
 
     res.status(201).json(immobile);

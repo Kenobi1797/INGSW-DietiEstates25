@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const GEOAPIFY_KEY = process.env.GEOAPIFY_KEY;
-
 interface Place {
   name: string;
   distance: number; // metri
@@ -9,6 +7,7 @@ interface Place {
 }
 
 export async function getNearbyPlaces(lat: number, lon: number, radius: number = 1000): Promise<Place[]> {
+  const GEOAPIFY_KEY = process.env.GEOAPIFY_KEY;
   if (!GEOAPIFY_KEY) throw new Error('Chiave Geoapify mancante');
 
   // Filtra per scuole, parchi e trasporto pubblico
