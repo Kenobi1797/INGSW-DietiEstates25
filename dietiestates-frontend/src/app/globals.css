@@ -212,10 +212,28 @@ a {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  text-decoration: none;
 }
 
 .logo-text {
   font-weight: bold;
+}
+
+/* Garantisce leggibilità in light e dark mode */
+.logo-text-dieti {
+  color: var(--foreground);
+}
+
+.logo-text-accent {
+  color: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  .navbar.default {
+    background: #1a1a1a;
+    color: var(--foreground);
+    border-bottom: 2px solid #333;
+  }
 }
 
 /* ── bottone accedi ── */
