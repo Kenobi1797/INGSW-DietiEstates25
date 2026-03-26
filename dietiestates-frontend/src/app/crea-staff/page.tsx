@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@/Context/Context";
 import AddStaff from "@/components/AddStaff";
+import { Home, Users } from 'lucide-react';
 
 export default function CreaStaffPage() {
   const { authuser } = useUser();
@@ -61,7 +62,7 @@ export default function CreaStaffPage() {
               className="w-full bg-white border-2 border-gray-200 hover:border-red-500 hover:bg-red-50 rounded-2xl p-5 text-left transition-all group"
             >
               <div className="flex items-center gap-4">
-                <span className="text-3xl">🏠</span>
+                <span className="text-3xl"><Home size={28} /></span>
                 <div>
                   <p className="font-bold text-gray-900 group-hover:text-red-600">Agente Immobiliare</p>
                   <p className="text-sm text-gray-500">Può caricare immobili, gestire offerte e inserire offerte manuali.</p>
@@ -75,7 +76,7 @@ export default function CreaStaffPage() {
                 className="w-full bg-white border-2 border-gray-200 hover:border-red-500 hover:bg-red-50 rounded-2xl p-5 text-left transition-all group"
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-3xl">👥</span>
+                  <span className="text-3xl"><Users size={28} /></span>
                   <div>
                     <p className="font-bold text-gray-900 group-hover:text-red-600">Account Supporto</p>
                     <p className="text-sm text-gray-500">Può creare agenti e monitorare l&apos;attività dell&apos;agenzia.</p>

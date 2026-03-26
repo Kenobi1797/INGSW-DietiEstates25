@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@/Context/Context';
 import Link from 'next/link';
+import { MapPin, MessageSquare, Undo2, Inbox } from 'lucide-react';
 
 interface Offerta {
   idOfferta: number;
@@ -120,7 +121,7 @@ export default function StoricoOffertePage() {
           {pendingControfferte.length > 0 && authuser.ruolo === 'Cliente' && (
             <Link href="/controfferte"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
-              📋 {pendingControfferte.length} controfferta/e da valutare →
+              <Undo2 size={15} /> {pendingControfferte.length} controfferta/e da valutare →
             </Link>
           )}
         </div>
@@ -134,7 +135,7 @@ export default function StoricoOffertePage() {
 
         {offerte.length === 0 ? (
           <div className="text-center py-20">
-            <div className="text-5xl mb-4">📭</div>
+            <div className="flex justify-center mb-4 text-gray-300"><Inbox size={60} /></div>
             <p className="text-gray-400 text-lg">Nessuna offerta nello storico.</p>
             <Link href="/immobili" className="mt-4 inline-block text-red-600 hover:underline text-sm font-medium">
               Sfoglia gli immobili →
@@ -157,12 +158,12 @@ export default function StoricoOffertePage() {
                       {/* Badge tipo offerta */}
                       <div className="flex items-center gap-2 flex-wrap mb-1.5">
                         {isControfferta ? (
-                          <span className="text-xs bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full font-semibold border border-blue-200">
-                            ↩ Controfferta ricevuta
+                          <span className="text-xs bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full font-semibold border border-blue-200 inline-flex items-center gap-1">
+                            <Undo2 size={11} /> Controfferta ricevuta
                           </span>
                         ) : (
-                          <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-full font-semibold border border-gray-200">
-                            💬 Offerta inviata
+                          <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-full font-semibold border border-gray-200 inline-flex items-center gap-1">
+                            <MessageSquare size={11} /> Offerta inviata
                           </span>
                         )}
                         {offerta.offertaManuale && (
@@ -176,7 +177,7 @@ export default function StoricoOffertePage() {
                         {offerta.titolo || `Immobile #${offerta.idImmobile}`}
                       </p>
                       {offerta.indirizzo && (
-                        <p className="text-sm text-gray-500 mt-0.5 truncate">📍 {offerta.indirizzo}</p>
+                        <p className="text-sm text-gray-500 mt-0.5 truncate inline-flex items-center gap-1"><MapPin size={12} />{offerta.indirizzo}</p>
                       )}
                     </div>
 

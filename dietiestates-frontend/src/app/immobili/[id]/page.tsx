@@ -6,6 +6,11 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useUser } from '@/Context/Context';
+import {
+  ArrowUpDown, Leaf, Sun, Trees, Car, Package, Hotel, Snowflake,
+  Ruler, BedDouble, ShowerHead, Building2, Zap, Flame,
+  MapPin, School, TrainFront, Check, X, Lock,
+} from 'lucide-react';
 
 const EstateMap = dynamic(() => import('@/components/EstateMap'), { ssr: false });
 
@@ -39,15 +44,15 @@ type ImmobileDettaglio = {
   venduto?: boolean;
 };
 
-const DOTAZIONI: { key: keyof ImmobileDettaglio; label: string }[] = [
-  { key: 'ascensore', label: '🛗 Ascensore' },
-  { key: 'balcone', label: '🌿 Balcone' },
-  { key: 'terrazzo', label: '☀️ Terrazzo' },
-  { key: 'giardino', label: '🌳 Giardino' },
-  { key: 'postoAuto', label: '🚗 Posto auto' },
-  { key: 'cantina', label: '📦 Cantina' },
-  { key: 'portineria', label: '🏨 Portineria' },
-  { key: 'climatizzazione', label: '❄️ Climatizzazione' },
+const DOTAZIONI: { key: keyof ImmobileDettaglio; icon: React.ReactNode; label: string }[] = [
+  { key: 'ascensore',      icon: <ArrowUpDown size={14} />, label: 'Ascensore' },
+  { key: 'balcone',        icon: <Leaf size={14} />,       label: 'Balcone' },
+  { key: 'terrazzo',       icon: <Sun size={14} />,        label: 'Terrazzo' },
+  { key: 'giardino',       icon: <Trees size={14} />,      label: 'Giardino' },
+  { key: 'postoAuto',      icon: <Car size={14} />,        label: 'Posto auto' },
+  { key: 'cantina',        icon: <Package size={14} />,    label: 'Cantina' },
+  { key: 'portineria',     icon: <Hotel size={14} />,      label: 'Portineria' },
+  { key: 'climatizzazione',icon: <Snowflake size={14} />,  label: 'Climatizzazione' },
 ];
 
 export default function ImmobileDettaglioPage() {
@@ -155,22 +160,22 @@ export default function ImmobileDettaglioPage() {
                   immobile.tipologia === 'Vendita' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
                 }`}>{immobile.tipologia}</span>
               </div>
-              <p className="text-gray-500 mt-1 text-sm">📍 {immobile.indirizzo}</p>
+              <p className="text-gray-500 mt-1 text-sm inline-flex items-center gap-1"><MapPin size={13} />{immobile.indirizzo}</p>
               <p className="text-3xl font-bold text-red-600 mt-2">€ {immobile.prezzo.toLocaleString('it-IT')}</p>
             </div>
 
             {/* Scheda metriche */}
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
               {[
-                { icon: '📐', label: 'mq', value: immobile.dimensioni ?? 'N/D' },
-                { icon: '🛏️', label: 'stanze', value: immobile.numeroStanze ?? 'N/D' },
-                { icon: '🚿', label: 'bagni', value: immobile.numeroBagni ?? 'N/D' },
-                { icon: '🏢', label: 'piano', value: immobile.piano === 0 ? 'T' : String(immobile.piano ?? 'N/D') },
-                { icon: '⚡', label: 'classe', value: immobile.classeEnergetica ?? 'N/D' },
-                { icon: '🔥', label: 'risc.', value: immobile.riscaldamento || 'N/D' },
+                { icon: <Ruler size={20} />,      label: 'mq',     value: immobile.dimensioni ?? 'N/D' },
+                { icon: <BedDouble size={20} />,   label: 'stanze', value: immobile.numeroStanze ?? 'N/D' },
+                { icon: <ShowerHead size={20} />,  label: 'bagni',  value: immobile.numeroBagni ?? 'N/D' },
+                { icon: <Building2 size={20} />,   label: 'piano',  value: immobile.piano === 0 ? 'T' : String(immobile.piano ?? 'N/D') },
+                { icon: <Zap size={20} />,         label: 'classe', value: immobile.classeEnergetica ?? 'N/D' },
+                { icon: <Flame size={20} />,       label: 'risc.',  value: immobile.riscaldamento || 'N/D' },
               ].map(({ icon, label, value }) => (
                 <div key={label} className="bg-gray-50 rounded-lg p-2 text-center border border-gray-100">
-                  <div className="text-xl">{icon}</div>
+                  <div className="flex justify-center text-gray-600">{icon}</div>
                   <div className="text-xs text-gray-500 mt-0.5">{label}</div>
                   <div className="font-semibold text-sm mt-0.5 truncate">{value}</div>
                 </div>
@@ -185,14 +190,14 @@ export default function ImmobileDettaglioPage() {
               </h2>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { key: 'scuoleVicine', label: '🏫 Scuole', value: immobile.scuoleVicine },
-                  { key: 'parchiVicini', label: '🌳 Parchi', value: immobile.parchiVicini },
-                  { key: 'trasportiPubbliciVicini', label: '🚇 Trasporti pubblici', value: immobile.trasportiPubbliciVicini },
-                ].map(({ key, label, value }) => (
+                  { key: 'scuoleVicine',            icon: <School size={14} />,     label: 'Scuole',             value: immobile.scuoleVicine },
+                  { key: 'parchiVicini',             icon: <Trees size={14} />,      label: 'Parchi',             value: immobile.parchiVicini },
+                  { key: 'trasportiPubbliciVicini',  icon: <TrainFront size={14} />, label: 'Trasporti pubblici', value: immobile.trasportiPubbliciVicini },
+                ].map(({ key, icon, label, value }) => (
                   <span key={key} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border ${
                     value ? 'bg-green-50 border-green-200 text-green-700' : 'bg-gray-50 border-gray-200 text-gray-400'
                   }`}>
-                    {label} <span className="text-xs font-bold">{value ? '✓' : '✗'}</span>
+                    {icon}{label} {value ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={3} />}
                   </span>
                 ))}
               </div>
@@ -202,8 +207,8 @@ export default function ImmobileDettaglioPage() {
             <div>
               <h2 className="text-base font-semibold mb-2">Dotazioni</h2>
               <div className="flex flex-wrap gap-2">
-                {DOTAZIONI.filter(({ key }) => immobile[key]).map(({ label }) => (
-                  <span key={label} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">{label}</span>
+                {DOTAZIONI.filter(({ key }) => immobile[key]).map(({ icon, label }) => (
+                  <span key={label} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm inline-flex items-center gap-1.5">{icon}{label}</span>
                 ))}
                 {DOTAZIONI.every(({ key }) => !immobile[key]) && <span className="text-sm text-gray-400">Nessuna dotazione aggiuntiva.</span>}
               </div>
@@ -239,7 +244,7 @@ export default function ImmobileDettaglioPage() {
 
             {immobile.venduto && (
               <div className="bg-gray-100 rounded-xl p-4 text-center border">
-                <p className="text-gray-600 font-semibold">🔒 Immobile non disponibile</p>
+                <p className="text-gray-600 font-semibold inline-flex items-center gap-1.5"><Lock size={15} /> Immobile non disponibile</p>
               </div>
             )}
 

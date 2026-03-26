@@ -32,7 +32,12 @@ export const navbarLinks: MenuLink[] = [
   {
     label: "Storico Offerte",
     path: "/storico-offerte",
-    roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
+    roles: ["Cliente"],
+  },
+  {
+    label: "I Miei Immobili",
+    path: "/miei-immobili",
+    roles: ["Agente", "Supporto", "AmministratoreAgenzia"],
   },
   {
     label: "Profilo",

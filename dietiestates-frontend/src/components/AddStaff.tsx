@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useUser } from "@/Context/Context";
 import { createAgente, createSupporto } from "@/Services/CreaStaff";
+import { CircleCheck } from 'lucide-react';
 
 interface Props {
   targetRole: "Agente" | "Supporto";
@@ -39,7 +40,7 @@ export default function AddStaff({ targetRole, onCancel }: Props) {
   if (success) {
     return (
       <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-sm">
-        <div className="text-4xl mb-3">✅</div>
+        <div className="text-4xl mb-3 flex justify-center text-green-600"><CircleCheck size={48} /></div>
         <h2 className="text-lg font-bold text-gray-900 mb-1">{roleLabel} creato!</h2>
         <p className="text-sm text-gray-500 mb-6">
           L&apos;account è adesso attivo e pronto all&apos;uso.

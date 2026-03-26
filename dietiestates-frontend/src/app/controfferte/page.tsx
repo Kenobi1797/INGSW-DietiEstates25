@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@/Context/Context';
 import Link from 'next/link';
+import { MapPin, Check, X, Inbox, Undo2 } from 'lucide-react';
 
 interface Controfferta {
   idOfferta: number;
@@ -111,14 +112,14 @@ export default function ControffertePage() {
 
         <div className="flex items-start justify-between flex-wrap gap-3 mb-3">
           <div className="flex-1 min-w-0">
-            <span className="text-xs bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full font-semibold border border-blue-200 mb-1.5 inline-block">
-              ↩ Controfferta ricevuta dall&apos;agente
+            <span className="text-xs bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full font-semibold border border-blue-200 mb-1.5 inline-flex items-center gap-1">
+              <Undo2 size={11} /> Controfferta ricevuta dall&apos;agente
             </span>
             <p className="font-semibold text-gray-900 truncate">
               {c.titolo || `Immobile #${c.idImmobile}`}
             </p>
             {c.indirizzo && (
-              <p className="text-sm text-gray-500 mt-0.5 truncate">📍 {c.indirizzo}</p>
+              <p className="text-sm text-gray-500 mt-0.5 truncate inline-flex items-center gap-1"><MapPin size={12} />{c.indirizzo}</p>
             )}
           </div>
 
@@ -151,14 +152,14 @@ export default function ControffertePage() {
                 <button
                   onClick={() => handleRispondi(c.idOfferta, 'Accettata')}
                   disabled={respondingId === c.idOfferta}
-                  className="text-xs bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-full font-semibold transition-colors disabled:opacity-50">
-                  {respondingId === c.idOfferta ? '...' : '✓ Accetta'}
+                  className="text-xs bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-full font-semibold transition-colors disabled:opacity-50 inline-flex items-center gap-1.5">
+                  {respondingId === c.idOfferta ? '...' : <><Check size={12} strokeWidth={3} /> Accetta</>}
                 </button>
                 <button
                   onClick={() => handleRispondi(c.idOfferta, 'Rifiutata')}
                   disabled={respondingId === c.idOfferta}
-                  className="text-xs bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-full font-semibold transition-colors disabled:opacity-50">
-                  {respondingId === c.idOfferta ? '...' : '✗ Rifiuta'}
+                  className="text-xs bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-full font-semibold transition-colors disabled:opacity-50 inline-flex items-center gap-1.5">
+                  {respondingId === c.idOfferta ? '...' : <><X size={12} strokeWidth={3} /> Rifiuta</>}
                 </button>
               </>
             )}
@@ -187,7 +188,7 @@ export default function ControffertePage() {
         {/* Empty state */}
         {controfferte.length === 0 && (
           <div className="text-center py-20">
-            <div className="text-5xl mb-4">📭</div>
+            <div className="flex justify-center mb-4 text-gray-300"><Inbox size={60} /></div>
             <p className="text-gray-400 text-lg">Nessuna controfferta ricevuta.</p>
           </div>
         )}

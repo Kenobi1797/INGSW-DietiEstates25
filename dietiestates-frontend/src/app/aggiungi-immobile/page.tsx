@@ -8,6 +8,7 @@ import { createImmobile } from '@/Services/immobileService';
 import { useUser } from '@/Context/Context';
 import { useRouter } from 'next/navigation';
 import PrezzoInput from '@/components/PrezzoInput';
+import { Home, Building2, Trees, Sofa, Camera } from 'lucide-react';
 
 export default function PaginaCaricamentoImmobile() {
   const { authuser } = useUser();
@@ -179,7 +180,7 @@ export default function PaginaCaricamentoImmobile() {
             <div className="caratteristiche-section">
               {/* Dimensioni e Stanze */}
               <div className="caratteristiche-group">
-                <h3 className="group-title">🏠 Dimensioni e Stanze</h3>
+                <h3 className="group-title"><Home size={16} className="inline mr-1" />Dimensioni e Stanze</h3>
                 <div className="grid-3">
                   <input
                     type="number"
@@ -210,7 +211,7 @@ export default function PaginaCaricamentoImmobile() {
 
               {/* Posizione nell'edificio */}
               <div className="caratteristiche-group">
-                <h3 className="group-title">🏢 Posizione</h3>
+                <h3 className="group-title"><Building2 size={16} className="inline mr-1" />Posizione</h3>
                 <div className="grid-2">
                   <input
                     type="number"
@@ -231,7 +232,7 @@ export default function PaginaCaricamentoImmobile() {
 
               {/* Dotazioni interne */}
               <div className="caratteristiche-group">
-                <h3 className="group-title">🛋️ Dotazioni Interne</h3>
+                <h3 className="group-title"><Sofa size={16} className="inline mr-1" />Dotazioni Interne</h3>
                 <div className="checkbox-grid">
                   {[
                     { name: 'ascensore', label: 'Ascensore' },
@@ -254,7 +255,7 @@ export default function PaginaCaricamentoImmobile() {
 
               {/* Spazi esterni */}
               <div className="caratteristiche-group">
-                <h3 className="group-title">🌳 Spazi Esterni</h3>
+                <h3 className="group-title"><Trees size={16} className="inline mr-1" />Spazi Esterni</h3>
                 <div className="checkbox-grid">
                   {[
                     { name: 'balcone', label: 'Balcone' },
@@ -277,7 +278,7 @@ export default function PaginaCaricamentoImmobile() {
 
               {/* Foto dell&apos;immobile: caricamento file */}
               <div className="caratteristiche-group">
-                <h3 className="group-title">📸 Foto dell&apos;immobile</h3>
+                <h3 className="group-title"><Camera size={16} className="inline mr-1" />Foto dell&apos;immobile</h3>
                 <input
                   type="file"
                   multiple

@@ -1,17 +1,19 @@
 'use client';
 import { useEffect } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
+import { Home } from 'lucide-react';
 import { ImmobileS } from '@/Models/ImmobileS';
 
 const casettaIcon = L.divIcon({
   className: '',
-  html: `
-    <svg width="32" height="32" viewBox="0 0 24 24" style="filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4))">
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="#E91E63" stroke="white" stroke-width="1.5" />
-    </svg>
-  `,
+  html: renderToStaticMarkup(
+    <div style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.4))' }}>
+      <Home size={32} color="#E91E63" strokeWidth={2} />
+    </div>
+  ),
   iconSize: [32, 32],
   iconAnchor: [16, 32],
 });

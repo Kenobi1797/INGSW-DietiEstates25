@@ -3,6 +3,11 @@
 import { useUser } from "@/Context/Context";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import type { LucideIcon } from 'lucide-react';
+import {
+  MapPinHouse, Search, ClipboardList, Undo2, Home,
+  CircleCheck, User, Users,
+} from 'lucide-react';
 
 type Ruolo = "Cliente" | "Agente" | "Supporto" | "AmministratoreAgenzia";
 
@@ -22,7 +27,7 @@ interface OffertaLite {
 interface ActionItem {
   href: string;
   label: string;
-  icon: string;
+  Icon: LucideIcon;
   className: string;
 }
 
@@ -44,13 +49,13 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
     {
       href: "/immobili",
       label: "Lista Immobili",
-      icon: "🏘️",
+      Icon: MapPinHouse,
       className: "bg-blue-500 hover:bg-blue-700",
     },
     {
       href: "/search",
       label: "Ricerca Immobili",
-      icon: "🔍",
+      Icon: Search,
       className: "bg-sky-500 hover:bg-sky-700",
     },
   ];
@@ -61,13 +66,13 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
       {
         href: "/storico-offerte",
         label: "Storico Offerte",
-        icon: "📋",
+        Icon: ClipboardList,
         className: "bg-green-500 hover:bg-green-700",
       },
       {
         href: "/controfferte",
         label: "Controfferte",
-        icon: "↩",
+        Icon: Undo2,
         className: "bg-blue-500 hover:bg-blue-700",
       },
     ];
@@ -79,25 +84,19 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
       {
         href: "/aggiungi-immobile",
         label: "Aggiungi Immobile",
-        icon: "🏠",
+        Icon: Home,
         className: "bg-indigo-500 hover:bg-indigo-700",
       },
       {
-        href: "/valuta-offerte",
-        label: "Valuta Offerte",
-        icon: "✅",
+        href: "/miei-immobili",
+        label: "Gestisci Offerte",
+        Icon: CircleCheck,
         className: "bg-green-500 hover:bg-green-700",
-      },
-      {
-        href: "/inserisci-offerta",
-        label: "Inserisci Offerta",
-        icon: "💰",
-        className: "bg-orange-500 hover:bg-orange-700",
       },
       {
         href: "/profilo",
         label: "Profilo",
-        icon: "👤",
+        Icon: User,
         className: "bg-gray-500 hover:bg-gray-700",
       },
     ];
@@ -109,19 +108,19 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
       {
         href: "/crea-staff",
         label: "Crea Agente",
-        icon: "👥",
+        Icon: Users,
         className: "bg-red-500 hover:bg-red-700",
       },
       {
-        href: "/storico-offerte",
-        label: "Storico Offerte",
-        icon: "📋",
+        href: "/miei-immobili",
+        label: "Gestisci Offerte",
+        Icon: ClipboardList,
         className: "bg-green-500 hover:bg-green-700",
       },
       {
         href: "/profilo",
         label: "Profilo",
-        icon: "👤",
+        Icon: User,
         className: "bg-gray-500 hover:bg-gray-700",
       },
     ];
@@ -133,31 +132,25 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
       {
         href: "/aggiungi-immobile",
         label: "Aggiungi Immobile",
-        icon: "🏠",
+        Icon: Home,
         className: "bg-indigo-500 hover:bg-indigo-700",
       },
       {
-        href: "/valuta-offerte",
-        label: "Valuta Offerte",
-        icon: "✅",
+        href: "/miei-immobili",
+        label: "Gestisci Offerte",
+        Icon: CircleCheck,
         className: "bg-green-500 hover:bg-green-700",
-      },
-      {
-        href: "/inserisci-offerta",
-        label: "Inserisci Offerta",
-        icon: "💰",
-        className: "bg-orange-500 hover:bg-orange-700",
       },
       {
         href: "/crea-staff",
         label: "Crea Staff",
-        icon: "👥",
+        Icon: Users,
         className: "bg-red-500 hover:bg-red-700",
       },
       {
         href: "/profilo",
         label: "Profilo",
-        icon: "👤",
+        Icon: User,
         className: "bg-gray-500 hover:bg-gray-700",
       },
     ];
@@ -169,7 +162,7 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
     {
       href: "/profilo",
       label: "Profilo",
-      icon: "👤",
+      Icon: User,
       className: "bg-gray-500 hover:bg-gray-700",
     },
   ];
@@ -349,16 +342,14 @@ export default function DashboardAgent() {
                 href={action.href}
                 className={`${action.className} text-white font-semibold py-4 px-5 rounded-xl text-sm flex items-center gap-2.5 transition-colors shadow-sm`}
               >
-                <span className="text-xl">{action.icon}</span>
+                <action.Icon size={20} />
                 {action.label}
               </Link>
             ))}
           </div>
         </div>
 
-        <p className="text-xs text-gray-400 mt-8">
-          Statistiche aggiornate in base al ruolo e ai dati reali della piattaforma.
-        </p>
+
       </div>
     </div>
   );

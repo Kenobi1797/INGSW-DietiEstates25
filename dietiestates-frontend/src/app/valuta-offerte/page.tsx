@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '@/Context/Context';
 import Link from 'next/link';
 import PrezzoInput from '@/components/PrezzoInput';
+import { MapPin, Check, X, Undo2, Inbox } from 'lucide-react';
 
 type StatoOfferta = 'InAttesa' | 'Accettata' | 'Rifiutata' | 'Controproposta' | 'Ritirata';
 
@@ -139,7 +140,7 @@ export default function ValutaOffertePage() {
 
         {offerte.length === 0 && (
           <div className="text-center py-20">
-            <div className="text-5xl mb-4">📭</div>
+          <div className="flex justify-center mb-4 text-gray-300"><Inbox size={60} /></div>
             <p className="text-gray-400 text-lg">Nessuna offerta ricevuta.</p>
           </div>
         )}
@@ -165,7 +166,7 @@ export default function ValutaOffertePage() {
                         {offerta.titolo || `Immobile #${offerta.idImmobile}`}
                       </p>
                       {offerta.indirizzo && (
-                        <p className="text-sm text-gray-500 mt-0.5 truncate">📍 {offerta.indirizzo}</p>
+                        <p className="text-sm text-gray-500 mt-0.5 truncate inline-flex items-center gap-1"><MapPin size={12} />{offerta.indirizzo}</p>
                       )}
                       <p className="text-xs text-gray-400 mt-1">
                         {new Date(offerta.dataOfferta).toLocaleDateString('it-IT', {
@@ -189,20 +190,20 @@ export default function ValutaOffertePage() {
                     <button
                       onClick={() => handleValuta(offerta.idOfferta, 'Accettata')}
                       disabled={actionLoadingId === offerta.idOfferta}
-                      className="text-sm bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg font-semibold transition-colors disabled:opacity-50">
-                      ✓ Accetta
+                      className="text-sm bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg font-semibold transition-colors disabled:opacity-50 inline-flex items-center gap-1.5">
+                      <Check size={14} strokeWidth={3} /> Accetta
                     </button>
                     <button
                       onClick={() => handleValuta(offerta.idOfferta, 'Rifiutata')}
                       disabled={actionLoadingId === offerta.idOfferta}
-                      className="text-sm bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-lg font-semibold transition-colors disabled:opacity-50">
-                      ✗ Rifiuta
+                      className="text-sm bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-lg font-semibold transition-colors disabled:opacity-50 inline-flex items-center gap-1.5">
+                      <X size={14} strokeWidth={3} /> Rifiuta
                     </button>
                     <button
                       onClick={() => toggleContropropostaForm(offerta.idOfferta)}
                       disabled={actionLoadingId === offerta.idOfferta}
-                      className="text-sm bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-1.5 rounded-lg font-semibold transition-colors border border-blue-300 disabled:opacity-50">
-                      ↩ Controproposta
+                      className="text-sm bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-1.5 rounded-lg font-semibold transition-colors border border-blue-300 disabled:opacity-50 inline-flex items-center gap-1.5">
+                      <Undo2 size={14} /> Controproposta
                     </button>
                   </div>
 
@@ -261,7 +262,7 @@ export default function ValutaOffertePage() {
                           {offerta.titolo || `Immobile #${offerta.idImmobile}`}
                         </p>
                         {offerta.indirizzo && (
-                          <p className="text-sm text-gray-500 mt-0.5 truncate">📍 {offerta.indirizzo}</p>
+                          <p className="text-sm text-gray-500 mt-0.5 truncate inline-flex items-center gap-1"><MapPin size={12} />{offerta.indirizzo}</p>
                         )}
                         <p className="text-xs text-gray-400 mt-1">
                           {new Date(offerta.dataOfferta).toLocaleDateString('it-IT', {

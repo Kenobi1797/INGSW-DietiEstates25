@@ -1,24 +1,21 @@
 // @/components/MapSearch.tsx
 'use client';
 import { useEffect } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
+import { Home } from 'lucide-react';
 import { ImmobileS } from '@/Models/ImmobileS';
 
 const createCasettaIcon = (color: string) => {
   return L.divIcon({
     className: "custom-marker-icon",
-    html: `
-      <svg width="32" height="32" viewBox="0 0 24 24" style="filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4))">
-        <path 
-          d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" 
-          fill="${color}" 
-          stroke="white" 
-          stroke-width="1.5"
-        />
-      </svg>
-    `,
+    html: renderToStaticMarkup(
+      <div style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.4))' }}>
+        <Home size={32} color={color} strokeWidth={2} />
+      </div>
+    ),
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
