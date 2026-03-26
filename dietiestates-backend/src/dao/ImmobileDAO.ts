@@ -61,12 +61,13 @@ export async function createImmobile(data: ImmobileDTO) {
     ) RETURNING *`,
     [
       data.idAgente, data.titolo, data.descrizione || null, data.prezzo, data.dimensioni || null, data.indirizzo,
-      data.numeroStanze || null, data.numeroBagni || null, data.piano || null,
+      data.numeroStanze || null, data.numeroBagni || null, data.piano ?? null,
       data.ascensore || false, data.balcone || false, data.terrazzo || false, data.giardino || false,
       data.postoAuto || false, data.cantina || false, data.portineria || false, data.climatizzazione || false,
       data.riscaldamento || null,
       scuoleVicine, parchiVicini, trasportiPubbliciVicini,
-      data.classeEnergetica || null, data.tipologia, data.latitudine, data.longitudine, data.fotoUrls || null
+      data.classeEnergetica || null, data.tipologia, data.latitudine, data.longitudine,
+      data.fotoUrls && data.fotoUrls.length > 0 ? data.fotoUrls : null
     ]
   );
 

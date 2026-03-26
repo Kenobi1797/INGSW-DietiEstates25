@@ -4,9 +4,13 @@ import * as UtenteDAO from '../dao/UtenteDAO';
 import * as OAuthDAO from '../dao/OAuthDAO';
 import { generateToken } from '../utils/jwt';
 
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID!,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
+if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) {
+  passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: '/auth/google/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
@@ -53,5 +57,8 @@ passport.use(new GoogleStrategy({
       return done(err as Error, undefined);
     }
   }
-));
+  ));
+} else {
+  console.warn('[passport] Google OAuth non configurato: le variabili GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET sono assenti.');
+}
 

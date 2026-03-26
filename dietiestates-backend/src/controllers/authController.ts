@@ -175,7 +175,11 @@ export async function createSupport(req: AuthRequest, res: Response) {
     if (await UtenteDAO.checkEmailExists(parsed.data.email))
       return res.status(400).json({ error: 'Email già registrata' });
 
-    const support = await UtenteDAO.createSupport(parsed.data);
+    // Assegna l'agenzia dell'amministratore che sta creando l'account supporto
+    const adminUser = await UtenteDAO.getUtenteById(req.user.id);
+    const idAgenzia = adminUser ? await resolveUserAgencyId(adminUser) : null;
+
+    const support = await UtenteDAO.createSupport({ ...parsed.data, idAgenzia });
     res.status(201).json(support);
   } catch (err) {
     console.error(err);

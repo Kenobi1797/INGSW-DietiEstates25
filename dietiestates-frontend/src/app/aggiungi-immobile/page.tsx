@@ -52,8 +52,18 @@ export default function PaginaCaricamentoImmobile() {
     let finalValue: string | number | boolean = type === 'checkbox' ? checked : value;
 
     if (type === 'number' || name === 'prezzo') {
+      if (value === '' || value === '-') {
+        // lascia il campo editabile
+        setFormData((prev) => ({ ...prev, [name]: value as unknown as number }));
+        return;
+      }
       const numValue = Number(value);
-      finalValue = numValue >= 0 ? numValue : 0;
+      // Per il piano permettiamo valori negativi (piani interrati); per gli altri campi solo >= 0
+      if (name === 'piano') {
+        finalValue = isNaN(numValue) ? 0 : numValue;
+      } else {
+        finalValue = numValue >= 0 ? numValue : 0;
+      }
     }
 
     setFormData((prev) => ({ ...prev, [name]: finalValue }));
@@ -216,8 +226,8 @@ export default function PaginaCaricamentoImmobile() {
                   <input
                     type="number"
                     name="piano"
-                    placeholder="Piano (0 per piano terra)"
-                    value={formData.piano || ''}
+                    placeholder="Piano (0 = piano terra, negativo = interrato)"
+                    value={formData.piano ?? ''}
                     onChange={handleChange}
                   />
                   <select name="riscaldamento" value={formData.riscaldamento || ''} onChange={handleChange}>

@@ -60,14 +60,14 @@ export async function createAgent(
 
 // Crea supporto
 export async function createSupport(
-  data: Omit<UtenteDTO, 'idUtente' | 'ruolo' | 'dataCreazione' | 'passwordHash'> & { password: string }
+  data: Omit<UtenteDTO, 'idUtente' | 'ruolo' | 'dataCreazione' | 'passwordHash'> & { password: string; idAgenzia?: number | null }
 ): Promise<UtenteDTO> {
   const passwordHash = await bcrypt.hash(data.password, 10);
   const result = await pool.query(
-    `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo)
-     VALUES ($1, $2, $3, $4, 'Supporto')
+    `INSERT INTO Utente (Nome, Cognome, Email, PasswordHash, Ruolo, IdAgenzia)
+     VALUES ($1, $2, $3, $4, 'Supporto', $5)
      RETURNING *`,
-    [data.nome, data.cognome, data.email, passwordHash]
+    [data.nome, data.cognome, data.email, passwordHash, data.idAgenzia ?? null]
   );
   return mapRowToUtente(result.rows[0]);
 }

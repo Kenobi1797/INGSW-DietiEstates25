@@ -5,12 +5,20 @@ import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
-// Rotte autenticazione Google
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+// Rotte autenticazione Google (solo se la strategy è configurata)
+const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+
+router.get('/google', (req, res, next) => {
+  if (!googleEnabled) return res.status(503).json({ error: 'Google OAuth non configurato' });
+  passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+});
 
 router.get(
   '/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res, next) => {
+    if (!googleEnabled) return res.status(503).json({ error: 'Google OAuth non configurato' });
+    passport.authenticate('google', { failureRedirect: '/' })(req, res, next);
+  },
   (req, res) => {
     const oauthResult = req.user as any;
     if (!oauthResult || !oauthResult.token || !oauthResult.user) {
