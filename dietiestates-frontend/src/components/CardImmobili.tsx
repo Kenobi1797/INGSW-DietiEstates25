@@ -1,10 +1,10 @@
 import React from 'react';
-import { School, Trees, TrainFront } from 'lucide-react';
+import { School, Trees, TrainFront, MapPin } from 'lucide-react';
 import { ImmobileS } from '@/Models/ImmobileS';
 
 interface Props {
   immobile: ImmobileS;
-  footer?: React.ReactNode; 
+  footer?: React.ReactNode;
   onClick?: () => void;
 }
 
@@ -17,12 +17,12 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
     <div
       style={{
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         backgroundColor: '#ffffff',
         border: '1px solid #e5e7eb',
         borderRadius: '12px',
         overflow: 'hidden',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+        boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
         cursor: onClick ? 'pointer' : 'default',
       }}
       onClick={onClick}
@@ -32,58 +32,54 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
       <img
         src={imgSrc}
         alt={immobile.titolo}
-        style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block', flexShrink: 0 }}
+        style={{ width: '160px', flexShrink: 0, objectFit: 'cover', alignSelf: 'stretch', display: 'block' }}
       />
 
       {/* Info */}
-      <div style={{ padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px', backgroundColor: '#ffffff' }}>
+      <div style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '10px' }}>
+        <div>
+          {/* Titolo + prezzo */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
+            <div>
+              <p style={{ fontWeight: 700, fontSize: '1rem', color: '#111827', margin: 0 }}>{immobile.titolo}</p>
+              <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                <MapPin size={12} />{immobile.indirizzo}
+              </p>
+            </div>
+            <span style={{ fontWeight: 800, fontSize: '1.1rem', color: '#2563eb', whiteSpace: 'nowrap' }}>
+              € {immobile.prezzo.toLocaleString('it-IT')}
+            </span>
+          </div>
 
-        {/* Prezzo e titolo */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#2563eb', lineHeight: 1.2 }}>
-            € {immobile.prezzo.toLocaleString('it-IT')}
-          </span>
-          <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1f2937', margin: 0 }}>
-            {immobile.titolo}
-          </h3>
+          {/* Statistiche */}
+          <div style={{ display: 'flex', gap: '12px', marginTop: '6px', fontSize: '0.78rem', color: '#4b5563' }}>
+            <span>{immobile.dimensioni} m²</span>
+            <span>{immobile.numeroStanze} locali</span>
+            <span>Piano {immobile.piano === 0 ? 'T' : immobile.piano}</span>
+            <span>{immobile.numeroBagni} {immobile.numeroBagni === 1 ? 'bagno' : 'bagni'}</span>
+          </div>
+
+          {/* Indicatori Geoapify */}
+          {(immobile.scuoleVicine || immobile.parchiVicini || immobile.trasportiPubbliciVicini) && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
+              {immobile.scuoleVicine && (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '0.7rem', color: '#059669', backgroundColor: '#ecfdf5', padding: '2px 6px', borderRadius: '4px', border: '1px solid #a7f3d0' }}>
+                  <School size={12} />Vicino a scuole
+                </span>
+              )}
+              {immobile.parchiVicini && (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '0.7rem', color: '#059669', backgroundColor: '#ecfdf5', padding: '2px 6px', borderRadius: '4px', border: '1px solid #a7f3d0' }}>
+                  <Trees size={12} />Vicino a parchi
+                </span>
+              )}
+              {immobile.trasportiPubbliciVicini && (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '0.7rem', color: '#059669', backgroundColor: '#ecfdf5', padding: '2px 6px', borderRadius: '4px', border: '1px solid #a7f3d0' }}>
+                  <TrainFront size={12} />Vicino a trasporto pubblico
+                </span>
+              )}
+            </div>
+          )}
         </div>
-
-        {/* Statistiche */}
-        <div style={{ display: 'flex', justifyContent: 'space-around', padding: '8px 0', borderTop: '1px solid #f3f4f6', borderBottom: '1px solid #f3f4f6' }}>
-          <div style={{ textAlign: 'center' }}>
-            <span style={{ display: 'block', fontSize: '0.65rem', textTransform: 'uppercase', color: '#9ca3af' }}>Mq</span>
-            <span style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', color: '#111827' }}>{immobile.dimensioni}</span>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <span style={{ display: 'block', fontSize: '0.65rem', textTransform: 'uppercase', color: '#9ca3af' }}>Locali</span>
-            <span style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', color: '#111827' }}>{immobile.numeroStanze}</span>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <span style={{ display: 'block', fontSize: '0.65rem', textTransform: 'uppercase', color: '#9ca3af' }}>Piano</span>
-            <span style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', color: '#111827' }}>{immobile.piano === 0 ? 'T' : immobile.piano}</span>
-          </div>
-        </div>
-
-        {/* Indicatori Geoapify */}
-        {(immobile.scuoleVicine || immobile.parchiVicini || immobile.trasportiPubbliciVicini) && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-            {immobile.scuoleVicine && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '0.7rem', color: '#059669', backgroundColor: '#ecfdf5', padding: '2px 6px', borderRadius: '4px', border: '1px solid #a7f3d0' }}>
-                <School size={12} />Vicino a scuole
-              </span>
-            )}
-            {immobile.parchiVicini && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '0.7rem', color: '#059669', backgroundColor: '#ecfdf5', padding: '2px 6px', borderRadius: '4px', border: '1px solid #a7f3d0' }}>
-                <Trees size={12} />Vicino a parchi
-              </span>
-            )}
-            {immobile.trasportiPubbliciVicini && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '0.7rem', color: '#059669', backgroundColor: '#ecfdf5', padding: '2px 6px', borderRadius: '4px', border: '1px solid #a7f3d0' }}>
-                <TrainFront size={12} />Vicino a trasporto pubblico
-              </span>
-            )}
-          </div>
-        )}
 
         {footer && (
           <div onClick={(e) => e.stopPropagation()}>
