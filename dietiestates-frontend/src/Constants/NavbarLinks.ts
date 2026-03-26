@@ -17,7 +17,7 @@ export const navbarLinks: MenuLink[] = [
   {
     label: "Ricerca Immobile",
     path: "/search",
-    roles: ["Cliente"],
+    roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
   },
   {
     label: "Dashboard",

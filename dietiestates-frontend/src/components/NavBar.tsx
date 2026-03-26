@@ -59,8 +59,8 @@ export default function Navbar({ className = "", compact = false }: NavbarProps)
         </>
       ) : (
         <div className="flex items-center gap-4">
-          <Link href="/immobili" className="text-red-600 hover:underline font-medium">Immobili</Link>
-          <Link href="/login">Accedi</Link>
+          <Link href="/search" className="text-gray-700 hover:text-red-600 font-medium text-sm">Ricerca Immobili</Link>
+          <Link href="/login" className="px-3 py-1.5 rounded-lg text-sm font-medium text-red-600 border border-red-600 hover:bg-red-50">Accedi</Link>
         </div>
       )}
     </nav>
