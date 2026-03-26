@@ -4,8 +4,8 @@ dotenv.config();
 
 const SECRET = process.env.JWT_SECRET || 'supersecret';
 
-export function generateToken(payload: object, expiresIn: string = '1h'): string {
-  const options: SignOptions = { expiresIn: 3600 }; 
+export function generateToken(payload: object, expiresIn: string = process.env.JWT_EXPIRES_IN || '7d'): string {
+  const options: SignOptions = { expiresIn: expiresIn as SignOptions['expiresIn'] };
   return jwt.sign(payload, SECRET, options);
 }
 

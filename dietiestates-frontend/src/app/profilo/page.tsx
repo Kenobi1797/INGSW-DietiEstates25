@@ -101,8 +101,8 @@ export default function ProfiloPage() {
           </div>
         </div>
 
-        {/* Card cambio password */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        {/* Card cambio password — nascosta per utenti OAuth */}
+        {!authuser.isOAuth && <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Cambia password</h2>
 
           {success && (
@@ -159,7 +159,7 @@ export default function ProfiloPage() {
               {loading ? 'Aggiornamento...' : 'Aggiorna password'}
             </button>
           </form>
-        </div>
+        </div>}
 
       </div>
     </div>

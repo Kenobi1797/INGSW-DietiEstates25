@@ -107,6 +107,10 @@ export async function me(req: AuthRequest, res: Response) {
       responseUser.idAgenzia = idAgenzia;
     }
 
+    if (req.user.isOAuth) {
+      responseUser.isOAuth = true;
+    }
+
     res.json(responseUser);
   } catch (err) {
     console.error(err);

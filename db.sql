@@ -9,7 +9,7 @@ CREATE TABLE Utente (
     Email VARCHAR(100) UNIQUE NOT NULL,
     PasswordHash TEXT, 
     Ruolo VARCHAR(30) NOT NULL CHECK (Ruolo IN ('AmministratoreAgenzia', 'Supporto', 'Agente', 'Cliente')),
-    DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    DataCreazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE OAuthAccount (
@@ -30,6 +30,11 @@ CREATE TABLE Agenzia (
     IdAmministratore INT NOT NULL REFERENCES Utente(IdUtente) ON DELETE CASCADE,
     Attiva BOOLEAN DEFAULT TRUE
 );
+
+-- Collegamento Utente → Agenzia (aggiunto dopo Agenzia per evitare dipendenza circolare)
+-- Agenti e Supporto appartengono a un'agenzia; Cliente e AmministratoreAgenzia hanno NULL
+ALTER TABLE Utente
+    ADD COLUMN IdAgenzia INT REFERENCES Agenzia(IdAgenzia) ON DELETE SET NULL;
 
 CREATE TABLE Immobile (
     IdImmobile SERIAL PRIMARY KEY,

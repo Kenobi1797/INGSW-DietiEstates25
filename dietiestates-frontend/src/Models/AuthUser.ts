@@ -6,4 +6,5 @@ export interface AuthUser {
   nome: string;
   ruolo: UserRole;
   idAgenzia?: number;
+  isOAuth?: boolean;
 }

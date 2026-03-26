@@ -20,16 +20,20 @@ passport.use(new GoogleStrategy({
         user = await UtenteDAO.getUtenteById(oauthAccount.idUtente);
         if (!user) throw new Error('Utente collegato non trovato');
       } else {
-        // Se non esiste, creo un utente nuovo
         const email = profile.emails?.[0].value;
         if (!email) throw new Error('Email non disponibile dal profilo Google');
 
-        user = await UtenteDAO.createCliente({
-          nome: profile.name?.givenName || 'Sconosciuto',
-          cognome: profile.name?.familyName || '',
-          email,
-          password: '' // password vuota perché OAuth
-        });
+        // Se esiste già un utente con questa email (registrato con password), lo colleghiamo
+        let existingUser = await UtenteDAO.getUtenteByEmail(email);
+        if (!existingUser) {
+          existingUser = await UtenteDAO.createCliente({
+            nome: profile.name?.givenName || 'Sconosciuto',
+            cognome: profile.name?.familyName || '',
+            email,
+            password: '' // password vuota perché OAuth
+          });
+        }
+        user = existingUser;
 
         // Creo l'associazione OAuth
         await OAuthDAO.createOAuth({
@@ -43,7 +47,7 @@ passport.use(new GoogleStrategy({
       }
 
       // Genero JWT
-      const token = generateToken({ id: user.idUtente!, ruolo: user.ruolo });
+      const token = generateToken({ id: user.idUtente!, ruolo: user.ruolo, isOAuth: true });
       return done(null, { user, token });
     } catch (err) {
       return done(err as Error, undefined);
