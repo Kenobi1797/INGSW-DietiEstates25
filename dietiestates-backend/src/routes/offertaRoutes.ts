@@ -8,7 +8,6 @@ import {
   getStoricoOfferte,
   getControffertePerCliente,
   updateOfferta,
-  ritiraOfferta,
   rispondiControproposta
 } from '../controllers/offertaController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
@@ -35,9 +34,6 @@ router.get('/agente', authMiddleware, roleMiddleware('Agente', 'AmministratoreAg
 
 // Controfferte ricevute dal cliente
 router.get('/controfferte', authMiddleware, roleMiddleware('Cliente'), getControffertePerCliente);
-
-// Ritiro offerta (solo il cliente proprietario)
-router.patch('/:idOfferta/ritira', authMiddleware, roleMiddleware('Cliente'), ritiraOfferta);
 
 // Risposta del cliente a una controfferta
 router.patch('/:idOfferta/rispondi', authMiddleware, roleMiddleware('Cliente'), rispondiControproposta);
