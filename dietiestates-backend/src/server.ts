@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import path from 'path';
 import initDb from './config/initDb';
 import pool from './config/db';
 import authRoutes from './routes/auth';
@@ -16,6 +17,9 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware per parse JSON
 app.use(express.json());
+
+// File statici – cartella uploads per le foto degli immobili
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // CORS per il frontend
 app.use(

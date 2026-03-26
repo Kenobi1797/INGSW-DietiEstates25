@@ -7,13 +7,14 @@ import RicercaIndirizzo from '@/components/SearchInd';
 import { createImmobile } from '@/Services/immobileService';
 import { useUser } from '@/Context/Context';
 import { useRouter } from 'next/navigation';
+import PrezzoInput from '@/components/PrezzoInput';
 
 export default function PaginaCaricamentoImmobile() {
   const { authuser } = useUser();
   const router = useRouter();
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [fotoUrlsText, setFotoUrlsText] = useState('');
+  const [fotoFiles, setFotoFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -69,9 +70,20 @@ export default function PaginaCaricamentoImmobile() {
     setLoading(true);
 
     try {
-      const fotoUrls = fotoUrlsText.trim()
-        ? fotoUrlsText.split('\n').map((u) => u.trim()).filter(Boolean)
-        : [];
+      let fotoUrls: string[] = [];
+      if (fotoFiles.length > 0) {
+        const token = localStorage.getItem('token');
+        const fd = new FormData();
+        fotoFiles.forEach(f => fd.append('foto', f));
+        const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/upload-foto`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token ?? ''}` },
+          body: fd,
+        });
+        if (!uploadRes.ok) throw new Error('Errore nel caricamento delle foto');
+        const uploadData = await uploadRes.json();
+        fotoUrls = uploadData.urls ?? [];
+      }
 
       await createImmobile(
         {
@@ -131,13 +143,10 @@ export default function PaginaCaricamentoImmobile() {
               />
 
               <div className="grid-2">
-                <input
-                  type="number"
-                  name="prezzo"
+                <PrezzoInput
+                  value={formData.prezzo}
+                  onChange={(val) => setFormData(prev => ({ ...prev, prezzo: val }))}
                   placeholder="Prezzo (€)"
-                  min="0"
-                  value={formData.prezzo || ''}
-                  onChange={handleChange}
                   required
                 />
                 <select
@@ -266,17 +275,20 @@ export default function PaginaCaricamentoImmobile() {
                 </div>
               </div>
 
-              {/* Foto dell&apos;immobile: inserisci URL per riga */}
+              {/* Foto dell&apos;immobile: caricamento file */}
               <div className="caratteristiche-group">
                 <h3 className="group-title">📸 Foto dell&apos;immobile</h3>
-                <textarea
-                  rows={4}
-                  placeholder="Inserisci un URL immagine per riga (es. https://images.unsplash.com/...)"
-                  value={fotoUrlsText}
-                  onChange={(e) => setFotoUrlsText(e.target.value)}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                <input
+                  type="file"
+                  multiple
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={(e) => setFotoFiles(Array.from(e.target.files ?? []))}
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white"
                 />
-                <small className="text-gray-400">Le immagini devono essere URL pubblici accessibili (JPEG, PNG, WebP). Il sistema rileva automaticamente i servizi nelle vicinanze tramite Geoapify.</small>
+                {fotoFiles.length > 0 && (
+                  <p className="text-sm text-green-600 mt-1">{fotoFiles.length} foto selezionata/e</p>
+                )}
+                <small className="text-gray-400">Formati accettati: JPEG, PNG, WebP. Max 5 MB per foto. Il sistema rileva automaticamente i servizi nelle vicinanze tramite Geoapify.</small>
               </div>
             </div>
           )}

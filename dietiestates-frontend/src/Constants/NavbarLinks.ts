@@ -34,6 +34,11 @@ export const navbarLinks: MenuLink[] = [
     path: "/storico-offerte",
     roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
   },
+  {
+    label: "Profilo",
+    path: "/profilo",
+    roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
+  },
 ];
 
 

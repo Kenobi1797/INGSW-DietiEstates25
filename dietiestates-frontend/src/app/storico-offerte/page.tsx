@@ -41,12 +41,11 @@ export default function StoricoOffertePage() {
       const token = localStorage.getItem('token');
       if (!token) { setInfoMessage('Sessione non valida. Effettua di nuovo il login.'); return; }
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/utente`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/storico`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
 
       if (response.status === 401) { setInfoMessage('Sessione scaduta. Effettua di nuovo il login.'); return; }
-      if (response.status === 403) { setInfoMessage('Lo storico offerte è disponibile solo per gli utenti Cliente.'); return; }
       if (response.status === 404) { setOfferte([]); setInfoMessage('Nessuna offerta presente nello storico.'); return; }
       if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}));
@@ -92,15 +91,6 @@ export default function StoricoOffertePage() {
     </div>
   );
 
-  if (authuser.ruolo !== 'Cliente') return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="box p-8 text-center max-w-sm">
-        <h1 className="text-xl font-bold mb-2">Storico Offerte</h1>
-        <p className="text-gray-600">Questa sezione è disponibile solo per account Cliente.</p>
-      </div>
-    </div>
-  );
-
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
       <p className="text-gray-500 animate-pulse">Caricamento storico offerte...</p>
@@ -127,7 +117,7 @@ export default function StoricoOffertePage() {
               {offerte.length > 0 ? `${offerte.length} offerta/e trovata/e` : 'Nessuna offerta'}
             </p>
           </div>
-          {pendingControfferte.length > 0 && (
+          {pendingControfferte.length > 0 && authuser.ruolo === 'Cliente' && (
             <Link href="/controfferte"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
               📋 {pendingControfferte.length} controfferta/e da valutare →
@@ -217,7 +207,7 @@ export default function StoricoOffertePage() {
                       </Link>
 
                       {/* Ritira solo offerte proprie (non controfferte) in InAttesa */}
-                      {offerta.stato === 'InAttesa' && !isControfferta && (
+                      {offerta.stato === 'InAttesa' && !isControfferta && authuser.ruolo === 'Cliente' && (
                         <button
                           onClick={() => handleRitira(offerta.idOfferta)}
                           disabled={withdrawingId === offerta.idOfferta}
@@ -227,7 +217,7 @@ export default function StoricoOffertePage() {
                       )}
 
                       {/* Link per rispondere alla controfferta pendente */}
-                      {isControfferta && offerta.stato === 'InAttesa' && (
+                      {isControfferta && offerta.stato === 'InAttesa' && authuser.ruolo === 'Cliente' && (
                         <Link href="/controfferte"
                           className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-full font-semibold transition-colors">
                           Rispondi →

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BaseButton from '@/components/BaseButton';
 import { useUser } from '@/Context/Context';
+import PrezzoInput from '@/components/PrezzoInput';
 
 interface ImmobileItem {
   id: number;
@@ -16,7 +17,7 @@ export default function InserisciOffertaPage() {
   const router = useRouter();
   const [immobili, setImmobili] = useState<ImmobileItem[]>([]);
   const [idImmobile, setIdImmobile] = useState('');
-  const [importo, setImporto] = useState('');
+  const [importo, setImporto] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingImmobili, setLoadingImmobili] = useState(false);
   const [error, setError] = useState('');
@@ -77,7 +78,7 @@ export default function InserisciOffertaPage() {
         },
         body: JSON.stringify({
           idImmobile: Number(idImmobile),
-          prezzoOfferto: Number(importo),
+          prezzoOfferto: importo,
         }),
       });
 
@@ -128,19 +129,17 @@ export default function InserisciOffertaPage() {
               )}
             </select>
           )}
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Importo (€)"
+          <PrezzoInput
             value={importo}
-            onChange={(e) => setImporto(e.target.value)}
+            onChange={(val) => setImporto(val)}
+            placeholder="Es. 150.000"
             required
           />
           <BaseButton
             type="submit"
             className="btn-primary"
             loading={loading}
-            disabled={loading || loadingImmobili || !idImmobile || immobili.length === 0}
+            disabled={loading || loadingImmobili || !idImmobile || immobili.length === 0 || importo <= 0}
           >
             Inserisci Offerta
           </BaseButton>

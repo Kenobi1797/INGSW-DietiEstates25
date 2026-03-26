@@ -62,6 +62,16 @@ export const getOffertePerAgente = async (idAgente: number): Promise<OffertaDTO[
   return result.rows.map(mapRowToOfferta);
 };
 
+export const getAllOfferte = async (): Promise<OffertaDTO[]> => {
+  const result = await pool.query(
+    `SELECT o.*, i.titolo, i.indirizzo
+     FROM offerta o
+     JOIN immobile i ON o.idimmobile = i.idimmobile
+     ORDER BY o.dataofferta DESC`
+  );
+  return result.rows.map(mapRowToOfferta);
+};
+
 export const getControffertePerCliente = async (idUtente: number): Promise<OffertaDTO[]> => {
   const result = await pool.query(
     `SELECT o.*, i.titolo, i.indirizzo

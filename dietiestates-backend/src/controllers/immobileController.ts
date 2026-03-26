@@ -2,6 +2,17 @@ import { AuthRequest } from '../middleware/authMiddleware';
 import { Response, Request } from 'express';
 import * as ImmobileDAO from '../dao/ImmobileDAO';
 
+// Handler upload foto
+export async function uploadFoto(req: AuthRequest, res: Response) {
+  const files = req.files as Express.Multer.File[];
+  if (!files || files.length === 0) {
+    return res.status(400).json({ error: 'Nessun file caricato' });
+  }
+  const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 5000}`;
+  const urls = files.map((f) => `${baseUrl}/uploads/${f.filename}`);
+  return res.json({ urls });
+}
+
 // Creazione nuovo immobile
 export async function createImmobile(req: AuthRequest, res: Response) {
   const {

@@ -7,18 +7,18 @@ import { z } from 'zod';
 export async function createAgenzia(req: AuthRequest, res: Response) {
   const parsed = z.object({
     nome: z.string().min(1),
-    idAmministratore: z.number().int()
   }).safeParse(req.body);
 
   if (!parsed.success) return res.status(400).json({ error: parsed.error });
 
-  const { nome, idAmministratore } = parsed.data;
+  // L'amministratore autenticato diventa automaticamente titolare dell'agenzia
+  const idAmministratore = req.user.id;
 
   try {
     const adminExists = await AgenzieDAO.checkAdminExists(idAmministratore);
     if (!adminExists) return res.status(400).json({ error: 'Amministratore non trovato' });
 
-    const agenzia = await AgenzieDAO.createAgenziaDB({ nome, idAmministratore });
+    const agenzia = await AgenzieDAO.createAgenziaDB({ nome: parsed.data.nome, idAmministratore });
     res.status(201).json(agenzia);
   } catch (err) {
     console.error(err);

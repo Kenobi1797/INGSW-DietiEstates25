@@ -94,6 +94,36 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
         icon: "💰",
         className: "bg-orange-500 hover:bg-orange-700",
       },
+      {
+        href: "/profilo",
+        label: "Profilo",
+        icon: "👤",
+        className: "bg-gray-500 hover:bg-gray-700",
+      },
+    ];
+  }
+
+  if (ruolo === "Supporto") {
+    return [
+      ...common,
+      {
+        href: "/crea-staff",
+        label: "Crea Agente",
+        icon: "👥",
+        className: "bg-red-500 hover:bg-red-700",
+      },
+      {
+        href: "/storico-offerte",
+        label: "Storico Offerte",
+        icon: "📋",
+        className: "bg-green-500 hover:bg-green-700",
+      },
+      {
+        href: "/profilo",
+        label: "Profilo",
+        icon: "👤",
+        className: "bg-gray-500 hover:bg-gray-700",
+      },
     ];
   }
 
@@ -124,10 +154,25 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
         icon: "👥",
         className: "bg-red-500 hover:bg-red-700",
       },
+      {
+        href: "/profilo",
+        label: "Profilo",
+        icon: "👤",
+        className: "bg-gray-500 hover:bg-gray-700",
+      },
     ];
   }
 
-  return common;
+  // Cliente
+  return [
+    ...common,
+    {
+      href: "/profilo",
+      label: "Profilo",
+      icon: "👤",
+      className: "bg-gray-500 hover:bg-gray-700",
+    },
+  ];
 }
 
 export default function DashboardAgent() {

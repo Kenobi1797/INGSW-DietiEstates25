@@ -81,6 +81,31 @@ export async function getOffertePerUtente(req: AuthRequest, res: Response) {
   }
 }
 
+// Storico offerte unificato — dispatch per ruolo
+export async function getStoricoOfferte(req: AuthRequest, res: Response) {
+  try {
+    let offerte;
+    switch (req.user.ruolo) {
+      case 'Cliente':
+        offerte = await OffertaDAO.getOffertePerUtente(req.user.id);
+        break;
+      case 'Agente':
+      case 'AmministratoreAgenzia':
+        offerte = await OffertaDAO.getOffertePerAgente(req.user.id);
+        break;
+      case 'Supporto':
+        offerte = await OffertaDAO.getAllOfferte();
+        break;
+      default:
+        return res.status(403).json({ error: 'Accesso non autorizzato' });
+    }
+    res.json(offerte);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore nel recupero dello storico offerte' });
+  }
+}
+
 // Ritiro offerta (solo il cliente proprietario)
 export async function ritiraOfferta(req: AuthRequest, res: Response) {
   try {

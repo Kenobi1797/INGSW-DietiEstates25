@@ -10,6 +10,8 @@ export default function NavbarWrapper() {
   if (noNavbarPaths.includes(pathname)) return null
 
   const className = trasparentPaths.includes(pathname) ? "trasparente" : "default"
+  // Sulla home mostra solo il bottone dropdown "Azioni"; altrove mostra i link in riga
+  const compact = pathname === '/'
 
-  return <Navbar className={className} />
+  return <Navbar className={className} compact={compact} />
 }

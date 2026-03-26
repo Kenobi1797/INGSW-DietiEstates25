@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@/Context/Context';
 import Link from 'next/link';
+import PrezzoInput from '@/components/PrezzoInput';
 
 type StatoOfferta = 'InAttesa' | 'Accettata' | 'Rifiutata' | 'Controproposta' | 'Ritirata';
 
@@ -31,7 +32,7 @@ export default function ValutaOffertePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   // Per ogni offerta aperta al form controproposta, tiene l'importo digitato
-  const [contropropostaForms, setContropropostaForms] = useState<Record<number, string>>({});
+  const [contropropostaForms, setContropropostaForms] = useState<Record<number, number>>({});
   const [actionLoadingId, setActionLoadingId] = useState<number | null>(null);
 
   useEffect(() => { fetchOfferte(); }, []);
@@ -60,7 +61,7 @@ export default function ValutaOffertePage() {
       if (next[idOfferta] !== undefined) {
         delete next[idOfferta];
       } else {
-        next[idOfferta] = '';
+        next[idOfferta] = 0;
       }
       return next;
     });
@@ -73,9 +74,8 @@ export default function ValutaOffertePage() {
     const body: { nuovoStato: string; prezzoControproposta?: number } = { nuovoStato: azione };
 
     if (azione === 'Controproposta') {
-      const importoStr = contropropostaForms[idOfferta];
-      const importo = Number(importoStr);
-      if (!Number.isFinite(importo) || importo <= 0) {
+      const importo = contropropostaForms[idOfferta];
+      if (!importo || importo <= 0) {
         setError('Inserisci un importo valido per la controproposta');
         return;
       }
@@ -211,15 +211,12 @@ export default function ValutaOffertePage() {
                     <div className="mt-3 pt-3 border-t border-yellow-200">
                       <p className="text-sm font-medium text-gray-700 mb-2">Importo controproposta:</p>
                       <div className="flex gap-2 flex-wrap">
-                        <input
-                          type="number"
-                          step="0.01"
-                          min="1"
-                          placeholder="Es. 180000"
-                          value={contropropostaForms[offerta.idOfferta]}
-                          onChange={(e) => setContropropostaForms(prev => ({
-                            ...prev, [offerta.idOfferta]: e.target.value
+                        <PrezzoInput
+                          value={contropropostaForms[offerta.idOfferta] ?? 0}
+                          onChange={(val) => setContropropostaForms(prev => ({
+                            ...prev, [offerta.idOfferta]: val
                           }))}
+                          placeholder="Es. 180.000"
                           className="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:border-blue-400 outline-none"
                         />
                         <button

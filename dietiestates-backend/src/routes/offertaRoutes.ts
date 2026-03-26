@@ -5,6 +5,7 @@ import {
   getOffertePerImmobile,
   getOffertePerUtente,
   getOffertePerAgente,
+  getStoricoOfferte,
   getControffertePerCliente,
   updateOfferta,
   ritiraOfferta,
@@ -25,6 +26,9 @@ router.get('/immobile/:idImmobile', authMiddleware, roleMiddleware('Agente', 'Am
 
 // Storico offerte utente (cliente)
 router.get('/utente', authMiddleware, roleMiddleware('Cliente'), getOffertePerUtente);
+
+// Storico offerte unificato — tutti i ruoli autenticati
+router.get('/storico', authMiddleware, getStoricoOfferte);
 
 // Offerte per agente (tutte le offerte sugli immobili dell'agente)
 router.get('/agente', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), getOffertePerAgente);

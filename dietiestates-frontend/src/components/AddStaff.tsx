@@ -2,99 +2,142 @@
 import { useState } from "react";
 import { useUser } from "@/Context/Context";
 import { createAgente, createSupporto } from "@/Services/CreaStaff";
+
 interface Props {
   targetRole: "Agente" | "Supporto";
   onCancel: () => void;
 }
 
 export default function AddStaff({ targetRole, onCancel }: Props) {
-  const [formData, setFormData] = useState({
-    nome: "",
-    cognome: "",
-    email: "",
-    password: ""
-  });
+  const [formData, setFormData] = useState({ nome: "", cognome: "", email: "", password: "" });
   const { authuser } = useUser();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
+    setLoading(true);
     try {
       if (targetRole === "Agente") {
-        if (!authuser?.idAgenzia) return setError("ID agenzia mancante");
+        if (!authuser?.idAgenzia) return setError("ID agenzia mancante. Assicurati di avere un'agenzia associata al tuo account.");
         await createAgente(formData, authuser.idAgenzia);
       } else {
         await createSupporto(formData);
       }
       setSuccess(true);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Errore sconosciuto");
+    } finally {
+      setLoading(false);
     }
   };
 
+  const roleLabel = targetRole === "Agente" ? "Agente Immobiliare" : "Account Supporto";
+
+  if (success) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-sm">
+        <div className="text-4xl mb-3">✅</div>
+        <h2 className="text-lg font-bold text-gray-900 mb-1">{roleLabel} creato!</h2>
+        <p className="text-sm text-gray-500 mb-6">
+          L&apos;account è adesso attivo e pronto all&apos;uso.
+        </p>
+        <div className="flex gap-3 justify-center">
+          <button
+            onClick={() => { setSuccess(false); setFormData({ nome: "", cognome: "", email: "", password: "" }); }}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition-colors"
+          >
+            Crea un altro
+          </button>
+          <button
+            onClick={onCancel}
+            className="px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-sm font-semibold transition-colors"
+          >
+            Torna indietro
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <h2 style={{ textTransform: 'uppercase', marginBottom: '8px' }}>
-        Aggiungi {targetRole}
-      </h2>
-      <p style={{ color: '#666', marginBottom: '20px' }}>
-        Inserisci i dati per creare il profilo di un nuovo collaboratore.
-      </p>
-       
-       {error && <p style={{ color: 'red' }}>{error}</p>}
-       {success && <p style={{ color: 'green' }}>{targetRole} creato con successo!</p>}
-      <form className="form" onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          placeholder="Nome"
-          required
-          value={formData.nome}
-          onChange={(e) => setFormData({...formData, nome: e.target.value})}
-        />
-
-        <input 
-          type="text" 
-          placeholder="Cognome"
-          required
-          value={formData.cognome}
-          onChange={(e) => setFormData({...formData, cognome: e.target.value})}
-        />
-        
-        <input 
-          type="email" 
-          placeholder="Email aziendale"
-          required
-          value={formData.email}
-          onChange={(e) => setFormData({...formData, email: e.target.value})}
-        />
-        <input 
-          type="password" 
-          placeholder="Password"
-          required
-          value={formData.password}
-          onChange={(e) => setFormData({...formData, password: e.target.value})}
-        />
-
-        <button type="submit" className="btn-primary">
-          Registra {targetRole}
-        </button>
-        
-        <button 
-          type="button" 
-          onClick={onCancel} 
-          style={{ 
-            backgroundColor: 'transparent', 
-            border: 'none', 
-            color: '#ef4444', 
-            cursor: 'pointer',
-            fontWeight: '600',
-            textDecoration: 'underline'
-          }}
+    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">Nuovo {roleLabel}</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Inserisci i dati del nuovo collaboratore.</p>
+        </div>
+        <button
+          onClick={onCancel}
+          className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
         >
-          Annulla e chiudi
+          ✕ Annulla
+        </button>
+      </div>
+
+      {error && (
+        <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+          {error}
+        </div>
+      )}
+
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+            <input
+              type="text"
+              required
+              value={formData.nome}
+              onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              placeholder="Mario"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Cognome</label>
+            <input
+              type="text"
+              required
+              value={formData.cognome}
+              onChange={(e) => setFormData({ ...formData, cognome: e.target.value })}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              placeholder="Rossi"
+            />
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email aziendale</label>
+          <input
+            type="email"
+            required
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            placeholder="mario.rossi@agenzia.com"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Password temporanea</label>
+          <input
+            type="password"
+            required
+            minLength={6}
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            placeholder="Almeno 6 caratteri"
+          />
+          <p className="text-xs text-gray-400 mt-1">Il collaboratore potrà cambiarla dal proprio profilo.</p>
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-red-600 hover:bg-red-700 disabled:bg-red-300 text-white font-semibold py-2.5 rounded-lg text-sm transition-colors"
+        >
+          {loading ? "Creazione in corso..." : `Crea ${roleLabel}`}
         </button>
       </form>
     </div>
