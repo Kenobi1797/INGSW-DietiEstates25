@@ -60,9 +60,9 @@ export default function PaginaCaricamentoImmobile() {
       const numValue = Number(value);
       // Per il piano permettiamo valori negativi (piani interrati); per gli altri campi solo >= 0
       if (name === 'piano') {
-        finalValue = isNaN(numValue) ? 0 : numValue;
+        finalValue = Number.isNaN(numValue) ? 0 : numValue;
       } else {
-        finalValue = numValue >= 0 ? numValue : 0;
+        finalValue = Math.max(numValue, 0);
       }
     }
 
@@ -135,54 +135,83 @@ export default function PaginaCaricamentoImmobile() {
         <form className="form" onSubmit={handleSubmit}>
           {currentStep === 1 && (
             <>
-              <input
-                type="text"
-                name="titolo"
-                placeholder="Titolo annuncio"
-                value={formData.titolo}
-                onChange={handleChange}
-                required
-              />
-
-              <textarea
-                name="descrizione"
-                placeholder="Descrizione dell'immobile"
-                value={formData.descrizione}
-                onChange={handleChange}
-                rows={4}
-                required
-              />
-
-              <div className="grid-2">
-                <PrezzoInput
-                  value={formData.prezzo}
-                  onChange={(val) => setFormData(prev => ({ ...prev, prezzo: val }))}
-                  placeholder="Prezzo (€)"
+              <div className="form-field">
+                <label className="field-label" htmlFor="titolo">Titolo annuncio</label>
+                <input
+                  id="titolo"
+                  type="text"
+                  name="titolo"
+                  placeholder="Es. Trilocale luminoso vicino al centro"
+                  value={formData.titolo}
+                  onChange={handleChange}
                   required
                 />
+              </div>
+
+              <div className="form-field">
+                <label className="field-label" htmlFor="descrizione">Descrizione</label>
+                <textarea
+                  id="descrizione"
+                  name="descrizione"
+                  placeholder="Descrivi punti di forza, stato dell'immobile e servizi nelle vicinanze"
+                  value={formData.descrizione}
+                  onChange={handleChange}
+                  rows={4}
+                  required
+                />
+              </div>
+
+              <div className="grid-2">
+                <div className="form-field">
+                  <label className="field-label" htmlFor="prezzo">Prezzo</label>
+                  <PrezzoInput
+                    value={formData.prezzo}
+                    onChange={(val) => setFormData(prev => ({ ...prev, prezzo: val }))}
+                    placeholder="Prezzo (€)"
+                    required
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="field-label" htmlFor="tipologia">Tipologia annuncio</label>
+                  <select
+                    id="tipologia"
+                    name="tipologia"
+                    value={formData.tipologia}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="Vendita">Vendita</option>
+                    <option value="Affitto">Affitto</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-field">
+                <label className="field-label" htmlFor="classeEnergetica">Classe energetica</label>
                 <select
-                  name="tipologia"
-                  value={formData.tipologia}
+                  id="classeEnergetica"
+                  name="classeEnergetica"
+                  value={formData.classeEnergetica}
                   onChange={handleChange}
                   required
                 >
-                  <option value="Vendita">Vendita</option>
-                  <option value="Affitto">Affitto</option>
+                  {['A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G'].map((classe) => (
+                    <option key={classe} value={classe}>
+                      {classe}
+                    </option>
+                  ))}
                 </select>
+                <p className="field-help">
+                  Indica la classe dell'APE: A+/A = consumi piu bassi, G = consumi piu alti.
+                </p>
+                <div className="energy-legend" aria-hidden="true">
+                  {['A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G'].map((classe) => (
+                    <span key={`legend-${classe}`} className={`energy-chip energy-${classe.replace('+', 'plus').toLowerCase()}`}>
+                      {classe}
+                    </span>
+                  ))}
+                </div>
               </div>
-
-              <select
-                name="classeEnergetica"
-                value={formData.classeEnergetica}
-                onChange={handleChange}
-                required
-              >
-                {['A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G'].map((classe) => (
-                  <option key={classe} value={classe}>
-                    {classe}
-                  </option>
-                ))}
-              </select>
             </>
           )}
 
@@ -192,30 +221,42 @@ export default function PaginaCaricamentoImmobile() {
               <div className="caratteristiche-group">
                 <h3 className="group-title"><Home size={16} className="inline mr-1" />Dimensioni e Stanze</h3>
                 <div className="grid-3">
-                  <input
-                    type="number"
-                    name="dimensioni"
-                    placeholder="Superficie (mq)"
-                    min="1"
-                    value={formData.dimensioni || ''}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type="number"
-                    name="numeroStanze"
-                    placeholder="N. stanze"
-                    min="1"
-                    value={formData.numeroStanze || ''}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type="number"
-                    name="numeroBagni"
-                    placeholder="N. bagni"
-                    min="1"
-                    value={formData.numeroBagni || ''}
-                    onChange={handleChange}
-                  />
+                  <div className="form-field compact">
+                    <label className="field-label" htmlFor="dimensioni">Superficie (mq)</label>
+                    <input
+                      id="dimensioni"
+                      type="number"
+                      name="dimensioni"
+                      placeholder="Es. 95"
+                      min="1"
+                      value={formData.dimensioni || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-field compact">
+                    <label className="field-label" htmlFor="numeroStanze">Numero stanze</label>
+                    <input
+                      id="numeroStanze"
+                      type="number"
+                      name="numeroStanze"
+                      placeholder="Es. 3"
+                      min="1"
+                      value={formData.numeroStanze || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-field compact">
+                    <label className="field-label" htmlFor="numeroBagni">Numero bagni</label>
+                    <input
+                      id="numeroBagni"
+                      type="number"
+                      name="numeroBagni"
+                      placeholder="Es. 2"
+                      min="1"
+                      value={formData.numeroBagni || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -223,20 +264,27 @@ export default function PaginaCaricamentoImmobile() {
               <div className="caratteristiche-group">
                 <h3 className="group-title"><Building2 size={16} className="inline mr-1" />Posizione</h3>
                 <div className="grid-2">
-                  <input
-                    type="number"
-                    name="piano"
-                    placeholder="Piano (0 = piano terra, negativo = interrato)"
-                    value={formData.piano ?? ''}
-                    onChange={handleChange}
-                  />
-                  <select name="riscaldamento" value={formData.riscaldamento || ''} onChange={handleChange}>
-                    <option value="">Tipo di riscaldamento</option>
-                    <option value="Autonomo">Autonomo</option>
-                    <option value="Centralizzato">Centralizzato</option>
-                    <option value="Pompa di calore">Pompa di calore</option>
-                    <option value="Altro">Altro</option>
-                  </select>
+                  <div className="form-field compact">
+                    <label className="field-label" htmlFor="piano">Piano</label>
+                    <input
+                      id="piano"
+                      type="number"
+                      name="piano"
+                      placeholder="0 = terra, -1 = interrato"
+                      value={formData.piano ?? ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-field compact">
+                    <label className="field-label" htmlFor="riscaldamento">Riscaldamento</label>
+                    <select id="riscaldamento" name="riscaldamento" value={formData.riscaldamento || ''} onChange={handleChange}>
+                      <option value="">Seleziona riscaldamento</option>
+                      <option value="Autonomo">Autonomo</option>
+                      <option value="Centralizzato">Centralizzato</option>
+                      <option value="Pompa di calore">Pompa di calore</option>
+                      <option value="Altro">Altro</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -306,13 +354,16 @@ export default function PaginaCaricamentoImmobile() {
 
           {currentStep === 3 && (
             <div className="map-block">
-              <p>Seleziona l&apos;indirizzo o utilizza la ricerca mappa</p>
+              <p>Seleziona l&apos;indirizzo preciso dell&apos;immobile (via, civico, citta)</p>
               <RicercaIndirizzo
                 soloIndirizziPrecisi={true}
                 onIndirizzoSelezionato={(lat, lon, indirizzo) => {
                   setFormData((prev) => ({ ...prev, latitudine: lat, longitudine: lon, indirizzo }));
                 }}
               />
+              <p className="field-help">
+                Coordinate selezionate: {formData.latitudine.toFixed(5)}, {formData.longitudine.toFixed(5)}
+              </p>
               <EstateMap lat={formData.latitudine} lon={formData.longitudine} />
             </div>
           )}

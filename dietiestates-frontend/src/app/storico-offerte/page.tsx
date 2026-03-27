@@ -83,6 +83,17 @@ export default function StoricoOffertePage() {
   );
 
   const pendingControfferte = offerte.filter(o => o.idOffertaOriginale && o.stato === 'InAttesa');
+  const groupedByImmobile = offerte.reduce<Record<number, Offerta[]>>((acc, offerta) => {
+    const key = offerta.idImmobile;
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(offerta);
+    return acc;
+  }, {});
+  const orderedImmobili = Object.entries(groupedByImmobile).sort(([, a], [, b]) => {
+    const dateA = new Date(a[0]?.dataOfferta ?? 0).getTime();
+    const dateB = new Date(b[0]?.dataOfferta ?? 0).getTime();
+    return dateB - dateA;
+  });
 
   return (
     <div className="min-h-screen bg-white p-4 md:p-8">
@@ -120,83 +131,92 @@ export default function StoricoOffertePage() {
             </Link>
           </div>
         ) : (
-          <div className="space-y-3">
-            {offerte.map((offerta) => {
-              const statoInfo = STATO_CONFIG[offerta.stato] ?? { label: offerta.stato, classes: 'bg-gray-50 border-gray-200 text-gray-700', dot: 'bg-gray-400' };
-              const isControfferta = !!offerta.idOffertaOriginale;
-
-              return (
-                <div key={offerta.idOfferta}
-                  className={`rounded-xl border-2 p-4 transition-shadow hover:shadow-sm ${
-                    isControfferta ? 'border-blue-200 bg-blue-50/40' : 'border-gray-200 bg-white'
-                  }`}>
-
-                  <div className="flex items-start justify-between flex-wrap gap-3">
-                    <div className="flex-1 min-w-0">
-                      {/* Badge tipo offerta */}
-                      <div className="flex items-center gap-2 flex-wrap mb-1.5">
-                        {isControfferta ? (
-                          <span className="text-xs bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full font-semibold border border-blue-200 inline-flex items-center gap-1">
-                            <Undo2 size={11} /> Controfferta ricevuta
-                          </span>
-                        ) : (
-                          <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-full font-semibold border border-gray-200 inline-flex items-center gap-1">
-                            <MessageSquare size={11} /> Offerta inviata
-                          </span>
-                        )}
-                        {offerta.offertaManuale && (
-                          <span className="text-xs bg-purple-100 text-purple-700 px-2.5 py-0.5 rounded-full font-semibold border border-purple-200">
-                            Manuale
-                          </span>
-                        )}
-                      </div>
-
-                      <p className="font-semibold text-gray-900 truncate">
-                        {offerta.titolo || `Immobile #${offerta.idImmobile}`}
-                      </p>
-                      {offerta.indirizzo && (
-                        <p className="text-sm text-gray-500 mt-0.5 truncate inline-flex items-center gap-1"><MapPin size={12} />{offerta.indirizzo}</p>
-                      )}
-                    </div>
-
-                    {/* Importo e data */}
-                    <div className="text-right shrink-0">
-                      <p className="text-xl font-bold text-red-600">
-                        € {offerta.prezzoOfferto?.toLocaleString('it-IT')}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        {new Date(offerta.dataOfferta).toLocaleDateString('it-IT', {
-                          day: '2-digit', month: 'short', year: 'numeric',
-                        })}
-                      </p>
-                    </div>
+          <div className="space-y-6">
+            {orderedImmobili.map(([idImmobile, offerteImmobile]) => (
+              <section key={idImmobile} className="rounded-2xl border border-gray-200 bg-white p-4 md:p-5">
+                <div className="flex items-start justify-between flex-wrap gap-2 mb-4">
+                  <div>
+                    <p className="font-semibold text-gray-900 truncate">
+                      {offerteImmobile[0]?.titolo || `Immobile #${idImmobile}`}
+                    </p>
+                    {offerteImmobile[0]?.indirizzo && (
+                      <p className="text-sm text-gray-500 mt-0.5 truncate inline-flex items-center gap-1"><MapPin size={12} />{offerteImmobile[0].indirizzo}</p>
+                    )}
                   </div>
-
-                  {/* Footer con stato e azioni */}
-                  <div className="flex items-center justify-between flex-wrap gap-2 mt-3 pt-3 border-t border-gray-100">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${statoInfo.classes}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${statoInfo.dot}`}></span>
-                      {statoInfo.label}
-                    </span>
-
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Link href={`/immobili/${offerta.idImmobile}`}
-                        className="text-xs text-red-600 hover:underline font-medium">
-                        Vedi immobile →
-                      </Link>
-
-                      {/* Link per rispondere alla controfferta pendente */}
-                      {isControfferta && offerta.stato === 'InAttesa' && authuser.ruolo === 'Cliente' && (
-                        <Link href="/controfferte"
-                          className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-full font-semibold transition-colors">
-                          Rispondi →
-                        </Link>
-                      )}
-                    </div>
-                  </div>
+                  <span className="text-xs bg-gray-100 text-gray-700 border border-gray-200 rounded-full px-2.5 py-1 font-semibold">
+                    {offerteImmobile.length} offerta/e
+                  </span>
                 </div>
-              );
-            })}
+
+                <div className="space-y-3">
+                  {offerteImmobile.map((offerta) => {
+                    const statoInfo = STATO_CONFIG[offerta.stato] ?? { label: offerta.stato, classes: 'bg-gray-50 border-gray-200 text-gray-700', dot: 'bg-gray-400' };
+                    const isControfferta = !!offerta.idOffertaOriginale;
+
+                    return (
+                      <div key={offerta.idOfferta}
+                        className={`rounded-xl border-2 p-4 transition-shadow hover:shadow-sm ${
+                          isControfferta ? 'border-blue-200 bg-blue-50/40' : 'border-gray-200 bg-white'
+                        }`}>
+
+                        <div className="flex items-start justify-between flex-wrap gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                              {isControfferta ? (
+                                <span className="text-xs bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full font-semibold border border-blue-200 inline-flex items-center gap-1">
+                                  <Undo2 size={11} /> Controfferta ricevuta
+                                </span>
+                              ) : (
+                                <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-full font-semibold border border-gray-200 inline-flex items-center gap-1">
+                                  <MessageSquare size={11} /> Offerta inviata
+                                </span>
+                              )}
+                              {offerta.offertaManuale && (
+                                <span className="text-xs bg-purple-100 text-purple-700 px-2.5 py-0.5 rounded-full font-semibold border border-purple-200">
+                                  Manuale
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="text-right shrink-0">
+                            <p className="text-xl font-bold text-red-600">
+                              € {offerta.prezzoOfferto?.toLocaleString('it-IT')}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-0.5">
+                              {new Date(offerta.dataOfferta).toLocaleDateString('it-IT', {
+                                day: '2-digit', month: 'short', year: 'numeric',
+                              })}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between flex-wrap gap-2 mt-3 pt-3 border-t border-gray-100">
+                          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${statoInfo.classes}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${statoInfo.dot}`}></span>
+                            {statoInfo.label}
+                          </span>
+
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <Link href={`/immobili/${offerta.idImmobile}`}
+                              className="text-xs text-red-600 hover:underline font-medium">
+                              Vedi immobile →
+                            </Link>
+
+                            {isControfferta && offerta.stato === 'InAttesa' && authuser.ruolo === 'Cliente' && (
+                              <Link href="/controfferte"
+                                className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-full font-semibold transition-colors">
+                                Rispondi →
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
           </div>
         )}
       </div>

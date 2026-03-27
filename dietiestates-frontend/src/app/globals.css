@@ -781,6 +781,10 @@ a {
   color: #0f172a;
 }
 
+.immobile-card p {
+  color: #334155;
+}
+
 .stepper {
   display: flex;
   gap: 0.75rem;
@@ -822,6 +826,96 @@ a {
 .form {
   display: grid;
   gap: 1rem;
+}
+
+.immobile-card .form input,
+.immobile-card .form textarea,
+.immobile-card .form select {
+  width: 100%;
+  background: #ffffff;
+  color: #0f172a;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.immobile-card .form input:focus,
+.immobile-card .form textarea:focus,
+.immobile-card .form select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+.immobile-card .form input::placeholder,
+.immobile-card .form textarea::placeholder {
+  color: #64748b;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.form-field.compact {
+  gap: 0.3rem;
+}
+
+.field-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.field-help {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.energy-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+}
+
+.energy-chip {
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid transparent;
+}
+
+.energy-aplus,
+.energy-a {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
+}
+
+.energy-b,
+.energy-c {
+  background: #fef9c3;
+  color: #854d0e;
+  border-color: #fde047;
+}
+
+.energy-d,
+.energy-e {
+  background: #ffedd5;
+  color: #9a3412;
+  border-color: #fdba74;
+}
+
+.energy-f,
+.energy-g {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
 }
 
 .grid-2 {
