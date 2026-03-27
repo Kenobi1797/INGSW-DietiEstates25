@@ -101,7 +101,7 @@ describe('Backend unit tests', () => {
         .mockResolvedValueOnce({ data: { features: [] } })
         .mockResolvedValueOnce({ data: { features: [{ properties: { name: 'Fermata Bus', distance: 300, categories: ['public_transport.bus_stop'] } }] } });
 
-      const places = await getNearbyPlaces(45.0, 9.0, 500);
+      const places = await getNearbyPlaces(45, 9, 500);
       expect(axios.get).toHaveBeenCalledTimes(3);
       expect(places).toHaveLength(2);
       expect(places.map(p => p.name)).toEqual(['Scuola ABC', 'Fermata Bus']);
@@ -109,7 +109,7 @@ describe('Backend unit tests', () => {
 
     it('lancia un\'eccezione se la chiave API è mancante', async () => {
       delete process.env.GEOAPIFY_KEY;
-      await expect(getNearbyPlaces(45.0, 9.0)).rejects.toThrow('Chiave Geoapify mancante');
+      await expect(getNearbyPlaces(45, 9)).rejects.toThrow('Chiave Geoapify mancante');
     });
   });
 });
