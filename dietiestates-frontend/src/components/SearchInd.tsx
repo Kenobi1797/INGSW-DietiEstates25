@@ -99,9 +99,8 @@ export default function RicercaIndirizzo({
     const addr = r.address;
     if (!addr) return r.display_name;
     const street = addr.road || addr.pedestrian || '';
-    const number = addr.house_number ? ` ${addr.house_number}` : '';
     const city = addr.city || addr.town || addr.village || addr.municipality || '';
-    if (street && city) return `${street}${number}, ${city}`;
+    if (street && city) return `${street}, ${city}`;
     return r.display_name;
   };
 

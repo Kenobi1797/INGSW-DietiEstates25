@@ -18,6 +18,15 @@ export default function PaginaCaricamentoImmobile() {
   const [fotoFiles, setFotoFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [baseIndirizzo, setBaseIndirizzo] = useState('');
+  const [numeroCivico, setNumeroCivico] = useState('');
+
+  const buildIndirizzoFinale = (base: string, civico: string): string => {
+    if (!civico.trim() || !base) return base;
+    const commaIdx = base.indexOf(',');
+    if (commaIdx === -1) return `${base} ${civico}`;
+    return `${base.slice(0, commaIdx)} ${civico}${base.slice(commaIdx)}`;
+  };
 
   const [formData, setFormData] = useState<Immobile>({
     titolo: '',
@@ -369,13 +378,32 @@ export default function PaginaCaricamentoImmobile() {
 
           {currentStep === 3 && (
             <div className="map-block">
-              <p>Seleziona l&apos;indirizzo preciso dell&apos;immobile (via, civico, città)</p>
+              <p>Seleziona l&apos;indirizzo dell&apos;immobile (via e città)</p>
               <RicercaIndirizzo
                 soloIndirizziPrecisi={true}
                 onIndirizzoSelezionato={(lat, lon, indirizzo) => {
-                  setFormData((prev) => ({ ...prev, latitudine: lat, longitudine: lon, indirizzo }));
+                  setBaseIndirizzo(indirizzo);
+                  const finale = buildIndirizzoFinale(indirizzo, numeroCivico);
+                  setFormData((prev) => ({ ...prev, latitudine: lat, longitudine: lon, indirizzo: finale }));
                 }}
               />
+              <div className="form-field" style={{ marginTop: '12px' }}>
+                <label className="field-label" htmlFor="numeroCivico">Numero civico</label>
+                <input
+                  id="numeroCivico"
+                  type="text"
+                  placeholder="Es. 12 oppure 5/A"
+                  value={numeroCivico}
+                  onChange={(e) => {
+                    const civico = e.target.value;
+                    setNumeroCivico(civico);
+                    if (baseIndirizzo) {
+                      const finale = buildIndirizzoFinale(baseIndirizzo, civico);
+                      setFormData((prev) => ({ ...prev, indirizzo: finale }));
+                    }
+                  }}
+                />
+              </div>
               {formData.indirizzo && (
                 <p className="field-help" style={{ color: '#166534', background: '#dcfce7', border: '1px solid #86efac', borderRadius: '8px', padding: '8px 12px' }}>
                   📍 {formData.indirizzo}
