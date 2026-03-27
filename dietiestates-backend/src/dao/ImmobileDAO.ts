@@ -83,7 +83,7 @@ export async function searchImmobili(filters: any) {
     orderBy, orderDir, limit = 20, offset = 0
   } = filters;
 
-  const conditions: string[] = [];
+  const conditions: string[] = ['Venduto = FALSE'];
   const values: any[] = [];
   let i = 1;
 
