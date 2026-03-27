@@ -2,7 +2,6 @@ import { AuthRequest } from '../middleware/authMiddleware';
 import { Response, Request } from 'express';
 import * as ImmobileDAO from '../dao/ImmobileDAO';
 import * as OffertaDAO from '../dao/OffertaDAO';
-import pool from '../config/db';
 
 // Handler upload foto
 export async function uploadFoto(req: AuthRequest, res: Response) {
@@ -87,19 +86,9 @@ export async function getImmobileById(req: Request, res: Response) {
 }
 
 // Immobili dell'agente autenticato
-// Per AmministratoreAgenzia restituisce tutti gli immobili degli agenti della sua agenzia
+// Per AmministratoreAgenzia restituisce solo gli immobili creati da lui stesso
 export async function getMyImmobili(req: AuthRequest, res: Response) {
   try {
-    if (req.user.ruolo === 'AmministratoreAgenzia') {
-      const { rows } = await pool.query(
-        'SELECT IdAgenzia FROM Utente WHERE IdUtente = $1',
-        [req.user.id]
-      );
-      const idAgenzia = rows[0]?.idagenzia;
-      if (!idAgenzia) return res.json([]);
-      const immobili = await ImmobileDAO.getImmobiliByAgenzia(idAgenzia);
-      return res.json(immobili);
-    }
     const immobili = await ImmobileDAO.getImmobiliByAgente(req.user.id);
     return res.json(immobili);
   } catch (err) {

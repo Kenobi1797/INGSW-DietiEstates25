@@ -95,6 +95,9 @@ export default function PaginaCaricamentoImmobile() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Enter su un campo dei passi precedenti non deve attivare la submit
+    if (currentStep < 3) return;
+
     if (!authuser?.idUtente) {
       setError('Utente non autenticato');
       return;
@@ -381,15 +384,20 @@ export default function PaginaCaricamentoImmobile() {
                   />
                 </label>
                 {fotoFiles.length > 0 && (
-                  <ul className="mt-2 space-y-1">
+                  <ul className="mt-3 space-y-2">
                     {fotoFiles.map((f, i) => (
-                      <li key={f.name + f.size} className="text-sm text-green-700 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-green-500 inline-block flex-shrink-0"></span>
-                        <span className="flex-1 truncate">{f.name}</span>
+                      <li key={f.name + f.size} className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg p-2">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={URL.createObjectURL(f)}
+                          alt={f.name}
+                          className="w-12 h-12 object-cover rounded flex-shrink-0"
+                        />
+                        <span className="flex-1 text-sm text-gray-700 truncate">{f.name}</span>
                         <button
                           type="button"
                           onClick={() => removeFoto(i)}
-                          className="text-red-400 hover:text-red-600 text-xs font-bold"
+                          className="text-red-400 hover:text-red-600 text-xs font-bold flex-shrink-0"
                           aria-label="Rimuovi foto"
                         >✕</button>
                       </li>
