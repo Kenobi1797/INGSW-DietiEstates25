@@ -22,8 +22,7 @@ export default function AddStaff({ targetRole, onCancel }: Props) {
     setLoading(true);
     try {
       if (targetRole === "Agente") {
-        if (!authuser?.idAgenzia) return setError("ID agenzia mancante. Assicurati di avere un'agenzia associata al tuo account.");
-        await createAgente(formData, authuser.idAgenzia);
+        await createAgente(formData);
       } else {
         await createSupporto(formData);
       }

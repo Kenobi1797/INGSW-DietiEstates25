@@ -128,7 +128,6 @@ export async function createAgent(req: AuthRequest, res: Response) {
   })
     .extend({
       password: z.string().min(6, "La password deve avere almeno 6 caratteri"),
-      idAgenzia: z.number().int()
     })
     .safeParse(req.body);
 
@@ -136,10 +135,17 @@ export async function createAgent(req: AuthRequest, res: Response) {
     return res.status(400).json({ error: parsed.error });
 
   try {
-    const { nome, cognome, email, password, idAgenzia } = parsed.data;
+    const { nome, cognome, email, password } = parsed.data;
 
     if (await UtenteDAO.checkEmailExists(email))
       return res.status(400).json({ error: "Email già registrata" });
+
+    // Ricava l'agenzia dal chiamante (admin o supporto)
+    const callerUser = await UtenteDAO.getUtenteById(req.user.id);
+    const idAgenzia = callerUser ? await resolveUserAgencyId(callerUser) : null;
+
+    if (!idAgenzia)
+      return res.status(400).json({ error: "Nessuna agenzia associata all'account chiamante" });
 
     const agent = await UtenteDAO.createAgent({
       nome,

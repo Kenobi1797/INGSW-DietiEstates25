@@ -101,8 +101,8 @@ export default function ProfiloPage() {
           </div>
         </div>
 
-        {/* Card cambio password — nascosta per utenti OAuth */}
-        {!authuser.isOAuth && <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        {/* Card cambio password — visibile solo all'AmministratoreAgenzia e non per utenti OAuth */}
+        {!authuser.isOAuth && authuser.ruolo === 'AmministratoreAgenzia' && <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Cambia password</h2>
 
           {success && (

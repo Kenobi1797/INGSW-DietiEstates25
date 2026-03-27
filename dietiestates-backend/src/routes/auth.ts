@@ -38,8 +38,8 @@ router.post('/login', login);
 // Rotta protetta: ottieni utenti correnti con id, nome, ruolo
 router.get('/me', authMiddleware, me);
 
-// Rotta protetta: cambia password (qualsiasi utente loggato)
-router.put('/change-password', authMiddleware, changePassword);
+// Rotta protetta: cambia password (solo amministratore agenzia)
+router.put('/change-password', authMiddleware, roleMiddleware('AmministratoreAgenzia'), changePassword);
 
 // Rotta protetta: crea agente (solo admin/supporto)
 router.post(

@@ -11,14 +11,14 @@ interface CreateStaffData {
   password: string;
 }
 
-export async function createAgente(formData: CreateStaffData, idAgenzia: number) {
+export async function createAgente(formData: CreateStaffData) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/create-agent`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${getToken()}`
     },
-    body: JSON.stringify({ ...formData, idAgenzia })
+    body: JSON.stringify(formData)
   });
 
   const data = await res.json();

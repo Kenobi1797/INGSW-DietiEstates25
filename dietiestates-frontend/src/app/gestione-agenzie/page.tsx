@@ -27,7 +27,6 @@ export default function GestioneAgenziePage() {
   const { authuser } = useUser();
   const [agenzie, setAgenzie] = useState<Agenzia[]>([]);
   const [staff, setStaff] = useState<StaffUser[]>([]);
-  const [nomeAgenzia, setNomeAgenzia] = useState('');
   const [selectedAgenzia, setSelectedAgenzia] = useState('');
   const [selectedUtente, setSelectedUtente] = useState('');
   const [error, setError] = useState('');
@@ -63,36 +62,6 @@ export default function GestioneAgenziePage() {
       loadData();
     }
   }, [canManage]);
-
-  const handleCreateAgenzia = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-    setLoading(true);
-
-    try {
-      const token = getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/agenzie`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ nome: nomeAgenzia }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Errore nella creazione dell\'agenzia');
-
-      setNomeAgenzia('');
-      setSuccess('Agenzia creata con successo');
-      await loadData();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Errore nella creazione dell\'agenzia');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleAssign = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,32 +110,11 @@ export default function GestioneAgenziePage() {
       <div className="max-w-4xl mx-auto space-y-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Gestione Agenzie</h1>
-          <p className="text-sm text-gray-500 mt-1">Crea nuove agenzie e assegna agenti o supporto a quelle esistenti.</p>
+          <p className="text-sm text-gray-500 mt-1">Assegna agenti o supporto all&apos;agenzia.</p>
         </div>
 
         {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-700">{error}</div>}
         {success && <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-green-700">{success}</div>}
-
-        <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Crea agenzia</h2>
-          <form className="flex flex-col md:flex-row gap-3" onSubmit={handleCreateAgenzia}>
-            <input
-              type="text"
-              value={nomeAgenzia}
-              onChange={(e) => setNomeAgenzia(e.target.value)}
-              placeholder="Nome agenzia"
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-2"
-              required
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 disabled:opacity-60"
-            >
-              Crea
-            </button>
-          </form>
-        </section>
 
         <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Assegna staff a un'agenzia</h2>
