@@ -34,6 +34,7 @@ function mapRowToImmobile(row: any) {
     fotoUrls: row.fotourls || [],
     dataCreazione: row.datacreazione,
     venduto: row.venduto,
+    affittato: row.affittato,
     dataVendita: row.datavendita,
     distanza: row.distanza == null ? null : Number.parseFloat(row.distanza),
     serviziVicinati: row.scuolevicine || row.parchivicini || row.trasportipubblicivicini
@@ -163,6 +164,18 @@ export async function getImmobiliByAgente(idAgente: number) {
   const result = await pool.query(
     `SELECT * FROM Immobile WHERE IdAgente = $1 ORDER BY DataCreazione DESC`,
     [idAgente]
+  );
+
+  return result.rows.map(mapRowToImmobile);
+}
+
+export async function getImmobiliByAgenzia(idAgenzia: number) {
+  const result = await pool.query(
+    `SELECT i.* FROM Immobile i
+     JOIN Utente u ON i.IdAgente = u.IdUtente
+     WHERE u.IdAgenzia = $1
+     ORDER BY i.DataCreazione DESC`,
+    [idAgenzia]
   );
 
   return result.rows.map(mapRowToImmobile);

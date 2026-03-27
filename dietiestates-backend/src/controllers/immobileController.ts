@@ -1,6 +1,8 @@
 import { AuthRequest } from '../middleware/authMiddleware';
 import { Response, Request } from 'express';
 import * as ImmobileDAO from '../dao/ImmobileDAO';
+import * as OffertaDAO from '../dao/OffertaDAO';
+import pool from '../config/db';
 
 // Handler upload foto
 export async function uploadFoto(req: AuthRequest, res: Response) {
@@ -84,12 +86,47 @@ export async function getImmobileById(req: Request, res: Response) {
   }
 }
 
+// Immobili dell'agente autenticato
+// Per AmministratoreAgenzia restituisce tutti gli immobili degli agenti della sua agenzia
 export async function getMyImmobili(req: AuthRequest, res: Response) {
   try {
+    if (req.user.ruolo === 'AmministratoreAgenzia') {
+      const { rows } = await pool.query(
+        'SELECT IdAgenzia FROM Utente WHERE IdUtente = $1',
+        [req.user.id]
+      );
+      const idAgenzia = rows[0]?.idagenzia;
+      if (!idAgenzia) return res.json([]);
+      const immobili = await ImmobileDAO.getImmobiliByAgenzia(idAgenzia);
+      return res.json(immobili);
+    }
     const immobili = await ImmobileDAO.getImmobiliByAgente(req.user.id);
     return res.json(immobili);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: 'Errore durante il recupero degli immobili dell\'agente' });
+    return res.status(500).json({ error: 'Errore durante il recupero degli immobili' });
+  }
+}
+
+// Segna un immobile in affitto come nuovamente disponibile (sfittato)
+export async function sfittaImmobile(req: AuthRequest, res: Response) {
+  try {
+    const idImmobile = Number(req.params.idImmobile);
+    if (!Number.isInteger(idImmobile) || idImmobile <= 0) {
+      return res.status(400).json({ error: 'Id immobile non valido' });
+    }
+    const immobile = await ImmobileDAO.getImmobileById(idImmobile);
+    if (!immobile) return res.status(404).json({ error: 'Immobile non trovato' });
+    if (immobile.tipologia !== 'Affitto') {
+      return res.status(400).json({ error: "L'operazione è valida solo per immobili in Affitto" });
+    }
+    if (!immobile.affittato) {
+      return res.status(400).json({ error: "L'immobile non risulta attualmente affittato" });
+    }
+    await OffertaDAO.markImmobileAsDisponibile(idImmobile);
+    return res.json({ message: 'Immobile reso nuovamente disponibile' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Errore durante l'aggiornamento dell'immobile" });
   }
 }

@@ -841,6 +841,17 @@ a {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Checkbox e file: non va applicato lo stile da testo */
+.immobile-card .form input[type="checkbox"],
+.immobile-card .form input[type="file"] {
+  width: auto;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
 .immobile-card .form input:focus,
 .immobile-card .form textarea:focus,
 .immobile-card .form select:focus {

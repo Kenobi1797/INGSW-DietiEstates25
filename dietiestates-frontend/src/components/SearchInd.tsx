@@ -72,9 +72,8 @@ export default function RicercaIndirizzo({
         if (soloIndirizziPrecisi) {
           risultatiFiltrati = risultatiDto.filter((r) => {
             const hasStreet = Boolean(r.address?.road || r.address?.pedestrian);
-            const hasNumber = Boolean(r.address?.house_number);
             const hasLocality = Boolean(r.address?.city || r.address?.town || r.address?.village || r.address?.municipality);
-            return hasStreet && hasNumber && hasLocality;
+            return hasStreet && hasLocality;
           });
         }
 
@@ -82,7 +81,7 @@ export default function RicercaIndirizzo({
 
         if (risultatiFiltrati.length === 0) {
           setErrore(soloIndirizziPrecisi
-            ? 'Inserisci via, numero civico e citta (es. Via Roma 10, Milano)'
+            ? 'Nessun risultato: prova a inserire via e città (es. Via Roma, Napoli)'
             : 'Nessun risultato trovato'
           );
         } else {
@@ -96,8 +95,18 @@ export default function RicercaIndirizzo({
     return () => clearTimeout(timer);
   }, [query, soloIndirizziPrecisi]);
 
+  const buildCleanAddress = (r: NominatimResult): string => {
+    const addr = r.address;
+    if (!addr) return r.display_name;
+    const street = addr.road || addr.pedestrian || '';
+    const number = addr.house_number ? ` ${addr.house_number}` : '';
+    const city = addr.city || addr.town || addr.village || addr.municipality || '';
+    if (street && city) return `${street}${number}, ${city}`;
+    return r.display_name;
+  };
+
   const seleziona = (r: NominatimResult) => {
-    const nomeVisualizzato = r.display_name;
+    const nomeVisualizzato = buildCleanAddress(r);
     setQuery(nomeVisualizzato);
     setRisultati([]);
     onIndirizzoSelezionato(Number.parseFloat(r.lat), Number.parseFloat(r.lon), nomeVisualizzato);

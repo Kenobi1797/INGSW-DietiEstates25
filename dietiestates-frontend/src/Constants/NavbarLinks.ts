@@ -35,11 +35,6 @@ export const navbarLinks: MenuLink[] = [
     roles: ["Agente", "Supporto", "AmministratoreAgenzia"],
   },
   {
-    label: "Gestione Agenzie",
-    path: "/gestione-agenzie",
-    roles: ["Supporto", "AmministratoreAgenzia"],
-  },
-  {
     label: "Profilo",
     path: "/profilo",
     roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],

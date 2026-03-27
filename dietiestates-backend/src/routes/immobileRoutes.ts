@@ -1,5 +1,5 @@
 import express from 'express';
-import { uploadFoto, createImmobile, searchImmobili, getImmobileById, getMyImmobili } from '../controllers/immobileController';
+import { uploadFoto, createImmobile, searchImmobili, getImmobileById, getMyImmobili, sfittaImmobile } from '../controllers/immobileController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 import { uploadMiddleware } from '../middleware/uploadMiddleware';
 
@@ -30,5 +30,8 @@ router.get('/miei', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgen
 
 // Dettaglio immobile
 router.get('/:idImmobile', getImmobileById);
+
+// Segna immobile in affitto come nuovamente disponibile (agente/admin)
+router.patch('/:idImmobile/sfittato', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), sfittaImmobile);
 
 export default router;

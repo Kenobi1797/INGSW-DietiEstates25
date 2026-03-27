@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/authMiddleware';
 import * as OffertaDAO from '../dao/OffertaDAO';
 import * as UtenteDAO from '../dao/UtenteDAO';
+import pool from '../config/db';
 import { z } from 'zod';
 
 async function handleControproposta(
@@ -231,8 +232,19 @@ export async function rispondiControproposta(req: AuthRequest, res: Response) {
 }
 
 // Offerte per agente (tutte le offerte sugli immobili dell'agente)
+// Per AmministratoreAgenzia restituisce tutte le offerte degli agenti della sua agenzia
 export async function getOffertePerAgente(req: AuthRequest, res: Response) {
   try {
+    if (req.user.ruolo === 'AmministratoreAgenzia') {
+      const { rows } = await pool.query(
+        'SELECT IdAgenzia FROM Utente WHERE IdUtente = $1',
+        [req.user.id]
+      );
+      const idAgenzia = rows[0]?.idagenzia;
+      if (!idAgenzia) return res.json([]);
+      const offerte = await OffertaDAO.getOffertePerAgenzia(idAgenzia);
+      return res.json(offerte);
+    }
     const offerte = await OffertaDAO.getOffertePerAgente(req.user.id);
     res.json(offerte);
   } catch (err) {

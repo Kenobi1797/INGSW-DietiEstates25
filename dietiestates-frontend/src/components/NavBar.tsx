@@ -23,7 +23,7 @@ export default function Navbar({ className = "", compact = false }: NavbarProps)
 
   const handleLogout = () => {
     logout();
-    router.push('/login');
+    router.push('/');
   };
 
   return (

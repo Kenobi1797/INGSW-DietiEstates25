@@ -157,7 +157,6 @@ export default function PaginaCaricamentoImmobile() {
                   value={formData.descrizione}
                   onChange={handleChange}
                   rows={4}
-                  required
                 />
               </div>
 
@@ -334,36 +333,54 @@ export default function PaginaCaricamentoImmobile() {
                 </div>
               </div>
 
-              {/* Foto dell&apos;immobile: caricamento file */}
+              {/* Foto dell&apos;immobile */}
               <div className="caratteristiche-group">
                 <h3 className="group-title"><Camera size={16} className="inline mr-1" />Foto dell&apos;immobile</h3>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/jpeg,image/png,image/webp,image/gif"
-                  onChange={(e) => setFotoFiles(Array.from(e.target.files ?? []))}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white"
-                />
+                <label
+                  htmlFor="foto-upload"
+                  className="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl p-6 cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors bg-white"
+                >
+                  <Camera size={28} className="text-gray-400 mb-2" />
+                  <span className="text-sm font-medium text-gray-600">Clicca per selezionare le foto</span>
+                  <span className="text-xs text-gray-400 mt-1">JPEG, PNG, WebP — max 5 MB — più file selezionabili</span>
+                  <input
+                    id="foto-upload"
+                    type="file"
+                    multiple
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    onChange={(e) => setFotoFiles(Array.from(e.target.files ?? []))}
+                    className="hidden"
+                  />
+                </label>
                 {fotoFiles.length > 0 && (
-                  <p className="text-sm text-green-600 mt-1">{fotoFiles.length} foto selezionata/e</p>
+                  <ul className="mt-2 space-y-1">
+                    {fotoFiles.map((f, i) => (
+                      <li key={i} className="text-sm text-green-700 flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+                        {f.name}
+                      </li>
+                    ))}
+                  </ul>
                 )}
-                <small className="text-gray-400">Formati accettati: JPEG, PNG, WebP. Max 5 MB per foto. Il sistema rileva automaticamente i servizi nelle vicinanze tramite Geoapify.</small>
+                <small className="text-gray-400 block mt-2">Il sistema rileva automaticamente i servizi nelle vicinanze tramite Geoapify.</small>
               </div>
             </div>
           )}
 
           {currentStep === 3 && (
             <div className="map-block">
-              <p>Seleziona l&apos;indirizzo preciso dell&apos;immobile (via, civico, citta)</p>
+              <p>Seleziona l&apos;indirizzo preciso dell&apos;immobile (via, civico, città)</p>
               <RicercaIndirizzo
                 soloIndirizziPrecisi={true}
                 onIndirizzoSelezionato={(lat, lon, indirizzo) => {
                   setFormData((prev) => ({ ...prev, latitudine: lat, longitudine: lon, indirizzo }));
                 }}
               />
-              <p className="field-help">
-                Coordinate selezionate: {formData.latitudine.toFixed(5)}, {formData.longitudine.toFixed(5)}
-              </p>
+              {formData.indirizzo && (
+                <p className="field-help" style={{ color: '#166534', background: '#dcfce7', border: '1px solid #86efac', borderRadius: '8px', padding: '8px 12px' }}>
+                  📍 {formData.indirizzo}
+                </p>
+              )}
               <EstateMap lat={formData.latitudine} lon={formData.longitudine} />
             </div>
           )}

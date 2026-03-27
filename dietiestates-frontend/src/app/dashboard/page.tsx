@@ -102,12 +102,6 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
         className: "bg-indigo-500 hover:bg-indigo-700",
       },
       {
-        href: "/gestione-agenzie",
-        label: "Gestione Agenzie",
-        Icon: Users,
-        className: "bg-slate-700 hover:bg-slate-900",
-      },
-      {
         href: "/crea-staff",
         label: "Crea Agente",
         Icon: Users,
@@ -130,12 +124,6 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
 
   if (ruolo === "AmministratoreAgenzia") {
     return [
-      {
-        href: "/gestione-agenzie",
-        label: "Gestione Agenzie",
-        Icon: Users,
-        className: "bg-slate-700 hover:bg-slate-900",
-      },
       {
         href: "/aggiungi-immobile",
         label: "Aggiungi Immobile",

@@ -56,6 +56,15 @@ export const markImmobileAsVenduto = async (idImmobile: number): Promise<void> =
   );
 };
 
+export const markImmobileAsDisponibile = async (idImmobile: number): Promise<void> => {
+  await pool.query(
+    `UPDATE immobile
+     SET affittato = false
+     WHERE idimmobile = $1`,
+    [idImmobile]
+  );
+};
+
 export const rejectPendingOfferteForImmobile = async (idImmobile: number, exceptIdOfferta: number): Promise<void> => {
   await pool.query(
     `UPDATE offerta
@@ -100,6 +109,20 @@ export const getOffertePerAgente = async (idAgente: number): Promise<OffertaDTO[
      WHERE i.idagente = $1
      ORDER BY o.dataofferta DESC`,
     [idAgente]
+  );
+  return result.rows.map(mapRowToOfferta);
+};
+
+export const getOffertePerAgenzia = async (idAgenzia: number): Promise<OffertaDTO[]> => {
+  const result = await pool.query(
+    `SELECT o.*, i.titolo, i.indirizzo, u.nome, u.cognome, u.email
+     FROM offerta o
+     JOIN immobile i ON o.idimmobile = i.idimmobile
+     JOIN utente agente ON i.idagente = agente.idutente
+     JOIN utente u ON o.idutente = u.idutente
+     WHERE agente.idagenzia = $1
+     ORDER BY o.dataofferta DESC`,
+    [idAgenzia]
   );
   return result.rows.map(mapRowToOfferta);
 };
