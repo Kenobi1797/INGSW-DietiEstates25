@@ -41,7 +41,7 @@ export default function ValutaOffertePage() {
   const fetchOfferte = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) throw new Error('Token mancante');
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/agente`, {
         headers: { 'Authorization': `Bearer ${token}` },
@@ -69,7 +69,7 @@ export default function ValutaOffertePage() {
   };
 
   const handleValuta = async (idOfferta: number, azione: 'Accettata' | 'Rifiutata' | 'Controproposta') => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) { setError('Token mancante'); return; }
 
     const body: { nuovoStato: string; prezzoControproposta?: number } = { nuovoStato: azione };

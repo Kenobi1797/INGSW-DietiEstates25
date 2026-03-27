@@ -35,7 +35,7 @@ export default function ControffertePage() {
   const fetchControfferte = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) throw new Error('Token mancante');
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/controfferte`, {
@@ -58,7 +58,7 @@ export default function ControffertePage() {
 
     setRespondingId(idOfferta);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/${idOfferta}/rispondi`, {
         method: 'PATCH',
         headers: {

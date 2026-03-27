@@ -48,8 +48,8 @@ export default function PaginaCaricamentoImmobile() {
     cantina: false,
     portineria: false,
     indirizzo: '',
-    latitudine: 41.9028,
-    longitudine: 12.4964,
+    latitudine: 0,
+    longitudine: 0,
     fotoUrls: [],
   });
 
@@ -78,11 +78,30 @@ export default function PaginaCaricamentoImmobile() {
     setFormData((prev) => ({ ...prev, [name]: finalValue }));
   };
 
+  const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nuovi = Array.from(e.target.files ?? []);
+    setFotoFiles((prev) => {
+      const nomiEsistenti = new Set(prev.map((f) => f.name + f.size));
+      const daAggiungere = nuovi.filter((f) => !nomiEsistenti.has(f.name + f.size));
+      return [...prev, ...daAggiungere];
+    });
+    e.target.value = '';
+  };
+
+  const removeFoto = (idx: number) => {
+    setFotoFiles((prev) => prev.filter((_, i) => i !== idx));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!authuser?.idUtente) {
       setError('Utente non autenticato');
+      return;
+    }
+
+    if (!formData.indirizzo || formData.latitudine === 0 || formData.longitudine === 0) {
+      setError('Seleziona un indirizzo dalla mappa prima di procedere.');
       return;
     }
 
@@ -92,7 +111,7 @@ export default function PaginaCaricamentoImmobile() {
     try {
       let fotoUrls: string[] = [];
       if (fotoFiles.length > 0) {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         const fd = new FormData();
         fotoFiles.forEach(f => fd.append('foto', f));
         const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/upload-foto`, {
@@ -351,22 +370,28 @@ export default function PaginaCaricamentoImmobile() {
                 >
                   <Camera size={28} className="text-gray-400 mb-2" />
                   <span className="text-sm font-medium text-gray-600">Clicca per selezionare le foto</span>
-                  <span className="text-xs text-gray-400 mt-1">JPEG, PNG, WebP — max 5 MB — più file selezionabili</span>
+                  <span className="text-xs text-gray-400 mt-1">JPEG, PNG, WebP — max 5 MB — seleziona più file tenendo Ctrl/Cmd</span>
                   <input
                     id="foto-upload"
                     type="file"
                     multiple
                     accept="image/jpeg,image/png,image/webp,image/gif"
-                    onChange={(e) => setFotoFiles(Array.from(e.target.files ?? []))}
+                    onChange={handleFotoChange}
                     className="hidden"
                   />
                 </label>
                 {fotoFiles.length > 0 && (
                   <ul className="mt-2 space-y-1">
                     {fotoFiles.map((f, i) => (
-                      <li key={i} className="text-sm text-green-700 flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
-                        {f.name}
+                      <li key={f.name + f.size} className="text-sm text-green-700 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-green-500 inline-block flex-shrink-0"></span>
+                        <span className="flex-1 truncate">{f.name}</span>
+                        <button
+                          type="button"
+                          onClick={() => removeFoto(i)}
+                          className="text-red-400 hover:text-red-600 text-xs font-bold"
+                          aria-label="Rimuovi foto"
+                        >✕</button>
                       </li>
                     ))}
                   </ul>
@@ -378,7 +403,7 @@ export default function PaginaCaricamentoImmobile() {
 
           {currentStep === 3 && (
             <div className="map-block">
-              <p>Seleziona l&apos;indirizzo dell&apos;immobile (via e città)</p>
+              <p>Cerca la via e la città dell&apos;immobile, poi aggiungi il numero civico nel campo sotto.</p>
               <RicercaIndirizzo
                 soloIndirizziPrecisi={true}
                 onIndirizzoSelezionato={(lat, lon, indirizzo) => {
@@ -388,7 +413,9 @@ export default function PaginaCaricamentoImmobile() {
                 }}
               />
               <div className="form-field" style={{ marginTop: '12px' }}>
-                <label className="field-label" htmlFor="numeroCivico">Numero civico</label>
+                <label className="field-label" htmlFor="numeroCivico">
+                  Numero civico <span style={{ fontWeight: 400, color: '#6b7280', fontSize: '0.8rem' }}>(opzionale — es. 12 oppure 5/A)</span>
+                </label>
                 <input
                   id="numeroCivico"
                   type="text"
@@ -418,7 +445,7 @@ export default function PaginaCaricamentoImmobile() {
               <button
                 type="button"
                 className="btn-secondary"
-                onClick={() => setCurrentStep((prev) => prev - 1)}
+                onClick={() => { setError(''); setCurrentStep((prev) => prev - 1); }}
               >
                 Indietro
               </button>
@@ -428,7 +455,7 @@ export default function PaginaCaricamentoImmobile() {
               <button
                 type="button"
                 className="btn-primary"
-                onClick={() => setCurrentStep((prev) => prev + 1)}
+                onClick={() => { setError(''); setCurrentStep((prev) => prev + 1); }}
               >
                 Continua
               </button>

@@ -3,7 +3,7 @@ import { Immobile } from "@/Models/Immobili";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function createImmobile(immobileData: Immobile, idAgente: number): Promise<Immobile> {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (!token) throw new Error('Token mancante');
 
   const response = await fetch(`${API_URL}/immobili`, {

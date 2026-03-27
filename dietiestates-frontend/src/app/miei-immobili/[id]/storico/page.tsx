@@ -41,7 +41,7 @@ export default function StoricoImmobilePage() {
     if (!id) return;
     async function fetchStorico() {
       try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if (!token) { setError('Sessione non valida.'); return; }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/immobile/${id}`, {

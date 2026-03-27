@@ -1,5 +1,5 @@
 function getToken(): string {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (!token) throw new Error("Utente non autenticato");
   return token;
 }

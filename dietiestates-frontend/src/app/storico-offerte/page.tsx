@@ -38,7 +38,7 @@ export default function StoricoOffertePage() {
   const fetchStorico = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) { setInfoMessage('Sessione non valida. Effettua di nuovo il login.'); return; }
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/storico`, {

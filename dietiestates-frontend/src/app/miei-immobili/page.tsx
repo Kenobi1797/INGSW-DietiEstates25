@@ -17,7 +17,7 @@ export default function MieiImmobiliPage() {
   useEffect(() => {
     async function fetchMiei() {
       try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if (!token) { setError('Sessione non valida.'); return; }
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/miei`, {
           headers: { Authorization: `Bearer ${token}` },

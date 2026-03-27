@@ -22,7 +22,7 @@ export default function LoginForm() {
     setLoading(true);
     try {
       const data = await login(email, password);
-      localStorage.setItem('token', data.token);
+      sessionStorage.setItem('token', data.token);
       setAuthUser(data.user);
       router.push('/dashboard');
     } catch (err: unknown) {

@@ -37,7 +37,7 @@ export default function ProfiloPage() {
 
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/change-password`, {
         method: 'PUT',
         headers: {

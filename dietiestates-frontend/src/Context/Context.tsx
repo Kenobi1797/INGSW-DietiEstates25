@@ -19,7 +19,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // Rehydrate user from token on mount
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token || !API_URL) return;
     fetch(`${API_URL}/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -32,7 +32,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setAuthUser(null);
     if (typeof window !== "undefined") {
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
     }
   };
 

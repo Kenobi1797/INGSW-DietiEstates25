@@ -73,7 +73,7 @@ export default function ImmobileDettaglioPage() {
     async function loadDettaglio() {
       try {
         // Il token è opzionale: la pagina è pubblica in lettura
-        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+        const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/${params.id}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
@@ -96,7 +96,7 @@ export default function ImmobileDettaglioPage() {
     setOffertaLoading(true);
     setOffertaMsg('');
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) throw new Error('Devi effettuare il login');
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte`, {
         method: 'POST',

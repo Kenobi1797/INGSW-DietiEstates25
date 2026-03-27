@@ -36,7 +36,7 @@ function InserisciOffertaContent() {
     const fetchImmobili = async () => {
       setLoadingImmobili(true);
       try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if (!token) return;
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/miei`, {
@@ -79,7 +79,7 @@ function InserisciOffertaContent() {
     setError('');
 
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) throw new Error('Token mancante');
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/manual`, {

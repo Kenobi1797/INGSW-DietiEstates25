@@ -15,7 +15,7 @@ function GoogleCallbackContent() {
     const token = searchParams.get("token");
     if (!token) return;
 
-    localStorage.setItem("token", token);
+    sessionStorage.setItem("token", token);
 
     // Recupera i dati utente e aggiorna il context prima di reindirizzare
     fetch(`${API_URL}/auth/me`, {

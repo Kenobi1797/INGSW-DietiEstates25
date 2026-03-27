@@ -16,7 +16,7 @@ export default function ListaImmobiliPage() {
       setLoading(true);
       setErrore(null);
       try {
-        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+        const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
         const query = new URLSearchParams({
           orderBy: "DataCreazione",
           orderDir: "DESC",

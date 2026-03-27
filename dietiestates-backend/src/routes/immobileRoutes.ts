@@ -26,7 +26,7 @@ router.post(
 router.get('/search', searchImmobili);
 
 // Immobili dell'agente autenticato
-router.get('/miei', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), getMyImmobili);
+router.get('/miei', authMiddleware, roleMiddleware('Agente', 'Supporto', 'AmministratoreAgenzia'), getMyImmobili);
 
 // Dettaglio immobile
 router.get('/:idImmobile', getImmobileById);

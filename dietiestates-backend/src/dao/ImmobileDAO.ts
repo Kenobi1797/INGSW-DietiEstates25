@@ -45,9 +45,13 @@ export async function createImmobile(data: ImmobileDTO) {
   // Determina luoghi vicini
   const nearbyPlaces = await getNearbyPlaces(data.latitudine, data.longitudine);
 
-  const scuoleVicine = nearbyPlaces.some(p => p.type === 'education.school');
-  const parchiVicini = nearbyPlaces.some(p => p.type === 'leisure.park');
-  const trasportiPubbliciVicini = nearbyPlaces.some(p => 
+  const scuoleVicine = nearbyPlaces.some(p =>
+    p.type.startsWith('education.school') || p.type.startsWith('education')
+  );
+  const parchiVicini = nearbyPlaces.some(p =>
+    p.type.startsWith('leisure.park') || p.type.startsWith('leisure')
+  );
+  const trasportiPubbliciVicini = nearbyPlaces.some(p =>
     p.type.startsWith('public_transport') ||
     ['bus_stop', 'tram_stop', 'subway_entrance', 'railway.station'].includes(p.type)
   );

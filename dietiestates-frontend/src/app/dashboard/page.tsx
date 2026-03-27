@@ -176,7 +176,7 @@ export default function DashboardAgent() {
         setStatsLoading(true);
         setStatsError("");
 
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
 
         const immobiliRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/search?limit=200`);
         if (!immobiliRes.ok) {

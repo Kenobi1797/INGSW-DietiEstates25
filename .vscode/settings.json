@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "UniSonarQube",
+        "projectKey": "Kenobi1797_INGSW-DietiEstates25"
+    }
+}

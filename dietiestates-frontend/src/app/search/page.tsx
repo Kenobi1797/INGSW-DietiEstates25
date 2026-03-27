@@ -41,7 +41,7 @@ function SearchContent() {
       setErrore(null);
 
       try {
-        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+        const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
         const currentParams = new URLSearchParams(searchParamsKey);
         const query = new URLSearchParams();
         if (hasCoords) {

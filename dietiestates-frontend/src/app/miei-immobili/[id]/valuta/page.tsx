@@ -48,7 +48,7 @@ export default function ValutaImmobilePage() {
   async function fetchOfferte() {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) { setError('Sessione non valida.'); return; }
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/immobile/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -75,7 +75,7 @@ export default function ValutaImmobilePage() {
   };
 
   const handleValuta = async (idOfferta: number, azione: 'Accettata' | 'Rifiutata' | 'Controproposta') => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) { setError('Token mancante'); return; }
 
     const body: { nuovoStato: string; prezzoControproposta?: number } = { nuovoStato: azione };
