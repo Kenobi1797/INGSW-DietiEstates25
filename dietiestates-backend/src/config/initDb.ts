@@ -177,14 +177,14 @@ async function createDemoData(): Promise<void> {
     const agenteLuciaId = await getOrCreateUser('Lucia', 'Bianchi', 'agente2@dietiestates.com', 'Agente123!', 'Agente');
     const clienteAnnaId = await getOrCreateUser('Anna', 'Verdi', 'cliente1@dietiestates.com', 'Cliente123!', 'Cliente');
     const clientePaoloId = await getOrCreateUser('Paolo', 'Neri', 'cliente2@dietiestates.com', 'Cliente123!', 'Cliente');
-    await getOrCreateUser('Sofia', 'Gialli', 'supporto@dietiestates.com', 'Supporto123!', 'Supporto');
+    const supportoSofiaId = await getOrCreateUser('Sofia', 'Gialli', 'supporto@dietiestates.com', 'Supporto123!', 'Supporto');
 
     if (idAgenzia) {
       await pool.query(
         `UPDATE Utente
          SET IdAgenzia = $1
          WHERE IdUtente = ANY($2::int[]) AND (IdAgenzia IS NULL OR IdAgenzia <> $1)`,
-        [idAgenzia, [agenteMarioId, agenteLuciaId]]
+        [idAgenzia, [agenteMarioId, agenteLuciaId, supportoSofiaId]]
       );
     }
 
