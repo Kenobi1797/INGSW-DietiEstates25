@@ -6,7 +6,10 @@ const config: Config.InitialOptions = {
   roots: ['<rootDir>/test'],
   testMatch: ['**/?(*.)+(spec|test).ts'],
   clearMocks: true,
-  collectCoverage: false,
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['lcov', 'text'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/server.ts', '!src/config/**'],
 };
 
 export default config;
