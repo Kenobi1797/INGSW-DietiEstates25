@@ -398,7 +398,7 @@ async function createDemoData(): Promise<void> {
 
       await pool.query(
         `INSERT INTO Offerta (IdImmobile, IdUtente, PrezzoOfferto, Stato, OffertaManuale)
-         VALUES ($1, $2, $3, 'Accettata', false)`,
+         VALUES ($1, $2, $3, 'InAttesa', false)`,
         [immobileGiardinoId, clientePaoloId, 275000]
       );
 
