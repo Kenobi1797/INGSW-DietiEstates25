@@ -9,7 +9,7 @@ const router = express.Router();
 router.post(
   '/upload-foto',
   authMiddleware,
-  roleMiddleware('Agente', 'AmministratoreAgenzia'),
+  roleMiddleware('Agente', 'Supporto', 'AmministratoreAgenzia'),
   uploadMiddleware,
   uploadFoto
 );
@@ -18,7 +18,7 @@ router.post(
 router.post(
   '/',
   authMiddleware,
-  roleMiddleware('Agente', 'AmministratoreAgenzia'),
+  roleMiddleware('Agente', 'Supporto', 'AmministratoreAgenzia'),
   createImmobile
 );
 

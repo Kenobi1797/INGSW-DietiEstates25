@@ -4,6 +4,49 @@ import * as OffertaDAO from '../dao/OffertaDAO';
 import * as UtenteDAO from '../dao/UtenteDAO';
 import { z } from 'zod';
 
+async function handleControproposta(
+  idOfferta: number,
+  prezzoControproposta: number | undefined,
+  offerta: NonNullable<Awaited<ReturnType<typeof OffertaDAO.getOffertaById>>>,
+  res: Response
+) {
+  if (!prezzoControproposta) {
+    return res.status(400).json({ error: 'Prezzo della controproposta obbligatorio' });
+  }
+
+  await OffertaDAO.updateStatoOfferta(idOfferta, 'Controproposta');
+  const nuovaOfferta = await OffertaDAO.createOfferta(
+    offerta.idImmobile,
+    offerta.idUtente,
+    prezzoControproposta,
+    offerta.idOfferta
+  );
+  return res.status(201).json(nuovaOfferta);
+}
+
+async function handleAccettazione(
+  idOfferta: number,
+  offerta: NonNullable<Awaited<ReturnType<typeof OffertaDAO.getOffertaById>>>,
+  res: Response
+) {
+  const immobileInVendita = await OffertaDAO.isImmobileInVendita(offerta.idImmobile);
+  if (immobileInVendita) {
+    const esisteGiaAccettata = await OffertaDAO.hasAcceptedOffertaForImmobile(offerta.idImmobile, idOfferta);
+    if (esisteGiaAccettata) {
+      return res.status(409).json({ error: 'Esiste gia una offerta accettata per questo immobile in vendita' });
+    }
+  }
+
+  const offertaAggiornata = await OffertaDAO.updateStatoOfferta(idOfferta, 'Accettata');
+
+  if (immobileInVendita) {
+    await OffertaDAO.markImmobileAsVenduto(offerta.idImmobile);
+    await OffertaDAO.rejectPendingOfferteForImmobile(offerta.idImmobile, idOfferta);
+  }
+
+  return res.json(offertaAggiornata);
+}
+
 // Creazione nuova offerta (cliente)
 export async function createOfferta(req: AuthRequest, res: Response) {
   const parsed = z.object({
@@ -106,31 +149,6 @@ export async function getStoricoOfferte(req: AuthRequest, res: Response) {
   }
 }
 
-// Ritiro offerta (solo il cliente proprietario)
-export async function ritiraOfferta(req: AuthRequest, res: Response) {
-  try {
-    const idOfferta = Number(req.params.idOfferta);
-    if (!Number.isInteger(idOfferta) || idOfferta <= 0)
-      return res.status(400).json({ error: 'Id offerta non valido' });
-
-    const offerta = await OffertaDAO.getOffertaById(idOfferta);
-    if (!offerta)
-      return res.status(404).json({ error: 'Offerta non trovata' });
-
-    if (offerta.idUtente !== req.user.id)
-      return res.status(403).json({ error: 'Non autorizzato' });
-
-    if (offerta.stato !== 'InAttesa')
-      return res.status(400).json({ error: `Non puoi ritirare un'offerta in stato "${offerta.stato}"` });
-
-    const aggiornata = await OffertaDAO.updateStatoOfferta(idOfferta, 'Ritirata');
-    res.json(aggiornata);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Errore durante il ritiro dell'offerta" });
-  }
-}
-
 // Aggiornamento stato offerta (agente/admin)
 export async function updateOfferta(req: AuthRequest, res: Response) {
   const parsed = z.object({
@@ -148,20 +166,16 @@ export async function updateOfferta(req: AuthRequest, res: Response) {
     const offerta = await OffertaDAO.getOffertaById(idOfferta);
     if (!offerta) return res.status(404).json({ error: 'Offerta non trovata' });
 
+    if (offerta.stato !== 'InAttesa') {
+      return res.status(400).json({ error: `Offerta non modificabile nello stato "${offerta.stato}"` });
+    }
+
     if (parsed.data.nuovoStato === 'Controproposta') {
-      if (!parsed.data.prezzoControproposta) {
-        return res.status(400).json({ error: 'Prezzo della controproposta obbligatorio' });
-      }
-      // Segna l'offerta originale come "Controproposta" per il tracciamento
-      await OffertaDAO.updateStatoOfferta(idOfferta, 'Controproposta');
-      // Crea la nuova offerta-controfferta dell'agente per il cliente
-      const nuovaOfferta = await OffertaDAO.createOfferta(
-        offerta.idImmobile,
-        offerta.idUtente,
-        parsed.data.prezzoControproposta,
-        offerta.idOfferta
-      );
-      return res.status(201).json(nuovaOfferta);
+      return handleControproposta(idOfferta, parsed.data.prezzoControproposta, offerta, res);
+    }
+
+    if (parsed.data.nuovoStato === 'Accettata') {
+      return handleAccettazione(idOfferta, offerta, res);
     }
 
     const offertaAggiornata = await OffertaDAO.updateStatoOfferta(idOfferta, parsed.data.nuovoStato);

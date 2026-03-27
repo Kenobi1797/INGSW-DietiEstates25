@@ -17,7 +17,7 @@ export const navbarLinks: MenuLink[] = [
   {
     label: "Ricerca Immobile",
     path: "/search",
-    roles: ["Cliente"],
+    roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
   },
   {
     label: "Dashboard",
@@ -38,6 +38,11 @@ export const navbarLinks: MenuLink[] = [
     label: "Profilo",
     path: "/profilo",
     roles: ["Cliente", "Agente", "Supporto", "AmministratoreAgenzia"],
+  },
+  {
+    label: "Gestione Agenzie",
+    path: "/gestione-agenzie",
+    roles: ["Supporto", "AmministratoreAgenzia"],
   },
 ];
 

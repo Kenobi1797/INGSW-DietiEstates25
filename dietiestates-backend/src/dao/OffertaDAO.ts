@@ -25,6 +25,48 @@ export const createOfferta = (idImmobile: number, idUtente: number, prezzoOffert
 export const createManualOfferta = (idImmobile: number, idCliente: number, prezzoOfferto: number, offertaOriginaleId?: number) =>
   insertOfferta(idImmobile, idCliente, prezzoOfferto, true, offertaOriginaleId);
 
+export const isImmobileInVendita = async (idImmobile: number): Promise<boolean> => {
+  const result = await pool.query(
+    'SELECT tipologia FROM immobile WHERE idimmobile = $1',
+    [idImmobile]
+  );
+  return result.rows[0]?.tipologia === 'Vendita';
+};
+
+export const hasAcceptedOffertaForImmobile = async (idImmobile: number, excludeIdOfferta?: number): Promise<boolean> => {
+  const result = await pool.query(
+    `SELECT 1
+     FROM offerta
+     WHERE idimmobile = $1
+       AND stato = 'Accettata'
+       AND ($2::INT IS NULL OR idofferta <> $2)
+     LIMIT 1`,
+    [idImmobile, excludeIdOfferta ?? null]
+  );
+  return result.rows.length > 0;
+};
+
+export const markImmobileAsVenduto = async (idImmobile: number): Promise<void> => {
+  await pool.query(
+    `UPDATE immobile
+     SET venduto = true,
+         datavendita = COALESCE(datavendita, CURRENT_TIMESTAMP)
+     WHERE idimmobile = $1`,
+    [idImmobile]
+  );
+};
+
+export const rejectPendingOfferteForImmobile = async (idImmobile: number, exceptIdOfferta: number): Promise<void> => {
+  await pool.query(
+    `UPDATE offerta
+     SET stato = 'Rifiutata'
+     WHERE idimmobile = $1
+       AND stato = 'InAttesa'
+       AND idofferta <> $2`,
+    [idImmobile, exceptIdOfferta]
+  );
+};
+
 export const getOffertePerImmobile = async (idImmobile: number): Promise<OffertaDTO[]> => {
   const result = await pool.query(
     `SELECT o.*, u.nome, u.cognome, u.email
@@ -103,7 +145,7 @@ function mapRowToOfferta(row: any): OffertaDTO {
     idOfferta: row.idofferta,
     idImmobile: row.idimmobile,
     idUtente: row.idutente,
-    prezzoOfferto: parseFloat(row.prezzoofferto), 
+    prezzoOfferto: Number.parseFloat(row.prezzoofferto), 
     stato: row.stato,
     dataOfferta: row.dataofferta,
     offertaManuale: row.offertamanuale,

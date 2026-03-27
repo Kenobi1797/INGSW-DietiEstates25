@@ -20,6 +20,29 @@ export async function getUtenteById(id: number): Promise<UtenteDTO | null> {
   return result.rows[0] ? mapRowToUtente(result.rows[0]) : null;
 }
 
+export async function getStaffUsers(): Promise<UtenteDTO[]> {
+  const result = await pool.query(
+    `SELECT *
+     FROM Utente
+     WHERE Ruolo IN ('Agente', 'Supporto')
+     ORDER BY Ruolo ASC, Nome ASC, Cognome ASC, Email ASC`
+  );
+  return result.rows.map(mapRowToUtente);
+}
+
+export async function assignUserToAgency(idUtente: number, idAgenzia: number): Promise<UtenteDTO | null> {
+  const result = await pool.query(
+    `UPDATE Utente
+     SET IdAgenzia = $1
+     WHERE IdUtente = $2
+       AND Ruolo IN ('Agente', 'Supporto')
+     RETURNING *`,
+    [idAgenzia, idUtente]
+  );
+
+  return result.rows[0] ? mapRowToUtente(result.rows[0]) : null;
+}
+
 type CreateUserData = Omit<UtenteDTO, 'idUtente' | 'ruolo' | 'dataCreazione' | 'passwordHash'> & { password: string };
 
 type CreateAgentData = CreateUserData & { idAgenzia: number };

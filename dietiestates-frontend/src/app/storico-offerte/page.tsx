@@ -32,7 +32,6 @@ export default function StoricoOffertePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [infoMessage, setInfoMessage] = useState('');
-  const [withdrawingId, setWithdrawingId] = useState<number | null>(null);
 
   useEffect(() => { fetchStorico(); }, []);
 
@@ -62,27 +61,6 @@ export default function StoricoOffertePage() {
       setError(err instanceof Error ? err.message : 'Errore nel caricamento storico');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleRitira = async (idOfferta: number) => {
-    if (!confirm('Vuoi ritirare questa offerta?')) return;
-    setWithdrawingId(idOfferta);
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/${idOfferta}/ritira`, {
-        method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${token ?? ''}` },
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'Errore nel ritiro');
-      }
-      await fetchStorico();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : 'Errore nel ritiro offerta');
-    } finally {
-      setWithdrawingId(null);
     }
   };
 
@@ -206,16 +184,6 @@ export default function StoricoOffertePage() {
                         className="text-xs text-red-600 hover:underline font-medium">
                         Vedi immobile →
                       </Link>
-
-                      {/* Ritira solo offerte proprie (non controfferte) in InAttesa */}
-                      {offerta.stato === 'InAttesa' && !isControfferta && authuser.ruolo === 'Cliente' && (
-                        <button
-                          onClick={() => handleRitira(offerta.idOfferta)}
-                          disabled={withdrawingId === offerta.idOfferta}
-                          className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full border border-gray-300 font-medium transition-colors disabled:opacity-50">
-                          {withdrawingId === offerta.idOfferta ? 'Ritiro...' : 'Ritira offerta'}
-                        </button>
-                      )}
 
                       {/* Link per rispondere alla controfferta pendente */}
                       {isControfferta && offerta.stato === 'InAttesa' && authuser.ruolo === 'Cliente' && (

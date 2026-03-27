@@ -13,10 +13,15 @@ interface NominatimResult {
   display_name: string;
   lat: string;
   lon: string;
+  importance?: number;
   address?: {
     road?: string;
     pedestrian?: string;
     house_number?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    municipality?: string;
   };
 }
 
@@ -25,7 +30,7 @@ export default function RicercaIndirizzo({
   soloIndirizziPrecisi = false,
   initialValue = '',
   onQueryChange
-}: RicercaIndirizzoProps) {
+}: Readonly<RicercaIndirizzoProps>) {
   const [query, setQuery] = useState(initialValue);
   const [risultati, setRisultati] = useState<NominatimResult[]>([]);
   const [errore, setErrore] = useState('');
@@ -55,23 +60,29 @@ export default function RicercaIndirizzo({
     const timer = setTimeout(async () => {
       setErrore('');
       try {
+        const normalizedQuery = `${query}, Italia`;
         const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1&limit=5&countrycodes=it`,
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(normalizedQuery)}&format=jsonv2&addressdetails=1&limit=8&countrycodes=it&dedupe=1&accept-language=it`,
           { headers: { 'Accept-Language': 'it' } }
         );
         const data = await res.json();
-        const risultatiDto = data as NominatimResult[];
+        const risultatiDto = Array.isArray(data) ? (data as NominatimResult[]) : [];
         let risultatiFiltrati = risultatiDto;
 
         if (soloIndirizziPrecisi) {
-          risultatiFiltrati = risultatiDto.filter((r) =>
-            r.address?.road || r.address?.pedestrian || r.address?.house_number
-          );
+          risultatiFiltrati = risultatiDto.filter((r) => {
+            const hasStreet = Boolean(r.address?.road || r.address?.pedestrian);
+            const hasNumber = Boolean(r.address?.house_number);
+            const hasLocality = Boolean(r.address?.city || r.address?.town || r.address?.village || r.address?.municipality);
+            return hasStreet && hasNumber && hasLocality;
+          });
         }
+
+        risultatiFiltrati = risultatiFiltrati.sort((a, b) => (b.importance ?? 0) - (a.importance ?? 0));
 
         if (risultatiFiltrati.length === 0) {
           setErrore(soloIndirizziPrecisi
-            ? 'Inserisci un indirizzo specifico'
+            ? 'Inserisci via, numero civico e citta (es. Via Roma 10, Milano)'
             : 'Nessun risultato trovato'
           );
         } else {
@@ -89,7 +100,7 @@ export default function RicercaIndirizzo({
     const nomeVisualizzato = r.display_name;
     setQuery(nomeVisualizzato);
     setRisultati([]);
-    onIndirizzoSelezionato(parseFloat(r.lat), parseFloat(r.lon), nomeVisualizzato);
+    onIndirizzoSelezionato(Number.parseFloat(r.lat), Number.parseFloat(r.lon), nomeVisualizzato);
   };
 
   return (
@@ -111,13 +122,18 @@ export default function RicercaIndirizzo({
 
       {risultati.length > 0 && (
         <ul className="address-results-list" style={{ position: 'absolute', zIndex: 1000, background: 'white', width: '100%' }}>
-          {risultati.map((r, i) => (
+          {risultati.map((r) => (
             <li
-              key={i}
+              key={`${r.display_name}-${r.lat}-${r.lon}`}
               className="address-result-item"
-              onClick={() => seleziona(r)}
             >
-              {r.display_name}
+              <button
+                type="button"
+                onClick={() => seleziona(r)}
+                className="w-full text-left"
+              >
+                {r.display_name}
+              </button>
             </li>
           ))}
         </ul>
