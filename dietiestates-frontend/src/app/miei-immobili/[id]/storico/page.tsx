@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, MessageSquare, Undo2, Inbox } from 'lucide-react';
+import { formatDateIt, formatEuro, STATO_CONFIG, StatoOfferta } from '@/Constants/offerte';
 
 interface Offerta {
   idOfferta: number;
   idImmobile: number;
   idUtente: number;
   prezzoOfferto: number;
-  stato: string;
+  stato: StatoOfferta;
   dataOfferta: string;
   offertaManuale?: boolean;
   idOffertaOriginale?: number | null;
@@ -18,14 +19,6 @@ interface Offerta {
   indirizzo?: string;
   nomeUtente?: string;
 }
-
-const STATO_CONFIG: Record<string, { label: string; classes: string; dot: string }> = {
-  InAttesa:       { label: 'In Attesa',       classes: 'bg-yellow-50 border-yellow-300 text-yellow-800',  dot: 'bg-yellow-400' },
-  Accettata:      { label: 'Accettata',       classes: 'bg-green-50 border-green-300 text-green-800',    dot: 'bg-green-500' },
-  Rifiutata:      { label: 'Rifiutata',       classes: 'bg-red-50 border-red-300 text-red-700',          dot: 'bg-red-500' },
-  Controproposta: { label: 'Controproposta',  classes: 'bg-blue-50 border-blue-300 text-blue-800',       dot: 'bg-blue-500' },
-  Ritirata:       { label: 'Ritirata',        classes: 'bg-gray-50 border-gray-200 text-gray-500',       dot: 'bg-gray-400' },
-};
 
 export default function StoricoImmobilePage() {
   const params = useParams();
@@ -61,7 +54,7 @@ export default function StoricoImmobilePage() {
     fetchStorico();
   }, [id]);
 
-  const byStato: Record<string, Offerta[]> = {};
+  const byStato: Partial<Record<StatoOfferta, Offerta[]>> = {};
   for (const o of offerte) {
     if (!byStato[o.stato]) byStato[o.stato] = [];
     byStato[o.stato].push(o);
@@ -148,12 +141,12 @@ export default function StoricoImmobilePage() {
                             )}
                           </p>
                           <p style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '2px' }}>
-                            {new Date(offerta.dataOfferta).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            {formatDateIt(offerta.dataOfferta)}
                           </p>
                         </div>
                         <div style={{ textAlign: 'right' }}>
                           <p style={{ fontWeight: 800, fontSize: '1.1rem', color: '#2563eb' }}>
-                            € {offerta.prezzoOfferto?.toLocaleString('it-IT')}
+                            € {formatEuro(offerta.prezzoOfferto)}
                           </p>
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border ${cfg.classes}`}>
                             <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`}></span>

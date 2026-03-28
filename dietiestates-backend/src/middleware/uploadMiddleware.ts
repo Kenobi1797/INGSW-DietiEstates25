@@ -56,7 +56,7 @@ const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB per file
   fileFilter: (_req, file, cb) => {
-    if (Object.prototype.hasOwnProperty.call(allowedMimeToExtension, file.mimetype)) {
+    if (file.mimetype in allowedMimeToExtension) {
       cb(null, true);
       return;
     }

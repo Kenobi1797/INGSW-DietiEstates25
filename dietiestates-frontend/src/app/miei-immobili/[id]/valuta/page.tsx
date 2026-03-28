@@ -5,8 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PrezzoInput from '@/components/PrezzoInput';
 import { ArrowLeft, Check, X, Undo2, Inbox, MapPin } from 'lucide-react';
-
-type StatoOfferta = 'InAttesa' | 'Accettata' | 'Rifiutata' | 'Controproposta' | 'Ritirata';
+import { formatDateIt, formatEuro, STATO_CONFIG, StatoOfferta } from '@/Constants/offerte';
 
 interface Offerta {
   idOfferta: number;
@@ -19,14 +18,6 @@ interface Offerta {
   indirizzo?: string;
   nomeUtente?: string;
 }
-
-const STATO_CONFIG: Record<string, { label: string; classes: string; dot: string }> = {
-  InAttesa:       { label: 'In Attesa',      classes: 'bg-yellow-50 border-yellow-300 text-yellow-800', dot: 'bg-yellow-400' },
-  Accettata:      { label: 'Accettata',      classes: 'bg-green-50 border-green-300 text-green-800',   dot: 'bg-green-500' },
-  Rifiutata:      { label: 'Rifiutata',      classes: 'bg-red-50 border-red-300 text-red-700',         dot: 'bg-red-500' },
-  Controproposta: { label: 'Controproposta', classes: 'bg-blue-50 border-blue-300 text-blue-800',      dot: 'bg-blue-500' },
-  Ritirata:       { label: 'Ritirata',       classes: 'bg-gray-50 border-gray-200 text-gray-500',      dot: 'bg-gray-400' },
-};
 
 export default function ValutaImmobilePage() {
   const params = useParams();
@@ -43,6 +34,7 @@ export default function ValutaImmobilePage() {
   useEffect(() => {
     if (!id) return;
     fetchOfferte();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   async function fetchOfferte() {
@@ -190,11 +182,11 @@ export default function ValutaImmobilePage() {
                             </p>
                           )}
                           <p style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '4px' }}>
-                            {new Date(offerta.dataOfferta).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            {formatDateIt(offerta.dataOfferta)}
                           </p>
                         </div>
                         <p style={{ fontWeight: 800, fontSize: '1.2rem', color: '#2563eb', alignSelf: 'flex-start' }}>
-                          € {offerta.prezzoOfferto?.toLocaleString('it-IT')}
+                          € {formatEuro(offerta.prezzoOfferto)}
                         </p>
                       </div>
 
@@ -266,7 +258,7 @@ export default function ValutaImmobilePage() {
                 </h2>
                 <div className="space-y-2">
                   {storiche.map(offerta => {
-                    const cfg = STATO_CONFIG[offerta.stato] ?? STATO_CONFIG['Ritirata'];
+                    const cfg = STATO_CONFIG[offerta.stato] ?? STATO_CONFIG.Ritirata;
                     return (
                       <div
                         key={offerta.idOfferta}
@@ -276,13 +268,11 @@ export default function ValutaImmobilePage() {
                           <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>
                             {offerta.nomeUtente ?? `Utente #${offerta.idUtente}`}
                           </p>
-                          <p style={{ fontSize: '0.73rem', color: '#9ca3af' }}>
-                            {new Date(offerta.dataOfferta).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' })}
-                          </p>
+                          <p style={{ fontSize: '0.73rem', color: '#9ca3af' }}>{formatDateIt(offerta.dataOfferta)}</p>
                         </div>
                         <div style={{ textAlign: 'right' }}>
                           <p style={{ fontWeight: 700, fontSize: '1rem', color: '#374151' }}>
-                            € {offerta.prezzoOfferto?.toLocaleString('it-IT')}
+                            € {formatEuro(offerta.prezzoOfferto)}
                           </p>
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border ${cfg.classes}`}>
                             <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`}></span>

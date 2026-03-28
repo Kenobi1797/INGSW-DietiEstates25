@@ -5,8 +5,7 @@ import { useUser } from '@/Context/Context';
 import Link from 'next/link';
 import PrezzoInput from '@/components/PrezzoInput';
 import { MapPin, Check, X, Undo2, Inbox } from 'lucide-react';
-
-type StatoOfferta = 'InAttesa' | 'Accettata' | 'Rifiutata' | 'Controproposta' | 'Ritirata';
+import { formatDateIt, formatEuro, STATO_CONFIG, STATO_FALLBACK, StatoOfferta } from '@/Constants/offerte';
 
 interface Offerta {
   idOfferta: number;
@@ -18,14 +17,6 @@ interface Offerta {
   titolo?: string;
   indirizzo?: string;
 }
-
-const STATO_CONFIG: Record<string, { label: string; classes: string; dot: string }> = {
-  InAttesa:       { label: 'In Attesa',      classes: 'bg-yellow-50 border-yellow-300 text-yellow-800', dot: 'bg-yellow-400' },
-  Accettata:      { label: 'Accettata',      classes: 'bg-green-50 border-green-300 text-green-800',   dot: 'bg-green-500' },
-  Rifiutata:      { label: 'Rifiutata',      classes: 'bg-red-50 border-red-300 text-red-700',         dot: 'bg-red-500' },
-  Controproposta: { label: 'Controproposta', classes: 'bg-blue-50 border-blue-300 text-blue-800',      dot: 'bg-blue-500' },
-  Ritirata:       { label: 'Ritirata',       classes: 'bg-gray-50 border-gray-200 text-gray-500',      dot: 'bg-gray-400' },
-};
 
 export default function ValutaOffertePage() {
   const { authuser } = useUser();
@@ -168,16 +159,10 @@ export default function ValutaOffertePage() {
                       {offerta.indirizzo && (
                         <p className="text-sm text-gray-500 mt-0.5 truncate inline-flex items-center gap-1"><MapPin size={12} />{offerta.indirizzo}</p>
                       )}
-                      <p className="text-xs text-gray-400 mt-1">
-                        {new Date(offerta.dataOfferta).toLocaleDateString('it-IT', {
-                          day: '2-digit', month: 'short', year: 'numeric',
-                        })}
-                      </p>
+                      <p className="text-xs text-gray-400 mt-1">{formatDateIt(offerta.dataOfferta)}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-xl font-bold text-red-600">
-                        € {offerta.prezzoOfferto?.toLocaleString('it-IT')}
-                      </p>
+                      <p className="text-xl font-bold text-red-600">€ {formatEuro(offerta.prezzoOfferto)}</p>
                       <Link href={`/immobili/${offerta.idImmobile}`}
                         className="text-xs text-red-600 hover:underline font-medium">
                         Vedi immobile →
@@ -252,7 +237,7 @@ export default function ValutaOffertePage() {
             </h2>
             <div className="space-y-3">
               {storiche.map((offerta) => {
-                const statoInfo = STATO_CONFIG[offerta.stato] ?? { label: offerta.stato, classes: 'bg-gray-50 border-gray-200 text-gray-700', dot: 'bg-gray-400' };
+                const statoInfo = STATO_CONFIG[offerta.stato] ?? STATO_FALLBACK;
                 return (
                   <div key={offerta.idOfferta}
                     className="rounded-xl border-2 border-gray-200 bg-white opacity-80 p-4">
@@ -264,16 +249,10 @@ export default function ValutaOffertePage() {
                         {offerta.indirizzo && (
                           <p className="text-sm text-gray-500 mt-0.5 truncate inline-flex items-center gap-1"><MapPin size={12} />{offerta.indirizzo}</p>
                         )}
-                        <p className="text-xs text-gray-400 mt-1">
-                          {new Date(offerta.dataOfferta).toLocaleDateString('it-IT', {
-                            day: '2-digit', month: 'short', year: 'numeric',
-                          })}
-                        </p>
+                        <p className="text-xs text-gray-400 mt-1">{formatDateIt(offerta.dataOfferta)}</p>
                       </div>
                       <div className="text-right shrink-0 space-y-1">
-                        <p className="text-lg font-bold text-red-600">
-                          € {offerta.prezzoOfferto?.toLocaleString('it-IT')}
-                        </p>
+                        <p className="text-lg font-bold text-red-600">€ {formatEuro(offerta.prezzoOfferto)}</p>
                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statoInfo.classes}`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${statoInfo.dot}`}></span>
                           {statoInfo.label}
