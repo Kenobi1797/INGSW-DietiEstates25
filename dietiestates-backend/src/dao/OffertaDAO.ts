@@ -56,15 +56,6 @@ export const markImmobileAsVenduto = async (idImmobile: number): Promise<void> =
   );
 };
 
-export const markImmobileAsDisponibile = async (idImmobile: number): Promise<void> => {
-  await pool.query(
-    `UPDATE immobile
-     SET affittato = false
-     WHERE idimmobile = $1`,
-    [idImmobile]
-  );
-};
-
 export const rejectPendingOfferteForImmobile = async (idImmobile: number, exceptIdOfferta: number): Promise<void> => {
   await pool.query(
     `UPDATE offerta

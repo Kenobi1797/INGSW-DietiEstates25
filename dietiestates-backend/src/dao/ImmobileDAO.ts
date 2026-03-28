@@ -34,7 +34,6 @@ function mapRowToImmobile(row: any) {
     fotoUrls: row.fotourls || [],
     dataCreazione: row.datacreazione,
     venduto: row.venduto,
-    affittato: row.affittato,
     dataVendita: row.datavendita,
     distanza: row.distanza == null ? null : Number.parseFloat(row.distanza),
     serviziVicinati: row.scuolevicine || row.parchivicini || row.trasportipubblicivicini

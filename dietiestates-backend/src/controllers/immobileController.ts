@@ -1,7 +1,6 @@
 import { AuthRequest } from '../middleware/authMiddleware';
 import { Response, Request } from 'express';
 import * as ImmobileDAO from '../dao/ImmobileDAO';
-import * as OffertaDAO from '../dao/OffertaDAO';
 import fs from 'node:fs/promises';
 import fsSync from 'node:fs';
 import path from 'node:path';
@@ -171,28 +170,5 @@ export async function getMyImmobili(req: AuthRequest, res: Response) {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Errore durante il recupero degli immobili' });
-  }
-}
-
-// Segna un immobile in affitto come nuovamente disponibile (sfittato)
-export async function sfittaImmobile(req: AuthRequest, res: Response) {
-  try {
-    const idImmobile = Number(req.params.idImmobile);
-    if (!Number.isInteger(idImmobile) || idImmobile <= 0) {
-      return res.status(400).json({ error: 'Id immobile non valido' });
-    }
-    const immobile = await ImmobileDAO.getImmobileById(idImmobile);
-    if (!immobile) return res.status(404).json({ error: 'Immobile non trovato' });
-    if (immobile.tipologia !== 'Affitto') {
-      return res.status(400).json({ error: "L'operazione è valida solo per immobili in Affitto" });
-    }
-    if (!immobile.affittato) {
-      return res.status(400).json({ error: "L'immobile non risulta attualmente affittato" });
-    }
-    await OffertaDAO.markImmobileAsDisponibile(idImmobile);
-    return res.json({ message: 'Immobile reso nuovamente disponibile' });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: "Errore durante l'aggiornamento dell'immobile" });
   }
 }

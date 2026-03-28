@@ -30,7 +30,6 @@ export const ImmobileSchema = z.object({
   fotoUrls: z.array(z.string()).optional(),
   dataCreazione: z.date().optional(),
   venduto: z.boolean().optional(),
-  affittato: z.boolean().optional(),
   dataVendita: z.date().nullable().optional(),
 });
 
