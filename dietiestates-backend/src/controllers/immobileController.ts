@@ -10,7 +10,18 @@ export async function uploadFoto(req: AuthRequest, res: Response) {
     return res.status(400).json({ error: 'Nessun file caricato' });
   }
   const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 5000}`;
-  const urls = files.map((f) => `${baseUrl}/uploads/${f.filename}`);
+  
+  // Estrai immobileId dal parametro query/body
+  const immobileId = req.query.immobileId || req.body?.immobileId;
+  
+  // Costruisci gli URL corretti: se immobileId è presente, includerlo nel path
+  const urls = files.map((f) => {
+    if (immobileId) {
+      return `${baseUrl}/uploads/${immobileId}/${f.filename}`;
+    }
+    return `${baseUrl}/uploads/${f.filename}`;
+  });
+  
   return res.json({ urls });
 }
 

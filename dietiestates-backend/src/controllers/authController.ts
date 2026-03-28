@@ -77,6 +77,9 @@ export async function login(req: Request, res: Response) {
       idUtente: user.idUtente,
       nome: user.nome,
       ruolo: user.ruolo,
+      isOAuth: false,
+      loginMethod: 'Email e password',
+      loginSourceTable: 'Utente',
     };
 
     if (idAgenzia) {
@@ -101,14 +104,13 @@ export async function me(req: AuthRequest, res: Response) {
       idUtente: user.idUtente,
       nome: user.nome,
       ruolo: user.ruolo,
+      isOAuth: Boolean(req.user.isOAuth),
+      loginMethod: req.user.isOAuth ? 'Google' : 'Email e password',
+      loginSourceTable: req.user.isOAuth ? 'OAuthAccount' : 'Utente',
     };
 
     if (idAgenzia) {
       responseUser.idAgenzia = idAgenzia;
-    }
-
-    if (req.user.isOAuth) {
-      responseUser.isOAuth = true;
     }
 
     res.json(responseUser);

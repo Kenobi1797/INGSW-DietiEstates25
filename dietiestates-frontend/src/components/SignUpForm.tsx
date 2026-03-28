@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { register } from '@/Services/authservice';
 import Link from 'next/link';
 
@@ -14,6 +14,7 @@ export interface SignUpData {
 
 export default function SignUpForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -27,8 +28,21 @@ export default function SignUpForm() {
   const handleGoogleLogin = () => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     if (!apiUrl) { setError('URL API non configurato'); return; }
-    globalThis.location.href = `${apiUrl}/auth/google`;
+    if (typeof window !== 'undefined') {
+      window.location.href = `${apiUrl}/auth/google?mode=signup`;
+    }
   };
+
+  useEffect(() => {
+    const oauth = searchParams.get('oauth');
+    if (oauth === 'not_registered') {
+      setError('Nessuna registrazione Google trovata. Registrati prima con Google.');
+      return;
+    }
+    if (oauth === 'failed') {
+      setError('Registrazione Google non riuscita. Riprova.');
+    }
+  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

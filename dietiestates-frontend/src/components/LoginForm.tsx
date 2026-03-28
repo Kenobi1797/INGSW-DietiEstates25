@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { login } from '@/Services/authservice';
 import { useUser } from "@/Context/Context";
@@ -10,11 +10,23 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { setAuthUser } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const oauth = searchParams.get('oauth');
+    if (oauth === 'already_registered') {
+      setError('Registrazione Google già effettuata. Procedi con Accedi con Google.');
+      return;
+    }
+    if (oauth === 'failed') {
+      setError('Accesso Google non riuscito. Riprova.');
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +46,9 @@ export default function LoginForm() {
 
   const handleGoogleLogin = () => {
     if (!API_URL) { setError('Indirizzo API non configurato'); return; }
-    globalThis.location.href = `${API_URL}/auth/google`;
+    if (typeof window !== 'undefined') {
+      window.location.href = `${API_URL}/auth/google?mode=login`;
+    }
   };
 
   return (

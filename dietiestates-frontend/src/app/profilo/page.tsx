@@ -92,6 +92,12 @@ export default function ProfiloPage() {
                 {ruoloLabel[authuser.ruolo] ?? authuser.ruolo}
               </span>
             </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-500">Metodo di accesso</span>
+              <span className="text-sm font-semibold text-gray-900">
+                {authuser.loginMethod ?? (authuser.isOAuth ? 'Google' : 'Email e password')}
+              </span>
+            </div>
             {authuser.idAgenzia && (
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">ID Agenzia</span>

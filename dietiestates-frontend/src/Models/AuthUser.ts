@@ -7,4 +7,6 @@ export interface AuthUser {
   ruolo: UserRole;
   idAgenzia?: number;
   isOAuth?: boolean;
+  loginMethod?: 'Google' | 'Email e password';
+  loginSourceTable?: 'OAuthAccount' | 'Utente';
 }

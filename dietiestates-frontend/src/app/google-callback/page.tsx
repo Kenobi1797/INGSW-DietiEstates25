@@ -13,7 +13,10 @@ function GoogleCallbackContent() {
 
   useEffect(() => {
     const token = searchParams.get("token");
-    if (!token) return;
+    if (!token) {
+      router.replace("/login");
+      return;
+    }
 
     sessionStorage.setItem("token", token);
 
@@ -23,10 +26,18 @@ function GoogleCallbackContent() {
     })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
-        if (data) setAuthUser(data);
-        router.push("/dashboard");
+        if (!data) {
+          sessionStorage.removeItem("token");
+          router.replace("/login");
+          return;
+        }
+        setAuthUser(data);
+        router.replace("/dashboard");
       })
-      .catch(() => router.push("/dashboard"));
+      .catch(() => {
+        sessionStorage.removeItem("token");
+        router.replace("/login");
+      });
   }, [searchParams, router, setAuthUser]);
 
   const token = searchParams.get("token");

@@ -15,24 +15,52 @@ const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE
 
 router.get('/google', (req, res, next) => {
   if (!googleEnabled) return res.status(503).json({ error: 'Google OAuth non configurato' });
-  passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+  const mode = req.query.mode === 'signup' ? 'signup' : 'login';
+  const authOptions: Record<string, unknown> = {
+    scope: ['profile', 'email'],
+    session: false,
+    state: mode,
+  };
+
+  // In registrazione forziamo scelta account/consenso; in login lasciamo accesso rapido.
+  if (mode === 'signup') {
+    authOptions.prompt = 'select_account consent';
+    authOptions.accessType = 'offline';
+  }
+
+  passport.authenticate('google', authOptions)(req, res, next);
 });
 
 router.get(
   '/google/callback',
   (req, res, next) => {
     if (!googleEnabled) return res.status(503).json({ error: 'Google OAuth non configurato' });
-    passport.authenticate('google', { failureRedirect: '/' })(req, res, next);
-  },
-  (req, res) => {
-    const oauthResult = req.user as OAuthResult | undefined;
-    if (!oauthResult?.token || !oauthResult?.user) {
-      return res.status(400).json({ error: 'Errore login Google' });
-    }
-
-    // Redirect al frontend con token per login con Google.
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-    res.redirect(`${frontendUrl}/google-callback?token=${oauthResult.token}`);
+    const mode = req.query.state === 'signup' ? 'signup' : 'login';
+    const fallbackPath = mode === 'signup' ? '/signup' : '/login';
+
+    passport.authenticate('google', { session: false }, (err: unknown, user: unknown, info: { code?: string } | undefined) => {
+      if (err) {
+        return res.redirect(`${frontendUrl}${fallbackPath}?oauth=failed`);
+      }
+
+      if (!user) {
+        if (info?.code === 'already_registered') {
+          return res.redirect(`${frontendUrl}/login?oauth=already_registered`);
+        }
+        if (info?.code === 'not_registered') {
+          return res.redirect(`${frontendUrl}/signup?oauth=not_registered`);
+        }
+        return res.redirect(`${frontendUrl}${fallbackPath}?oauth=failed`);
+      }
+
+      const oauthResult = user as OAuthResult;
+      if (!oauthResult?.token || !oauthResult?.user) {
+        return res.redirect(`${frontendUrl}${fallbackPath}?oauth=failed`);
+      }
+
+      return res.redirect(`${frontendUrl}/google-callback?token=${oauthResult.token}`);
+    })(req, res, next);
   }
 );
 
