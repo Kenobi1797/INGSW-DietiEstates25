@@ -47,7 +47,7 @@ export default function StaffCreationPage({
           <p className="text-gray-500 text-sm mt-1">{description}</p>
         </div>
 
-        <AddStaff targetRole={targetRole} onCancel={() => window.history.back()} />
+        <AddStaff targetRole={targetRole} onCancel={() => globalThis.history.back()} />
       </div>
     </div>
   );

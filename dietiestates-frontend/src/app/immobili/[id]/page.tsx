@@ -187,6 +187,7 @@ export default function ImmobileDettaglioPage() {
             <div>
               <h2 className="text-base font-semibold mb-2 flex items-center gap-2">
                 Servizi nelle vicinanze
+                {' '}
                 <span className="text-xs text-gray-400 font-normal bg-gray-100 px-2 py-0.5 rounded">via Geoapify</span>
               </h2>
               <div className="flex flex-wrap gap-2">

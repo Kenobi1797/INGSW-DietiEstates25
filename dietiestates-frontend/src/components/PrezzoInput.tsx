@@ -50,7 +50,7 @@ export default function PrezzoInput({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
     // Accetta solo cifre, punti e virgola
-    const sanitized = raw.replace(/[^0-9.,]/g, '');
+    const sanitized = raw.replaceAll(/[^0-9.,]/g, '');
     const numeric = parsePrezzo(sanitized);
     if (numeric >= (min ?? 0)) onChange(numeric);
     else onChange(0);

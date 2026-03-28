@@ -85,7 +85,7 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
         </div>
 
         {footer && (
-          <div onClick={(e) => e.stopPropagation()}>
+          <div data-stop-card-click="true">
             {footer}
           </div>
         )}
@@ -94,10 +94,28 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
   );
 
   if (onClick) {
+    const handleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
+      const target = event.target as HTMLElement;
+      if (target.closest('[data-stop-card-click="true"]')) return;
+      onClick();
+    };
+
+    const handleCardKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      onClick();
+    };
+
     return (
-      <button type="button" style={cardStyle} onClick={onClick}>
+      <div
+        role="button"
+        tabIndex={0}
+        style={cardStyle}
+        onClick={handleCardClick}
+        onKeyDown={handleCardKeyDown}
+      >
         {cardInner}
-      </button>
+      </div>
     );
   }
 
