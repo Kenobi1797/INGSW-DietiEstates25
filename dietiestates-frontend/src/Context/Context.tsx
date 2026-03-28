@@ -1,7 +1,7 @@
 // context/UserContext.tsx
 "use client";
 
-import { createContext, useState, ReactNode, useContext, useEffect } from "react";
+import { createContext, useState, ReactNode, useContext, useEffect, useMemo, useCallback } from "react";
 import { AuthUser } from "@/Models/AuthUser";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -14,7 +14,7 @@ export interface UserContextData {
 
 const UserContext = createContext<UserContextData | undefined>(undefined);
 
-export function UserProvider({ children }: { children: ReactNode }) {
+export function UserProvider({ children }: { readonly children: ReactNode }) {
   const [authuser, setAuthUser] = useState<AuthUser | null>(null);
 
   // Rehydrate user from token on mount
@@ -29,15 +29,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
       .catch(() => {});
   }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setAuthUser(null);
-    if (typeof window !== "undefined") {
+    if (typeof globalThis.window !== "undefined") {
       sessionStorage.removeItem('token');
     }
-  };
+  }, []);
+
+  const contextValue = useMemo(() => ({ authuser, setAuthUser, logout }), [authuser, logout]);
 
   return (
-    <UserContext.Provider value={{ authuser, setAuthUser, logout }}>
+    <UserContext.Provider value={contextValue}>
       {children}
     </UserContext.Provider>
   );

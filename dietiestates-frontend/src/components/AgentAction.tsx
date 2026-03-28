@@ -4,8 +4,8 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 
 interface Props {
-  id: number;
-  isVenduto: boolean;
+  readonly id: number;
+  readonly isVenduto: boolean;
 }
 
 export default function AgentActions({ id, isVenduto }: Props){
@@ -16,13 +16,14 @@ const router = useRouter();
     e.stopPropagation();
 
     switch (type) {
-    case 'offerta manuale':
-      const offerta = window.prompt("Inserisci l'importo dell'offerta manuale:");
-      if (type === 'offerta manuale' && isVenduto) {
+    case 'offerta manuale': {
+      globalThis.prompt("Inserisci l'importo dell'offerta manuale:");
+      if (isVenduto) {
       // chiamata da fare
       return; 
     }
       break;
+    }
 
     case 'valuta offerte':
       router.push(`/dashboard/valuta/${id}`);

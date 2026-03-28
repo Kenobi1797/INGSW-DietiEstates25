@@ -44,6 +44,33 @@ function countByStatus(offerte: OffertaLite[], stato: string) {
   return offerte.filter((offerta) => offerta.stato === stato).length;
 }
 
+async function fetchImmobiliDisponibili(): Promise<number> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/search?limit=200`);
+  if (!res.ok) throw new Error('Impossibile caricare gli immobili disponibili');
+  const data: unknown = await res.json();
+  return Array.isArray(data) ? data.length : 0;
+}
+
+async function fetchOfferteStats(
+  url: string,
+  token: string,
+  immobiliDisponibili: number,
+  errorMsg: string,
+): Promise<DashboardStats> {
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) throw new Error(errorMsg);
+  const data: unknown = await res.json();
+  const list: OffertaLite[] = Array.isArray(data) ? data : [];
+  return {
+    immobiliDisponibili,
+    offerteTotali: list.length,
+    offerteInAttesa: countByStatus(list, 'InAttesa'),
+    offerteAccettate: countByStatus(list, 'Accettata'),
+    offerteRifiutate: countByStatus(list, 'Rifiutata'),
+    controproposte: countByStatus(list, 'Controproposta'),
+  };
+}
+
 function getActionsByRole(ruolo: Ruolo): ActionItem[] {
   const ricerca: ActionItem = {
     href: "/search",
@@ -177,67 +204,28 @@ export default function DashboardAgent() {
         setStatsError("");
 
         const token = sessionStorage.getItem('token');
-
-        const immobiliRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/search?limit=200`);
-        if (!immobiliRes.ok) {
-          throw new Error('Impossibile caricare gli immobili disponibili');
-        }
-        const immobiliData = await immobiliRes.json();
-        const immobiliDisponibili = Array.isArray(immobiliData) ? immobiliData.length : 0;
+        const immobiliDisponibili = await fetchImmobiliDisponibili();
 
         if ((authuser.ruolo === "Agente" || authuser.ruolo === "AmministratoreAgenzia") && token) {
-          const offerteRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/agente`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
-          if (!offerteRes.ok) {
-            throw new Error('Impossibile caricare le offerte dell\'agente');
-          }
-
-          const offerteData = await offerteRes.json();
-          const offerteList: OffertaLite[] = Array.isArray(offerteData) ? offerteData : [];
-
-          setStats({
-            immobiliDisponibili,
-            offerteTotali: offerteList.length,
-            offerteInAttesa: countByStatus(offerteList, 'InAttesa'),
-            offerteAccettate: countByStatus(offerteList, 'Accettata'),
-            offerteRifiutate: countByStatus(offerteList, 'Rifiutata'),
-            controproposte: countByStatus(offerteList, 'Controproposta'),
-          });
-
+          setStats(await fetchOfferteStats(
+            `${process.env.NEXT_PUBLIC_API_URL}/offerte/agente`,
+            token, immobiliDisponibili,
+            "Impossibile caricare le offerte dell'agente",
+          ));
           return;
         }
 
         if (authuser.ruolo === "Cliente" && token) {
-          const offerteRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/utente`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
-          if (!offerteRes.ok) {
-            throw new Error('Impossibile caricare lo storico offerte del cliente');
-          }
-
-          const offerteData = await offerteRes.json();
-          const offerteList: OffertaLite[] = Array.isArray(offerteData) ? offerteData : [];
-
-          setStats({
-            immobiliDisponibili,
-            offerteTotali: offerteList.length,
-            offerteInAttesa: countByStatus(offerteList, 'InAttesa'),
-            offerteAccettate: countByStatus(offerteList, 'Accettata'),
-            offerteRifiutate: countByStatus(offerteList, 'Rifiutata'),
-            controproposte: countByStatus(offerteList, 'Controproposta'),
-          });
-
+          setStats(await fetchOfferteStats(
+            `${process.env.NEXT_PUBLIC_API_URL}/offerte/utente`,
+            token, immobiliDisponibili,
+            "Impossibile caricare lo storico offerte del cliente",
+          ));
           return;
         }
 
         // Supporto: focus su monitoraggio immobili disponibili
-        setStats({
-          ...EMPTY_STATS,
-          immobiliDisponibili,
-        });
+        setStats({ ...EMPTY_STATS, immobiliDisponibili });
 
       } catch (err) {
         setStats(EMPTY_STATS);
@@ -311,7 +299,7 @@ export default function DashboardAgent() {
         <div className="mb-8">
           {statsLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {[...Array(3)].map((_, i) => <div key={i} className="h-20 bg-gray-100 rounded-xl animate-pulse" />)}
+              {[...new Array<undefined>(3)].map((_, i) => <div key={`skeleton-${i}`} className="h-20 bg-gray-100 rounded-xl animate-pulse" />)}
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">

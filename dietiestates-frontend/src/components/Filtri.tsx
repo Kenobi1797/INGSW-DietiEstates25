@@ -16,9 +16,9 @@ export interface AvanzatiFilterState {
 }
 
 interface FiltriAvanzatiProps {
-  currentFiltri: AvanzatiFilterState;
-  onFiltriChange: (filtri: AvanzatiFilterState) => void;
-  onClose: () => void;
+  readonly currentFiltri: AvanzatiFilterState;
+  readonly onFiltriChange: (filtri: AvanzatiFilterState) => void;
+  readonly onClose: () => void;
 }
 
 export default function FiltriAvanzati({ currentFiltri, onFiltriChange, onClose }: FiltriAvanzatiProps) {
@@ -60,7 +60,6 @@ export default function FiltriAvanzati({ currentFiltri, onFiltriChange, onClose 
   };
 
   return (
-    <>
       
       <div className="filtri-modal-container" ref={popupRef}>
         <div className="filtri-popup-content">
@@ -71,14 +70,16 @@ export default function FiltriAvanzati({ currentFiltri, onFiltriChange, onClose 
         </div>
 
         <div className="filtro-group">
-          <label>Budget (€)</label>
+          <label htmlFor="filtri-prezzoMin">Budget (€)</label>
           <div className="dual-input">
             <input 
+              id="filtri-prezzoMin"
               type="number" placeholder="Min" 
               value={localFiltri.prezzoMin}
               onChange={(e) => handleChange('prezzoMin', e.target.value)}
             />
             <input 
+              id="filtri-prezzoMax"
               type="number" placeholder="Max" 
               value={localFiltri.prezzoMax}
               onChange={(e) => handleChange('prezzoMax', e.target.value)}
@@ -87,14 +88,16 @@ export default function FiltriAvanzati({ currentFiltri, onFiltriChange, onClose 
         </div>
 
         <div className="filtro-group">
-          <label>Numero di Stanze</label>
+          <label htmlFor="filtri-stanzeMin">Numero di Stanze</label>
           <div className="dual-input">
             <input 
+              id="filtri-stanzeMin"
               type="number" placeholder="Min" 
               value={localFiltri.stanzeMin}
               onChange={(e) => handleChange('stanzeMin', e.target.value)}
             />
             <input 
+              id="filtri-stanzeMax"
               type="number" placeholder="Max" 
               value={localFiltri.stanzeMax}
               onChange={(e) => handleChange('stanzeMax', e.target.value)}
@@ -104,8 +107,9 @@ export default function FiltriAvanzati({ currentFiltri, onFiltriChange, onClose 
 
         <div className="filtro-row">
           <div className="filtro-group">
-            <label>Bagni</label>
+            <label htmlFor="filtri-bagni">Bagni</label>
             <input 
+              id="filtri-bagni"
               type="number" 
               placeholder="Es. 2"
               value={localFiltri.bagni}
@@ -114,8 +118,9 @@ export default function FiltriAvanzati({ currentFiltri, onFiltriChange, onClose 
           </div>
 
           <div className="filtro-group">
-            <label>Classe Energetica</label>
+            <label htmlFor="filtri-classeEnergetica">Classe Energetica</label>
             <select 
+              id="filtri-classeEnergetica"
               value={localFiltri.classeEnergetica}
               onChange={(e) => handleChange('classeEnergetica', e.target.value as classeEner)}
             >
@@ -137,8 +142,7 @@ export default function FiltriAvanzati({ currentFiltri, onFiltriChange, onClose 
             Applica
           </button>
         </div>
+        </div>
       </div>
-      </div>
-    </>
   );
 }

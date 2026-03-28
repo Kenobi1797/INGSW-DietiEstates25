@@ -5,8 +5,8 @@ import Link from "next/link";
 import { MenuLink } from "@/Constants/NavbarLinks";
 
 interface MenuProps {
-  items: MenuLink[];       // Voci da visualizzare
-  buttonLabel?: string;    // Testo del bottone (opzionale)
+  readonly items: MenuLink[];       // Voci da visualizzare
+  readonly buttonLabel?: string;    // Testo del bottone (opzionale)
 }
 
 export default function Menu({ items, buttonLabel = "Menu" }: MenuProps) {
@@ -32,14 +32,13 @@ export default function Menu({ items, buttonLabel = "Menu" }: MenuProps) {
       </button>
 
       {isOpen && (
-        <ul className="absolute right-0 top-full mt-2 bg-white border border-gray-200 text-black min-w-52 shadow-lg rounded-xl z-50 py-2" role="menu">
+        <ul className="absolute right-0 top-full mt-2 bg-white border border-gray-200 text-black min-w-52 shadow-lg rounded-xl z-50 py-2">
           {items.map(item => (
-            <li key={item.path} className="px-2 py-0" role="none">
+            <li key={item.path} className="px-2 py-0">
               <Link
                 href={item.path}
                 className="block px-3 py-2 rounded-lg hover:bg-red-50 hover:text-red-700 font-medium"
                 onClick={() => setIsOpen(false)}
-                role="menuitem"
               >
                 {item.label}
               </Link>

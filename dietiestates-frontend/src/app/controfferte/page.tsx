@@ -198,7 +198,7 @@ export default function ControffertePage() {
           <div className="mb-8">
             <h2 className="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-yellow-400 inline-block"></span>
-              Da valutare
+              {' '}Da valutare{' '}
               <span className="ml-1 bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-0.5 rounded-full border border-yellow-300">
                 {pendenti.length}
               </span>
@@ -214,7 +214,7 @@ export default function ControffertePage() {
           <div>
             <h2 className="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-gray-400 inline-block"></span>
-              Storico risposte
+              {' '}Storico risposte{' '}
               <span className="ml-1 bg-gray-100 text-gray-600 text-xs font-bold px-2 py-0.5 rounded-full border border-gray-300">
                 {storico.length}
               </span>

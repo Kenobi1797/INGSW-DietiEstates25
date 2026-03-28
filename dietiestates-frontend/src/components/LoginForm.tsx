@@ -34,7 +34,7 @@ export default function LoginForm() {
 
   const handleGoogleLogin = () => {
     if (!API_URL) { setError('Indirizzo API non configurato'); return; }
-    window.location.href = `${API_URL}/auth/google`;
+    globalThis.location.href = `${API_URL}/auth/google`;
   };
 
   return (
@@ -49,7 +49,7 @@ export default function LoginForm() {
         onClick={handleGoogleLogin}
         className="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-xl py-2.5 px-4 text-sm font-medium hover:bg-gray-50 transition-colors"
       >
-        <img src="/GoogleLogo.svg" alt="Google" width={18} height={18} />
+        <img src="/GoogleLogo.svg" alt="Google" width={18} height={18} />{' '}
         Continua con Google
       </button>
 

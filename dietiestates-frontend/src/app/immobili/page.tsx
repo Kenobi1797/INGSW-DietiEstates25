@@ -16,7 +16,7 @@ export default function ListaImmobiliPage() {
       setLoading(true);
       setErrore(null);
       try {
-        const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
+        const token = typeof globalThis.window === "undefined" ? null : sessionStorage.getItem("token");
         const query = new URLSearchParams({
           orderBy: "DataCreazione",
           orderDir: "DESC",
@@ -33,7 +33,7 @@ export default function ListaImmobiliPage() {
 
         const data = await response.json();
         if (!Array.isArray(data)) {
-          throw new Error("Risposta non valida dal server");
+          throw new TypeError("Risposta non valida dal server");
         }
 
         setImmobili(data as ImmobileS[]);

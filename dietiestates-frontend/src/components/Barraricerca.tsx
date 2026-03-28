@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import RicercaIndirizzo from '@/components/SearchInd';
-import FiltriAvanzati from './Filtri';
-import { AvanzatiFilterState } from './Filtri';
+import FiltriAvanzati, { AvanzatiFilterState } from './Filtri';
 
 export interface StatoRicerca {
   contratto: 'vendita' | 'affitto';
@@ -82,7 +81,7 @@ export default function Barraricerca() {
             setRicerca(prev => ({
               ...prev,
               indirizzoTestuale: value,
-              posizione: prev.posizione && prev.posizione.indirizzo === value ? prev.posizione : null,
+              posizione: prev.posizione?.indirizzo === value ? prev.posizione : null,
             }));
           }}
         />

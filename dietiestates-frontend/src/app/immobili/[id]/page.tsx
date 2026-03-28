@@ -73,7 +73,7 @@ export default function ImmobileDettaglioPage() {
     async function loadDettaglio() {
       try {
         // Il token è opzionale: la pagina è pubblica in lettura
-        const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
+        const token = typeof globalThis.window === 'undefined' ? null : sessionStorage.getItem('token');
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/${params.id}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
@@ -140,8 +140,8 @@ export default function ImmobileDettaglioPage() {
           <Image src={foto[fotoIdx]} alt={immobile.titolo} fill className="object-cover" unoptimized />
           {foto.length > 1 && (
             <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2">
-              {foto.map((_, i) => (
-                <button key={i} onClick={() => setFotoIdx(i)} aria-label={`Foto ${i + 1}`}
+              {foto.map((url, i) => (
+                <button key={url} onClick={() => setFotoIdx(i)} aria-label={`Foto ${i + 1}`}
                   className={`w-2.5 h-2.5 rounded-full border border-white transition-all ${i === fotoIdx ? 'bg-white scale-125' : 'bg-white/40'}`}
                 />
               ))}
@@ -197,7 +197,7 @@ export default function ImmobileDettaglioPage() {
                   <span key={key} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border ${
                     value ? 'bg-green-50 border-green-200 text-green-700' : 'bg-gray-50 border-gray-200 text-gray-400'
                   }`}>
-                    {icon}{label} {value ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={3} />}
+                    {icon}{label}{' '}{value ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={3} />}
                   </span>
                 ))}
               </div>

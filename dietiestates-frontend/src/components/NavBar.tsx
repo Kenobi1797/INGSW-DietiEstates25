@@ -5,13 +5,12 @@ import Menu from "./Menu";
 import { useUser } from "@/Context/Context";
 import { getMenuForRole } from "@/Constants/NavbarLinks";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface NavbarProps {
-  className?: string;
+  readonly className?: string;
   /** compact=true → mostra dropdown "Azioni" (solo sulla home) */
-  compact?: boolean;
+  readonly compact?: boolean;
 }
 
 export default function Navbar({ className = "", compact = false }: NavbarProps) {

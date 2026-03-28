@@ -2,8 +2,7 @@
 
 import { useEffect, useState, useMemo, Suspense } from "react";
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Barraricerca from "@/components/Barraricerca";
 import ListaImmobili from "@/components/ListImmobili";
 import { ImmobileS } from "@/Models/ImmobileS";
@@ -21,8 +20,8 @@ function SearchContent() {
   // Number(null) === 0, quindi controlliamo esplicitamente la presenza
   const rawLat = searchParams.get("lat");
   const rawLon = searchParams.get("lon");
-  const lat = rawLat !== null ? Number(rawLat) : 0;
-  const lon = rawLon !== null ? Number(rawLon) : 0;
+  const lat = rawLat === null ? 0 : Number(rawLat);
+  const lon = rawLon === null ? 0 : Number(rawLon);
   const address = searchParams.get("address") || "";
 
   // Centro mappa: coordinate esplicite → primo risultato → centro Italia
@@ -35,13 +34,13 @@ function SearchContent() {
   useEffect(() => {
     async function fetchImmobili() {
       // Bug fix: Number(null)===0, quindi lat=0/lon=0 NON significa coordinate valide
-      const hasCoords = lat !== 0 && lon !== 0 && !isNaN(lat) && !isNaN(lon);
+      const hasCoords = lat !== 0 && lon !== 0 && !Number.isNaN(lat) && !Number.isNaN(lon);
 
       setLoading(true);
       setErrore(null);
 
       try {
-        const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
+        const token = typeof globalThis.window === "undefined" ? null : sessionStorage.getItem("token");
         const currentParams = new URLSearchParams(searchParamsKey);
         const query = new URLSearchParams();
         if (hasCoords) {

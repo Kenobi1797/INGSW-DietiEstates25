@@ -4,9 +4,9 @@ import ImmobileCard from './CardImmobili';
 import { ImmobileS } from '@/Models/ImmobileS';
 
 interface Props {
-  immobili: ImmobileS[];
-  loading: boolean;
-  renderExtra?: (immobile: ImmobileS) => {
+  readonly immobili: ImmobileS[];
+  readonly loading: boolean;
+  readonly renderExtra?: (immobile: ImmobileS) => {
     footer?: React.ReactNode;
     onClick?: () => void;
   };

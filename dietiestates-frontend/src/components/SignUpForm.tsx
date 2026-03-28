@@ -27,7 +27,7 @@ export default function SignUpForm() {
   const handleGoogleLogin = () => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     if (!apiUrl) { setError('URL API non configurato'); return; }
-    window.location.href = `${apiUrl}/auth/google`;
+    globalThis.location.href = `${apiUrl}/auth/google`;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +61,7 @@ export default function SignUpForm() {
         onClick={handleGoogleLogin}
         className="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-xl py-2.5 px-4 text-sm font-medium hover:bg-gray-50 transition-colors"
       >
-        <img src="/GoogleLogo.svg" alt="Google" width={18} height={18} />
+        <img src="/GoogleLogo.svg" alt="Google" width={18} height={18} />{' '}
         Continua con Google
       </button>
 

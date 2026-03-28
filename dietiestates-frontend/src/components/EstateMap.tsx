@@ -29,9 +29,9 @@ function AutoCenter({ lat, lon }: { lat: number, lon: number }) {
 }
 
 interface MapPreviewProps {
-  lat?: number;
-  lon?: number;
-  immobili?: ImmobileS[];
+  readonly lat?: number;
+  readonly lon?: number;
+  readonly immobili?: ImmobileS[];
 }
 
 export default function EstateMap({ lat = 0, lon = 0, immobili = [] }: MapPreviewProps) {

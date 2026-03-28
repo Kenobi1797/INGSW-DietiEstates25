@@ -31,8 +31,8 @@ services:
       - JWT_EXPIRES_IN=7d
       - SESSION_SECRET=dietiestates_session_secret_2025
       - GEOAPIFY_KEY=d563955355f940038bab665e9c538a44
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
       - FRONTEND_URL=http://localhost:3000
     depends_on:
       - dietiestates-db

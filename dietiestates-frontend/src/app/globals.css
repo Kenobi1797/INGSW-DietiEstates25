@@ -162,11 +162,6 @@ a {
   text-align: center;
 }
 
-.btn-primary {
-  background-color: #dc2626;
-  color: white;
-}
-
 .sfondoHome {
   background-image: url('/casa01.jpg');
   background-size: cover;
@@ -823,7 +818,7 @@ a {
   border-color: #bfdbfe;
 }
 
-.form {
+.immobile-card .form {
   display: grid;
   gap: 1rem;
 }
@@ -935,13 +930,13 @@ a {
   gap: 1rem;
 }
 
-.checkbox-grid {
+.immobile-card .checkbox-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0,1fr));
   gap: .75rem;
 }
 
-.check-item {
+.immobile-card .check-item {
   display: flex;
   align-items: center;
   gap: .4rem;
@@ -976,8 +971,8 @@ a {
   margin-top: 1rem;
 }
 
-.btn-primary,
-.btn-secondary {
+.immobile-card .btn-primary,
+.immobile-card .btn-secondary {
   padding: .8rem 1rem;
   border-radius: .75rem;
   border: none;
@@ -985,28 +980,28 @@ a {
   font-weight: 600;
 }
 
-.btn-primary {
+.immobile-card .btn-primary {
   background: #1d4ed8;
   color: white;
 }
 
-.btn-secondary {
+.immobile-card .btn-secondary {
   background: #e2e8f0;
   color: #1e293b;
 }
 
-.btn-secondary:hover,
-.btn-primary:hover {
+.immobile-card .btn-secondary:hover,
+.immobile-card .btn-primary:hover {
   opacity: .9;
 }
 
 @media (max-width: 768px) {
   .grid-2,
-  .checkbox-grid {
+  .immobile-card .checkbox-grid {
     grid-template-columns: 1fr;
   }
 
-  .actions {
+  .immobile-card .actions {
     flex-wrap: wrap;
     justify-content: center;
   }

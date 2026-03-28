@@ -118,8 +118,9 @@ export default function ProfiloPage() {
 
           <form onSubmit={handleChangePassword} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password attuale</label>
+              <label htmlFor="profilo-oldPassword" className="block text-sm font-medium text-gray-700 mb-1">Password attuale</label>
               <input
+                id="profilo-oldPassword"
                 type="password"
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
@@ -129,8 +130,9 @@ export default function ProfiloPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nuova password</label>
+              <label htmlFor="profilo-newPassword" className="block text-sm font-medium text-gray-700 mb-1">Nuova password</label>
               <input
+                id="profilo-newPassword"
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -141,8 +143,9 @@ export default function ProfiloPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Conferma nuova password</label>
+              <label htmlFor="profilo-confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">Conferma nuova password</label>
               <input
+                id="profilo-confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}

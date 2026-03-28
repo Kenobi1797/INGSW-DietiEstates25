@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { MenuLink } from "@/Constants/NavbarLinks";
 
 interface AgencyBarProps {
-  items: MenuLink[];
+  readonly items: MenuLink[];
 }
 
 export default function AgencyBar({ items }: AgencyBarProps) {

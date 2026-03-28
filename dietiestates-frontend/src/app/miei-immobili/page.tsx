@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/Context/Context';
 import { ImmobileAgente } from '@/Models/ImmobileAgent';
@@ -40,36 +40,25 @@ export default function MieiImmobiliPage() {
     </div>
   );
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="max-w-5xl mx-auto">
-
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">I Miei Immobili</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Seleziona un immobile per gestire le offerte ricevute
-          </p>
-        </div>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm">
-            {error}
-          </div>
-        )}
-
-        {loading ? (
-          <div className="space-y-4">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="h-32 bg-gray-200 rounded-xl animate-pulse" />
-            ))}
-          </div>
-        ) : immobili.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-gray-400 text-lg">Nessun immobile trovato.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {immobili.map((imm) => (
+  let immobiliContent: React.ReactNode;
+  if (loading) {
+    immobiliContent = (
+      <div className="space-y-4">
+        {[1, 2, 3].map(i => (
+          <div key={i} className="h-32 bg-gray-200 rounded-xl animate-pulse" />
+        ))}
+      </div>
+    );
+  } else if (immobili.length === 0) {
+    immobiliContent = (
+      <div className="text-center py-20">
+        <p className="text-gray-400 text-lg">Nessun immobile trovato.</p>
+      </div>
+    );
+  } else {
+    immobiliContent = (
+      <div className="space-y-4">
+        {immobili.map((imm) => (
               <div
                 key={imm.id}
                 style={{
@@ -171,9 +160,29 @@ export default function MieiImmobiliPage() {
                   </div>
                 </div>
               </div>
-            ))}
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+      <div className="max-w-5xl mx-auto">
+
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">I Miei Immobili</h1>
+          <p className="text-gray-500 text-sm mt-1">
+            Seleziona un immobile per gestire le offerte ricevute
+          </p>
+        </div>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm">
+            {error}
           </div>
         )}
+
+        {immobiliContent}
       </div>
     </div>
   );

@@ -3,9 +3,9 @@ import { School, Trees, TrainFront, MapPin } from 'lucide-react';
 import { ImmobileS } from '@/Models/ImmobileS';
 
 interface Props {
-  immobile: ImmobileS;
-  footer?: React.ReactNode;
-  onClick?: () => void;
+  readonly immobile: ImmobileS;
+  readonly footer?: React.ReactNode;
+  readonly onClick?: () => void;
 }
 
 export default function ImmobileCard({ immobile, footer, onClick }: Props) {
@@ -15,6 +15,9 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
 
   return (
     <div
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick(); } : undefined}
       style={{
         display: 'flex',
         flexDirection: 'row',
@@ -82,7 +85,7 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
         </div>
 
         {footer && (
-          <div onClick={(e) => e.stopPropagation()}>
+          <div role="presentation" onClick={(e) => e.stopPropagation()}>
             {footer}
           </div>
         )}

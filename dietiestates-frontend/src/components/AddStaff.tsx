@@ -1,17 +1,15 @@
 "use client";
 import { useState } from "react";
-import { useUser } from "@/Context/Context";
 import { createAgente, createSupporto } from "@/Services/CreaStaff";
 import { CircleCheck } from 'lucide-react';
 
 interface Props {
-  targetRole: "Agente" | "Supporto";
-  onCancel: () => void;
+  readonly targetRole: "Agente" | "Supporto";
+  readonly onCancel: () => void;
 }
 
 export default function AddStaff({ targetRole, onCancel }: Props) {
   const [formData, setFormData] = useState({ nome: "", cognome: "", email: "", password: "" });
-  const { authuser } = useUser();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -86,8 +84,9 @@ export default function AddStaff({ targetRole, onCancel }: Props) {
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+            <label htmlFor="staff-nome" className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
             <input
+              id="staff-nome"
               type="text"
               required
               value={formData.nome}
@@ -97,8 +96,9 @@ export default function AddStaff({ targetRole, onCancel }: Props) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Cognome</label>
+            <label htmlFor="staff-cognome" className="block text-sm font-medium text-gray-700 mb-1">Cognome</label>
             <input
+              id="staff-cognome"
               type="text"
               required
               value={formData.cognome}
@@ -109,8 +109,9 @@ export default function AddStaff({ targetRole, onCancel }: Props) {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email aziendale</label>
+          <label htmlFor="staff-email" className="block text-sm font-medium text-gray-700 mb-1">Email aziendale</label>
           <input
+            id="staff-email"
             type="email"
             required
             value={formData.email}
@@ -120,8 +121,9 @@ export default function AddStaff({ targetRole, onCancel }: Props) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password temporanea</label>
+          <label htmlFor="staff-password" className="block text-sm font-medium text-gray-700 mb-1">Password temporanea</label>
           <input
+            id="staff-password"
             type="password"
             required
             minLength={6}
