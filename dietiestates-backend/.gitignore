@@ -9,6 +9,11 @@
 # Production
 /dist
 
+# Environment files (segreti)
+.env
+.env.*
+!.env.example
+
 # Test coverage
 /coverage
 

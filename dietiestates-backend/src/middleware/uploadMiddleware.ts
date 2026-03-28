@@ -1,33 +1,54 @@
 import multer from 'multer';
 import path from 'node:path';
 import fs from 'node:fs';
+import { randomUUID } from 'node:crypto';
 import { Request } from 'express';
 
-const uploadsDir = path.join(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+const uploadsDir = path.resolve(process.cwd(), 'uploads');
+
+const allowedMimeToExtension: Record<string, string> = {
+  'image/jpeg': '.jpg',
+  'image/png': '.png',
+  'image/webp': '.webp',
+  'image/gif': '.gif',
+};
+
+function normalizeImmobileId(rawValue: unknown): string | undefined | null {
+  if (rawValue === undefined || rawValue === null) return undefined;
+  const firstValue = Array.isArray(rawValue) ? rawValue[0] : rawValue;
+  const value = String(firstValue).trim();
+  if (!value) return undefined;
+  if (!/^\d+$/.test(value)) return null;
+  return value;
+}
 
 const storage = multer.diskStorage({
   destination: (req: Request, _file, cb) => {
-    // Estrai immobileId dai parametri della request (query, body, o params)
-    const immobileId = req.query.immobileId || req.body?.immobileId || req.params?.immobileId;
+    const rawImmobileId = req.query.immobileId ?? req.body?.immobileId ?? req.params?.immobileId;
+    const immobileId = normalizeImmobileId(rawImmobileId);
 
-    let destDir = uploadsDir;
-
-    // Se immobileId è fornito, crea una sottocartella
-    if (immobileId) {
-      destDir = path.join(uploadsDir, String(immobileId));
+    if (immobileId === null) {
+      cb(new Error('immobileId non valido'), '');
+      return;
     }
 
-    // Ricrea sempre la destinazione se è stata rimossa manualmente a runtime.
-    if (!fs.existsSync(destDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
+    const destinationPath = immobileId ? path.resolve(uploadsDir, immobileId) : uploadsDir;
+    const isInsideUploadsDir =
+      destinationPath === uploadsDir || destinationPath.startsWith(`${uploadsDir}${path.sep}`);
+
+    if (!isInsideUploadsDir) {
+      cb(new Error('Percorso upload non valido'), '');
+      return;
     }
 
-    cb(null, destDir);
+    fs.promises
+      .mkdir(destinationPath, { recursive: true })
+      .then(() => cb(null, destinationPath))
+      .catch((error: unknown) => cb(error as Error, ''));
   },
   filename: (_req, file, cb) => {
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${unique}${path.extname(file.originalname)}`);
+    const ext = allowedMimeToExtension[file.mimetype] || path.extname(file.originalname).toLowerCase();
+    cb(null, `${randomUUID()}${ext}`);
   },
 });
 
@@ -35,8 +56,11 @@ const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB per file
   fileFilter: (_req, file, cb) => {
-    if (/^image\/(jpeg|png|webp|gif)$/.test(file.mimetype)) cb(null, true);
-    else cb(new Error('Solo immagini JPEG, PNG, WebP o GIF'));
+    if (Object.prototype.hasOwnProperty.call(allowedMimeToExtension, file.mimetype)) {
+      cb(null, true);
+      return;
+    }
+    cb(new Error('Solo immagini JPEG, PNG, WebP o GIF'));
   },
 });
 
