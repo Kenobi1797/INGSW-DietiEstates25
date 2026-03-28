@@ -64,6 +64,9 @@ export default function SignUpForm() {
         <img src="/GoogleLogo.svg" alt="Google" width={18} height={18} />{' '}
         Continua con Google
       </button>
+      <p className="text-xs text-gray-400 text-center -mt-2">
+        Se hai già un account Google collegato, verrai reindirizzato direttamente al login.
+      </p>
 
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-gray-200" />
