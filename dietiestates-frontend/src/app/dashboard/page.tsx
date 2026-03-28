@@ -129,7 +129,7 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
         className: "bg-indigo-500 hover:bg-indigo-700",
       },
       {
-        href: "/crea-staff",
+        href: "/crea-agente",
         label: "Crea Agente",
         Icon: Users,
         className: "bg-red-500 hover:bg-red-700",
@@ -164,10 +164,16 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
         className: "bg-green-500 hover:bg-green-700",
       },
       {
-        href: "/crea-staff",
-        label: "Crea Staff",
+        href: "/crea-agente",
+        label: "Crea Agente",
         Icon: Users,
         className: "bg-red-500 hover:bg-red-700",
+      },
+      {
+        href: "/crea-supporto",
+        label: "Crea Supporto",
+        Icon: Users,
+        className: "bg-orange-500 hover:bg-orange-700",
       },
       {
         href: "/profilo",
