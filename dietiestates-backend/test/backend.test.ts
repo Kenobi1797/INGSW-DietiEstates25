@@ -94,7 +94,10 @@ describe('Backend unit tests', () => {
   // Metodo 4: getNearbyPlaces(lat, lon, radius) — 3 parametri
   describe('geoapify.getNearbyPlaces', () => {
     it('restituisce i luoghi vicini aggregati per categoria', async () => {
+      const previousKey = process.env.GEOAPIFY_KEY;
+      const previousApiKey = process.env.GEOAPIFY_API_KEY;
       process.env.GEOAPIFY_KEY = 'testkey';
+      delete process.env.GEOAPIFY_API_KEY;
 
       (axios.get as jest.Mock)
         .mockResolvedValueOnce({ data: { features: [{ properties: { name: 'Scuola ABC', distance: 100, categories: ['education.school'] } }] } })
@@ -105,11 +108,26 @@ describe('Backend unit tests', () => {
       expect(axios.get).toHaveBeenCalledTimes(3);
       expect(places).toHaveLength(2);
       expect(places.map(p => p.name)).toEqual(['Scuola ABC', 'Fermata Bus']);
+
+      if (previousKey === undefined) delete process.env.GEOAPIFY_KEY;
+      else process.env.GEOAPIFY_KEY = previousKey;
+
+      if (previousApiKey === undefined) delete process.env.GEOAPIFY_API_KEY;
+      else process.env.GEOAPIFY_API_KEY = previousApiKey;
     });
 
     it('lancia un\'eccezione se la chiave API è mancante', async () => {
+      const previousKey = process.env.GEOAPIFY_KEY;
+      const previousApiKey = process.env.GEOAPIFY_API_KEY;
       delete process.env.GEOAPIFY_KEY;
+      delete process.env.GEOAPIFY_API_KEY;
       await expect(getNearbyPlaces(45, 9)).rejects.toThrow('Chiave Geoapify mancante');
+
+      if (previousKey === undefined) delete process.env.GEOAPIFY_KEY;
+      else process.env.GEOAPIFY_KEY = previousKey;
+
+      if (previousApiKey === undefined) delete process.env.GEOAPIFY_API_KEY;
+      else process.env.GEOAPIFY_API_KEY = previousApiKey;
     });
   });
 });
