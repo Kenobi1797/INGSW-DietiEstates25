@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, MessageSquare, Undo2, Inbox } from 'lucide-react';
 import { formatDateIt, formatEuro, STATO_CONFIG, StatoOfferta } from '@/Constants/offerte';
+import { fetchOfferteByImmobile } from '@/Services/offerteService';
 
 interface Offerta {
   idOfferta: number;
@@ -34,19 +35,11 @@ export default function StoricoImmobilePage() {
     if (!id) return;
     async function fetchStorico() {
       try {
-        const token = sessionStorage.getItem('token');
-        if (!token) { setError('Sessione non valida.'); return; }
-
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/immobile/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) throw new Error('Errore nel caricamento storico');
-        const data = await res.json();
-        const list: Offerta[] = Array.isArray(data) ? data : [];
+        const list = await fetchOfferteByImmobile<Offerta>(id);
         setOfferte(list);
         if (list.length > 0 && list[0].titolo) setTitoloImmobile(list[0].titolo);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Errore');
+        setError(err instanceof Error ? err.message : 'Errore nel caricamento storico');
       } finally {
         setLoading(false);
       }

@@ -10,6 +10,27 @@ import { useRouter } from 'next/navigation';
 import PrezzoInput from '@/components/PrezzoInput';
 import { Home, Building2, Trees, Sofa, Camera } from 'lucide-react';
 
+type FeatureOptionName = 'ascensore' | 'climatizzazione' | 'cantina' | 'portineria' | 'balcone' | 'terrazzo' | 'giardino' | 'postoAuto';
+
+interface FeatureOption {
+  name: FeatureOptionName;
+  label: string;
+}
+
+const INTERNAL_FEATURES: FeatureOption[] = [
+  { name: 'ascensore', label: 'Ascensore' },
+  { name: 'climatizzazione', label: 'Climatizzazione' },
+  { name: 'cantina', label: 'Cantina/Solaio' },
+  { name: 'portineria', label: 'Portineria' },
+];
+
+const EXTERNAL_FEATURES: FeatureOption[] = [
+  { name: 'balcone', label: 'Balcone' },
+  { name: 'terrazzo', label: 'Terrazzo' },
+  { name: 'giardino', label: 'Giardino' },
+  { name: 'postoAuto', label: 'Posto auto/garage' },
+];
+
 export default function PaginaCaricamentoImmobile() {
   const { authuser } = useUser();
   const router = useRouter();
@@ -138,6 +159,22 @@ export default function PaginaCaricamentoImmobile() {
 
   const stepTitles = ['Dettagli generali', 'Caratteristiche', 'Posizione'];
 
+  const renderFeatureCheckboxes = (options: FeatureOption[]) => (
+    <div className="checkbox-grid">
+      {options.map(({ name, label }) => (
+        <label key={name} className="check-item">
+          <input
+            type="checkbox"
+            name={name}
+            checked={(formData as unknown as Record<string, boolean>)[name] ?? false}
+            onChange={handleChange}
+          />
+          {label}
+        </label>
+      ))}
+    </div>
+  );
+
   return (
     <main className="immobile-page">
       <section className="immobile-card">
@@ -223,7 +260,7 @@ export default function PaginaCaricamentoImmobile() {
                   ))}
                 </select>
                 <p className="field-help">
-                  Indica la classe dell'APE: A+/A = consumi piu bassi, G = consumi piu alti.
+                  Indica la classe dell&apos;APE: A+/A = consumi piu bassi, G = consumi piu alti.
                 </p>
                 <div className="energy-legend" aria-hidden="true">
                   {['A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G'].map((classe) => (
@@ -312,47 +349,13 @@ export default function PaginaCaricamentoImmobile() {
               {/* Dotazioni interne */}
               <div className="caratteristiche-group">
                 <h3 className="group-title"><Sofa size={16} className="inline mr-1" />Dotazioni Interne</h3>
-                <div className="checkbox-grid">
-                  {[
-                    { name: 'ascensore', label: 'Ascensore' },
-                    { name: 'climatizzazione', label: 'Climatizzazione' },
-                    { name: 'cantina', label: 'Cantina/Solaio' },
-                    { name: 'portineria', label: 'Portineria' },
-                  ].map(({ name, label }) => (
-                    <label key={name} className="check-item">
-                      <input
-                        type="checkbox"
-                        name={name}
-                        checked={(formData as unknown as Record<string, boolean>)[name] ?? false}
-                        onChange={handleChange}
-                      />
-                      {label}
-                    </label>
-                  ))}
-                </div>
+                {renderFeatureCheckboxes(INTERNAL_FEATURES)}
               </div>
 
               {/* Spazi esterni */}
               <div className="caratteristiche-group">
                 <h3 className="group-title"><Trees size={16} className="inline mr-1" />Spazi Esterni</h3>
-                <div className="checkbox-grid">
-                  {[
-                    { name: 'balcone', label: 'Balcone' },
-                    { name: 'terrazzo', label: 'Terrazzo' },
-                    { name: 'giardino', label: 'Giardino' },
-                    { name: 'postoAuto', label: 'Posto auto/garage' },
-                  ].map(({ name, label }) => (
-                    <label key={name} className="check-item">
-                      <input
-                        type="checkbox"
-                        name={name}
-                        checked={(formData as unknown as Record<string, boolean>)[name] ?? false}
-                        onChange={handleChange}
-                      />
-                      {label}
-                    </label>
-                  ))}
-                </div>
+                {renderFeatureCheckboxes(EXTERNAL_FEATURES)}
               </div>
 
               {/* Foto dell&apos;immobile */}

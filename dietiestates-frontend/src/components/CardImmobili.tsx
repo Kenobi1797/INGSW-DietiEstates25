@@ -84,40 +84,34 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
           )}
         </div>
 
-        {footer && (
-          <div data-stop-card-click="true">
-            {footer}
-          </div>
-        )}
       </div>
     </>
   );
 
   if (onClick) {
-    const handleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
-      const target = event.target as HTMLElement;
-      if (target.closest('[data-stop-card-click="true"]')) return;
-      onClick();
-    };
-
-    const handleCardKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      event.preventDefault();
-      onClick();
-    };
-
     return (
-      <div
-        role="button"
-        tabIndex={0}
-        style={cardStyle}
-        onClick={handleCardClick}
-        onKeyDown={handleCardKeyDown}
-      >
-        {cardInner}
+      <div style={cardStyle}>
+        <button
+          type="button"
+          onClick={onClick}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            border: 'none',
+            background: 'transparent',
+            padding: 0,
+            width: '100%',
+            textAlign: 'left',
+            cursor: 'pointer',
+            font: 'inherit',
+          }}
+        >
+          {cardInner}
+        </button>
+        {footer && <div style={{ padding: '0 16px 16px' }}>{footer}</div>}
       </div>
     );
   }
 
-  return <div style={cardStyle}>{cardInner}</div>;
+  return <div style={cardStyle}>{cardInner}{footer && <div style={{ padding: '0 16px 16px' }}>{footer}</div>}</div>;
 }

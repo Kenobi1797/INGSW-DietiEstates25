@@ -15,6 +15,9 @@ import passport from 'passport';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Evita l'header X-Powered-By per non esporre dettagli del framework.
+app.disable('x-powered-by');
+
 // Middleware per parse JSON
 app.use(express.json());
 

@@ -15,7 +15,7 @@ export const STATO_FALLBACK = {
 };
 
 export const formatEuro = (amount: number | undefined): string =>
-  amount !== undefined ? amount.toLocaleString('it-IT') : '0';
+  amount === undefined ? '0' : amount.toLocaleString('it-IT');
 
 export const formatDateIt = (dateIso: string): string =>
   new Date(dateIso).toLocaleDateString('it-IT', {

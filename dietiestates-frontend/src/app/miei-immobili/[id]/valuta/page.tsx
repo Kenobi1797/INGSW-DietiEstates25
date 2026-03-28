@@ -6,6 +6,7 @@ import Link from 'next/link';
 import PrezzoInput from '@/components/PrezzoInput';
 import { ArrowLeft, Check, X, Undo2, Inbox, MapPin } from 'lucide-react';
 import { formatDateIt, formatEuro, STATO_CONFIG, StatoOfferta } from '@/Constants/offerte';
+import { fetchOfferteByImmobile } from '@/Services/offerteService';
 
 interface Offerta {
   idOfferta: number;
@@ -40,14 +41,7 @@ export default function ValutaImmobilePage() {
   async function fetchOfferte() {
     setLoading(true);
     try {
-      const token = sessionStorage.getItem('token');
-      if (!token) { setError('Sessione non valida.'); return; }
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/immobile/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error('Errore nel caricamento offerte');
-      const data = await res.json();
-      const list: Offerta[] = Array.isArray(data) ? data : [];
+      const list = await fetchOfferteByImmobile<Offerta>(id);
       setOfferte(list);
       if (list.length > 0 && list[0].titolo) setTitoloImmobile(list[0].titolo);
     } catch (err) {
