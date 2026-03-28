@@ -33,7 +33,7 @@ function RecenterMap({ position }: { position: [number, number] }) {
 interface EstateMapProps {
   readonly immobili: ImmobileS[];
   readonly center: [number, number]; 
-  onSelectImmobile?: (immobile: ImmobileS) => void;
+  readonly onSelectImmobile?: (immobile: ImmobileS) => void;
 }
 
 export default function EstateMap({ immobili, center, onSelectImmobile }: EstateMapProps) {

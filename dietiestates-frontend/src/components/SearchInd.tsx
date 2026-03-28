@@ -99,8 +99,13 @@ export default function RicercaIndirizzo({
     const addr = r.address;
     if (!addr) return r.display_name;
     const street = addr.road || addr.pedestrian || '';
+    const houseNumber = addr.house_number || '';
     const city = addr.city || addr.town || addr.village || addr.municipality || '';
-    if (street && city) return `${street}, ${city}`;
+    if (street && city) {
+      return houseNumber
+        ? `${street} ${houseNumber}, ${city}`
+        : `${street}, ${city}`;
+    }
     return r.display_name;
   };
 
@@ -123,7 +128,7 @@ export default function RicercaIndirizzo({
           onQueryChange?.(value);
         }}
         onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}
-        placeholder={soloIndirizziPrecisi ? "Via, Numero, Città" : "Cerca città o indirizzo..."}
+        placeholder={soloIndirizziPrecisi ? "Es. Via Roma 12, Napoli" : "Cerca città o indirizzo..."}
       />
 
       {errore && <p className="address-error-msg">{errore}</p>}

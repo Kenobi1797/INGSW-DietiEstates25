@@ -224,7 +224,15 @@ export default function DashboardAgent() {
           return;
         }
 
-        // Supporto: focus su monitoraggio immobili disponibili
+        if (authuser.ruolo === "Supporto" && token) {
+          setStats(await fetchOfferteStats(
+            `${process.env.NEXT_PUBLIC_API_URL}/offerte/storico`,
+            token, immobiliDisponibili,
+            "Impossibile caricare le offerte",
+          ));
+          return;
+        }
+
         setStats({ ...EMPTY_STATS, immobiliDisponibili });
 
       } catch (err) {
@@ -244,15 +252,7 @@ export default function DashboardAgent() {
 
   const actions = getActionsByRole(authuser.ruolo as Ruolo);
 
-  const cards = authuser.ruolo === "Supporto"
-    ? [
-        {
-          title: 'Immobili Disponibili',
-          value: stats.immobiliDisponibili,
-          colors: 'bg-blue-100 text-blue-600 border-blue-200',
-        },
-      ]
-    : [
+  const cards = [
         {
           title: 'Immobili Disponibili',
           value: stats.immobiliDisponibili,
@@ -299,7 +299,7 @@ export default function DashboardAgent() {
         <div className="mb-8">
           {statsLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {Array.from({length: 3}).map((_, i) => <div key={`skeleton-${i}`} className="h-20 bg-gray-100 rounded-xl animate-pulse" />)}
+              {(['sk-a', 'sk-b', 'sk-c', 'sk-d', 'sk-e', 'sk-f']).map((k) => <div key={k} className="h-20 bg-gray-100 rounded-xl animate-pulse" />)}
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">

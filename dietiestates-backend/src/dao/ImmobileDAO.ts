@@ -96,6 +96,23 @@ function buildDistanceClause(
   return { distanceSelect, nextIdx: idx + 3 };
 }
 
+function applyBoolFilters(
+  bools: Record<string, string | undefined>,
+  conditions: string[],
+  values: unknown[],
+  startIdx: number,
+): number {
+  let idx = startIdx;
+  for (const [k, v] of Object.entries(bools)) {
+    if (v !== undefined) {
+      conditions.push(`${k} = $${idx}`);
+      values.push(v === 'true');
+      idx++;
+    }
+  }
+  return idx;
+}
+
 export async function searchImmobili(filters: any) {
   const {
     tipologia, prezzoMin, prezzoMax, numeroStanze, numeroStanzeMin, numeroStanzeMax, numeroBagni, classeEnergetica,
@@ -122,7 +139,7 @@ export async function searchImmobili(filters: any) {
 
   const bools = { balcone, terrazzo, giardino, ascensore, postoAuto, cantina,
     portineria, climatizzazione, scuoleVicine, parchiVicini, trasportiPubbliciVicini };
-  for (const [k, v] of Object.entries(bools)) if (v !== undefined) add(`${k} = $${i}`, v === 'true');
+  i = applyBoolFilters(bools, conditions, values, i);
 
   if (citta) add(`Indirizzo ILIKE $${i}`, `%${citta}%`);
 

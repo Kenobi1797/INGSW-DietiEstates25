@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useUser } from '@/Context/Context';
+import PrezzoInput from '@/components/PrezzoInput';
 import {
   ArrowUpDown, Leaf, Sun, Trees, Car, Package, Hotel, Snowflake,
   Ruler, BedDouble, ShowerHead, Building2, Zap, Flame,
@@ -65,7 +66,7 @@ export default function ImmobileDettaglioPage() {
   const [errore, setErrore] = useState<string | null>(null);
   const [fotoIdx, setFotoIdx] = useState(0);
 
-  const [offertaAmount, setOffertaAmount] = useState('');
+  const [offertaAmount, setOffertaAmount] = useState(0);
   const [offertaLoading, setOffertaLoading] = useState(false);
   const [offertaMsg, setOffertaMsg] = useState('');
 
@@ -101,7 +102,7 @@ export default function ImmobileDettaglioPage() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ idImmobile: immobile.id, prezzoOfferto: Number(offertaAmount) }),
+        body: JSON.stringify({ idImmobile: immobile.id, prezzoOfferto: offertaAmount }),
       });
       const raw = await res.text();
       if (!res.ok) {
@@ -110,7 +111,7 @@ export default function ImmobileDettaglioPage() {
         throw new Error(msg);
       }
       setOffertaMsg('Offerta inviata con successo!');
-      setOffertaAmount('');
+      setOffertaAmount(0);
     } catch (err) {
       setOffertaMsg(err instanceof Error ? err.message : 'Errore imprevisto');
     } finally {
@@ -197,7 +198,7 @@ export default function ImmobileDettaglioPage() {
                   <span key={key} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border ${
                     value ? 'bg-green-50 border-green-200 text-green-700' : 'bg-gray-50 border-gray-200 text-gray-400'
                   }`}>
-                    {icon}{label}{' '}{value ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={3} />}
+                    {icon}{label}{value ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={3} />}
                   </span>
                 ))}
               </div>
@@ -230,10 +231,14 @@ export default function ImmobileDettaglioPage() {
               <div className="border-2 border-red-200 rounded-xl p-4 space-y-3">
                 <h2 className="text-base font-semibold">Fai un&apos;offerta</h2>
                 <form onSubmit={handleOfferta} className="space-y-2">
-                  <input type="number" step="0.01" min="1" placeholder="Importo (€)" value={offertaAmount}
-                    onChange={(e) => setOffertaAmount(e.target.value)}
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:border-red-400 outline-none" required />
-                  <button type="submit" disabled={offertaLoading || !offertaAmount}
+                  <PrezzoInput
+                    value={offertaAmount}
+                    onChange={(val) => setOffertaAmount(val)}
+                    placeholder="Importo (€)"
+                    required
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:border-red-400 outline-none"
+                  />
+                  <button type="submit" disabled={offertaLoading || offertaAmount <= 0}
                     className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded font-semibold text-sm disabled:opacity-50 transition-colors">
                     {offertaLoading ? 'Invio...' : 'Invia Offerta'}
                   </button>

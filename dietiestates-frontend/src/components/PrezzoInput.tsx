@@ -29,7 +29,7 @@ function formatPrezzo(n: number): string {
 
 function parsePrezzo(s: string): number {
   // Rimuove tutti i punti separatori delle migliaia; sostituisce la virgola decimale con punto
-  const cleaned = s.replaceAll('.', '').replace(',', '.');
+  const cleaned = s.replaceAll('.', '').replaceAll(',', '.');
   const val = Number.parseFloat(cleaned);
   return Number.isNaN(val) ? 0 : val;
 }
