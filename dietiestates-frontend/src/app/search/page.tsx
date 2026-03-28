@@ -40,7 +40,7 @@ function SearchContent() {
       setErrore(null);
 
       try {
-        const token = typeof globalThis.window === "undefined" ? null : sessionStorage.getItem("token");
+        const token = globalThis.window === undefined ? null : sessionStorage.getItem("token");
         const currentParams = new URLSearchParams(searchParamsKey);
         const query = new URLSearchParams();
         if (hasCoords) {

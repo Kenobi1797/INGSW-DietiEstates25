@@ -299,7 +299,7 @@ export default function DashboardAgent() {
         <div className="mb-8">
           {statsLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {[...new Array<undefined>(3)].map((_, i) => <div key={`skeleton-${i}`} className="h-20 bg-gray-100 rounded-xl animate-pulse" />)}
+              {Array.from({length: 3}).map((_, i) => <div key={`skeleton-${i}`} className="h-20 bg-gray-100 rounded-xl animate-pulse" />)}
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">

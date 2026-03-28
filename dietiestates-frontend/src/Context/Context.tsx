@@ -31,7 +31,7 @@ export function UserProvider({ children }: { readonly children: ReactNode }) {
 
   const logout = useCallback(() => {
     setAuthUser(null);
-    if (typeof globalThis.window !== "undefined") {
+    if (globalThis.window !== undefined) {
       sessionStorage.removeItem('token');
     }
   }, []);

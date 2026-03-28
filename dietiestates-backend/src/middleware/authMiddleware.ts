@@ -15,7 +15,7 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
   try {
     req.user = verifyToken(token);
     next();
-  } catch (err) {
+  } catch {
     res.status(401).json({ error: 'Token non valido' });
   }
 }

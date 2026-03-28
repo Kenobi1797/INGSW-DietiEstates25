@@ -4,7 +4,7 @@ import { UserProvider } from "@/Context/Context";
 import './globals.css';
 import NavbarWrapper from "@/components/NavbarWrapper";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { readonly children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>

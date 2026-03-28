@@ -15,8 +15,11 @@ export default function Menu({ items, buttonLabel = "Menu" }: MenuProps) {
   return (
     <div className="relative">
      {isOpen && (
-        <div
+        <button
+          type="button"
+          aria-label="Chiudi menu"
           className="fixed inset-0 bg-black/40 z-40"
+          style={{ border: 'none', padding: 0, cursor: 'default' }}
           onClick={() => setIsOpen(false)}
         />
       )}

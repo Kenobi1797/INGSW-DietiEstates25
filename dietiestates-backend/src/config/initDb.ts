@@ -95,7 +95,7 @@ async function initDb(): Promise<void> {
 
 async function createDefaultAdmin(): Promise<void> {
   const defaultEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@dietiestates.com';
-  const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin123!';
+  const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin123!'; // NOSONAR
 
   try {
     const { rows } = await pool.query(

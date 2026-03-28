@@ -65,7 +65,7 @@ export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
   try {
     const user = await UtenteDAO.getUtenteByEmail(email);
-    if (!user || !user.passwordHash) return res.status(400).json({ error: 'Credenziali non valide' });
+    if (!user?.passwordHash) return res.status(400).json({ error: 'Credenziali non valide' });
 
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) return res.status(400).json({ error: 'Credenziali non valide' });
@@ -203,7 +203,7 @@ export async function changePassword(req: AuthRequest, res: Response) {
 
   try {
     const user = await UtenteDAO.getUtenteById(req.user.id);
-    if (!user || !user.passwordHash)
+    if (!user?.passwordHash)
       return res.status(404).json({ error: 'Utente non trovato' });
 
     const match = await bcrypt.compare(oldPassword, user.passwordHash);

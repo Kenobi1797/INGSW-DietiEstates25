@@ -2,12 +2,12 @@ import React from 'react';
 import Spinner from './Spinner';
 
 interface BaseButtonProps {
-  action?: () => void;
-  className?: string;
-  children: React.ReactNode;
-  loading?: boolean;
-  disabled?: boolean;
-  type?: 'button' | 'submit' | 'reset'; // aggiunto type
+  readonly action?: () => void;
+  readonly className?: string;
+  readonly children: React.ReactNode;
+  readonly loading?: boolean;
+  readonly disabled?: boolean;
+  readonly type?: 'button' | 'submit' | 'reset';
 }
 
 export default function BaseButton({

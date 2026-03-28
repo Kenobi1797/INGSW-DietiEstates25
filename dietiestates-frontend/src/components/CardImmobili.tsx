@@ -13,23 +13,23 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
     ? immobile.fotoUrls[0]
     : '/placeholder.svg';
 
-  return (
-    <div
-      role={onClick ? 'button' : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick(); } : undefined}
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        backgroundColor: '#ffffff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-        cursor: onClick ? 'pointer' : 'default',
-      }}
-      onClick={onClick}
-    >
+  const cardStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    border: '1px solid #e5e7eb',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+    cursor: onClick ? 'pointer' : 'default',
+    padding: 0,
+    font: 'inherit',
+    textAlign: 'left',
+    width: '100%',
+  };
+
+  const cardInner = (
+    <>
       {/* Immagine */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -85,11 +85,21 @@ export default function ImmobileCard({ immobile, footer, onClick }: Props) {
         </div>
 
         {footer && (
-          <div role="presentation" onClick={(e) => e.stopPropagation()}>
+          <div onClick={(e) => e.stopPropagation()}>
             {footer}
           </div>
         )}
       </div>
-    </div>
+    </>
   );
+
+  if (onClick) {
+    return (
+      <button type="button" style={cardStyle} onClick={onClick}>
+        {cardInner}
+      </button>
+    );
+  }
+
+  return <div style={cardStyle}>{cardInner}</div>;
 }

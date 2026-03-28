@@ -73,7 +73,7 @@ export default function ImmobileDettaglioPage() {
     async function loadDettaglio() {
       try {
         // Il token è opzionale: la pagina è pubblica in lettura
-        const token = typeof globalThis.window === 'undefined' ? null : sessionStorage.getItem('token');
+        const token = globalThis.window === undefined ? null : sessionStorage.getItem('token');
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/${params.id}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });

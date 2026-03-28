@@ -22,8 +22,8 @@ export async function getAgenziaById(idAgenzia: number): Promise<AgenziaDTO | nu
 }
 
 export const updateAgenziaDB = async (idAgenzia: number, fields: Partial<AgenziaDTO>): Promise<AgenziaDTO> => {
-  const allowedFields: (keyof AgenziaDTO)[] = ['nome', 'attiva'];
-  const safeFields = Object.keys(fields).filter(f => allowedFields.includes(f as keyof AgenziaDTO));
+  const allowedFields = new Set<keyof AgenziaDTO>(['nome', 'attiva']);
+  const safeFields = Object.keys(fields).filter(f => allowedFields.has(f as keyof AgenziaDTO));
 
   if (!safeFields.length) throw new Error('Nessun campo valido da aggiornare');
 
