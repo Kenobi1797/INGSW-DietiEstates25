@@ -10,17 +10,19 @@ const storage = multer.diskStorage({
   destination: (req: Request, _file, cb) => {
     // Estrai immobileId dai parametri della request (query, body, o params)
     const immobileId = req.query.immobileId || req.body?.immobileId || req.params?.immobileId;
-    
+
     let destDir = uploadsDir;
-    
+
     // Se immobileId è fornito, crea una sottocartella
     if (immobileId) {
       destDir = path.join(uploadsDir, String(immobileId));
-      if (!fs.existsSync(destDir)) {
-        fs.mkdirSync(destDir, { recursive: true });
-      }
     }
-    
+
+    // Ricrea sempre la destinazione se è stata rimossa manualmente a runtime.
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
+
     cb(null, destDir);
   },
   filename: (_req, file, cb) => {

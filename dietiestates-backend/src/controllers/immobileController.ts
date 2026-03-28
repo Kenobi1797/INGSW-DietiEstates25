@@ -2,6 +2,57 @@ import { AuthRequest } from '../middleware/authMiddleware';
 import { Response, Request } from 'express';
 import * as ImmobileDAO from '../dao/ImmobileDAO';
 import * as OffertaDAO from '../dao/OffertaDAO';
+import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
+import path from 'node:path';
+
+function extractFilenameFromUrl(url: string): string | null {
+  try {
+    const pathname = new URL(url).pathname;
+    const filename = path.basename(pathname);
+    return filename || null;
+  } catch {
+    const filename = path.basename(url);
+    return filename || null;
+  }
+}
+
+async function safeMoveFile(sourcePath: string, targetPath: string): Promise<void> {
+  if (sourcePath === targetPath) return;
+  try {
+    await fs.rename(sourcePath, targetPath);
+  } catch {
+    await fs.copyFile(sourcePath, targetPath);
+    await fs.unlink(sourcePath);
+  }
+}
+
+async function relocateUploadedPhotos(idImmobile: number, fotoUrls: string[]): Promise<string[]> {
+  const uploadsRoot = path.join(process.cwd(), 'uploads');
+  const immobileDir = path.join(uploadsRoot, String(idImmobile));
+  const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 5000}`;
+
+  if (!fsSync.existsSync(immobileDir)) {
+    await fs.mkdir(immobileDir, { recursive: true });
+  }
+
+  const normalizedUrls: string[] = [];
+  for (const rawUrl of fotoUrls) {
+    const filename = extractFilenameFromUrl(rawUrl);
+    if (!filename) continue;
+
+    const sourceInRoot = path.join(uploadsRoot, filename);
+    const targetInImmobileDir = path.join(immobileDir, filename);
+
+    if (fsSync.existsSync(sourceInRoot) && !fsSync.existsSync(targetInImmobileDir)) {
+      await safeMoveFile(sourceInRoot, targetInImmobileDir);
+    }
+
+    normalizedUrls.push(`${baseUrl}/uploads/${idImmobile}/${filename}`);
+  }
+
+  return Array.from(new Set(normalizedUrls));
+}
 
 // Handler upload foto
 export async function uploadFoto(req: AuthRequest, res: Response) {
@@ -40,14 +91,23 @@ export async function createImmobile(req: AuthRequest, res: Response) {
   }
 
   try {
+    const initialFotoUrls = Array.isArray(fotoUrls) ? fotoUrls : [];
+
     const immobile = await ImmobileDAO.createImmobile({
       idAgente: req.user.id,
       titolo, descrizione, prezzo, dimensioni, indirizzo,
       numeroStanze, numeroBagni, piano, ascensore, balcone,
       terrazzo, giardino, postoAuto, cantina, portineria,
       climatizzazione, riscaldamento, classeEnergetica, tipologia,
-      latitudine, longitudine, fotoUrls,
+      latitudine, longitudine, fotoUrls: initialFotoUrls,
     });
+
+    const idImmobile = immobile.idImmobile ?? immobile.id;
+    if (idImmobile) {
+      const finalFotoUrls = await relocateUploadedPhotos(idImmobile, initialFotoUrls);
+      await ImmobileDAO.updateImmobileFotoUrls(idImmobile, finalFotoUrls);
+      immobile.fotoUrls = finalFotoUrls;
+    }
 
     res.status(201).json(immobile);
   } catch (err) {

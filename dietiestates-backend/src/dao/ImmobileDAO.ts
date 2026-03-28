@@ -79,6 +79,15 @@ export async function createImmobile(data: ImmobileDTO) {
   return mapRowToImmobile(result.rows[0]);
 }
 
+export async function updateImmobileFotoUrls(idImmobile: number, fotoUrls: string[]) {
+  await pool.query(
+    `UPDATE Immobile
+     SET FotoUrls = $1
+     WHERE IdImmobile = $2`,
+    [fotoUrls.length > 0 ? fotoUrls : null, idImmobile]
+  );
+}
+
 function buildDistanceClause(
   conditions: string[], values: any[], idx: number,
   latStr: string, lngStr: string, raggioStr: string
