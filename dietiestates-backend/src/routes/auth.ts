@@ -1,5 +1,10 @@
 import express from 'express';
 import passport from 'passport';
+
+interface OAuthResult {
+  token: string;
+  user: { id: number; nome: string; email: string; ruolo: string };
+}
 import { register, login, me, createAgent, changePassword, createSupport } from '../controllers/authController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
@@ -20,8 +25,8 @@ router.get(
     passport.authenticate('google', { failureRedirect: '/' })(req, res, next);
   },
   (req, res) => {
-    const oauthResult = req.user as any;
-    if (!oauthResult || !oauthResult.token || !oauthResult.user) {
+    const oauthResult = req.user as OAuthResult | undefined;
+    if (!oauthResult?.token || !oauthResult?.user) {
       return res.status(400).json({ error: 'Errore login Google' });
     }
 

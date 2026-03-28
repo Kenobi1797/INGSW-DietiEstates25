@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import path from 'path';
+import path from 'node:path';
 import initDb from './config/initDb';
 import pool from './config/db';
 import authRoutes from './routes/auth';

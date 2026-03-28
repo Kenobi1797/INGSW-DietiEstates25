@@ -79,6 +79,23 @@ export async function createImmobile(data: ImmobileDTO) {
   return mapRowToImmobile(result.rows[0]);
 }
 
+function buildDistanceClause(
+  conditions: string[], values: any[], idx: number,
+  latStr: string, lngStr: string, raggioStr: string
+): { distanceSelect: string; nextIdx: number } {
+  const [lat, lng, raggio] = [+latStr, +lngStr, +raggioStr];
+  const iLat = idx, iLng = idx + 1, iRaggio = idx + 2;
+  values.push(lat, lng, raggio);
+  const expr = `(6371 * acos(LEAST(1.0,
+        cos(radians($${iLat})) * cos(radians(Latitudine)) *
+        cos(radians(Longitudine) - radians($${iLng})) +
+        sin(radians($${iLat})) * sin(radians(Latitudine))
+      )))`;
+  const distanceSelect = `,\n      ${expr} AS distanza`;
+  conditions.push(`${expr} <= $${iRaggio}`);
+  return { distanceSelect, nextIdx: idx + 3 };
+}
+
 export async function searchImmobili(filters: any) {
   const {
     tipologia, prezzoMin, prezzoMax, numeroStanze, numeroStanzeMin, numeroStanzeMax, numeroBagni, classeEnergetica,
@@ -111,30 +128,9 @@ export async function searchImmobili(filters: any) {
 
   let distanceSelect = '';
   if (latitudine && longitudine && raggioKm) {
-    const [lat, lng, raggio] = [+latitudine, +longitudine, +raggioKm];
-
-    // Snapshot degli indici PRIMA di pushare
-    const iLat = i;
-    const iLng = i + 1;
-    const iRaggio = i + 2;
-
-    values.push(lat, lng, raggio);
-    i += 3;
-
-    distanceSelect = `,
-      (6371 * acos(LEAST(1.0,
-        cos(radians($${iLat})) * cos(radians(Latitudine)) *
-        cos(radians(Longitudine) - radians($${iLng})) +
-        sin(radians($${iLat})) * sin(radians(Latitudine))
-      ))) AS distanza`;
-
-    conditions.push(`
-      (6371 * acos(LEAST(1.0,
-        cos(radians($${iLat})) * cos(radians(Latitudine)) *
-        cos(radians(Longitudine) - radians($${iLng})) +
-        sin(radians($${iLat})) * sin(radians(Latitudine))
-      ))) <= $${iRaggio}`
-    );
+    const built = buildDistanceClause(conditions, values, i, latitudine, longitudine, raggioKm);
+    distanceSelect = built.distanceSelect;
+    i = built.nextIdx;
   }
 
   const where = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';

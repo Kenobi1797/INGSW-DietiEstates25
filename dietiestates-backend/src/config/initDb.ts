@@ -201,34 +201,23 @@ async function createDemoData(): Promise<void> {
     const { rows: immobileRows } = await pool.query('SELECT IdImmobile, Titolo FROM Immobile ORDER BY IdImmobile ASC');
     const immobiliMap = new Map<string, number>(immobileRows.map((r) => [r.titolo, r.idimmobile]));
 
-    const ensureImmobile = async (
-      idAgente: number,
-      titolo: string,
-      descrizione: string,
-      prezzo: number,
-      dimensioni: number,
-      indirizzo: string,
-      numeroStanze: number,
-      numeroBagni: number,
-      piano: number,
-      ascensore: boolean,
-      balcone: boolean,
-      terrazzo: boolean,
-      giardino: boolean,
-      postoAuto: boolean,
-      cantina: boolean,
-      portineria: boolean,
-      climatizzazione: boolean,
-      riscaldamento: string,
-      scuoleVicine: boolean,
-      parchiVicini: boolean,
-      trasportiPubbliciVicini: boolean,
-      classeEnergetica: string,
-      tipologia: 'Vendita' | 'Affitto',
-      latitudine: number,
-      longitudine: number,
-      fotoUrls: string[]
-    ): Promise<number> => {
+    interface ImmobileInit {
+      idAgente: number; titolo: string; descrizione: string; prezzo: number;
+      dimensioni: number; indirizzo: string; numeroStanze: number; numeroBagni: number;
+      piano: number; ascensore: boolean; balcone: boolean; terrazzo: boolean; giardino: boolean;
+      postoAuto: boolean; cantina: boolean; portineria: boolean; climatizzazione: boolean;
+      riscaldamento: string; scuoleVicine: boolean; parchiVicini: boolean;
+      trasportiPubbliciVicini: boolean; classeEnergetica: string; tipologia: 'Vendita' | 'Affitto';
+      latitudine: number; longitudine: number; fotoUrls: string[];
+    }
+
+    const ensureImmobile = async (data: ImmobileInit): Promise<number> => {
+      const {
+        idAgente, titolo, descrizione, prezzo, dimensioni, indirizzo, numeroStanze, numeroBagni,
+        piano, ascensore, balcone, terrazzo, giardino, postoAuto, cantina, portineria, climatizzazione,
+        riscaldamento, scuoleVicine, parchiVicini, trasportiPubbliciVicini, classeEnergetica,
+        tipologia, latitudine, longitudine, fotoUrls,
+      } = data;
       if (immobiliMap.has(titolo)) return immobiliMap.get(titolo)!;
 
       const { rows } = await pool.query(
@@ -269,121 +258,45 @@ async function createDemoData(): Promise<void> {
       return idImmobile;
     };
 
-    const immobileAtticoId = await ensureImmobile(
-      agenteMarioId,
-      'Attico con terrazzo',
-      'Attico con vista panoramica e terrazzo di 50mq',
-      520000,
-      140,
-      'Via Toledo 34, Napoli',
-      5,
-      3,
-      6,
-      true,
-      true,
-      true,
-      false,
-      false,
-      true,
-      false,
-      true,
-      'Centralizzato',
-      true,
-      true,
-      true,
-      'A',
-      'Vendita',
-      40.8522,
-      14.2681,
-      estateImagesA
-    );
+    const immobileAtticoId = await ensureImmobile({
+      idAgente: agenteMarioId, titolo: 'Attico con terrazzo',
+      descrizione: 'Attico con vista panoramica e terrazzo di 50mq', prezzo: 520000,
+      dimensioni: 140, indirizzo: 'Via Toledo 34, Napoli', numeroStanze: 5, numeroBagni: 3, piano: 6,
+      ascensore: true, balcone: true, terrazzo: true, giardino: false, postoAuto: false, cantina: true,
+      portineria: false, climatizzazione: true, riscaldamento: 'Centralizzato',
+      scuoleVicine: true, parchiVicini: true, trasportiPubbliciVicini: true, classeEnergetica: 'A',
+      tipologia: 'Vendita', latitudine: 40.8522, longitudine: 14.2681, fotoUrls: estateImagesA,
+    });
 
-    const immobileGiardinoId = await ensureImmobile(
-      agenteMarioId,
-      'Appartamento con giardino privato',
-      'Appartamento in residenza con giardino privato e parcheggio',
-      280000,
-      95,
-      'Via delle Gardenie 21, Caserta',
-      4,
-      2,
-      1,
-      false,
-      true,
-      false,
-      true,
-      true,
-      false,
-      false,
-      false,
-      'Autonomo',
-      true,
-      true,
-      false,
-      'B',
-      'Vendita',
-      41.0737,
-      14.3349,
-      estateImagesB
-    );
+    const immobileGiardinoId = await ensureImmobile({
+      idAgente: agenteMarioId, titolo: 'Appartamento con giardino privato',
+      descrizione: 'Appartamento in residenza con giardino privato e parcheggio', prezzo: 280000,
+      dimensioni: 95, indirizzo: 'Via delle Gardenie 21, Caserta', numeroStanze: 4, numeroBagni: 2, piano: 1,
+      ascensore: false, balcone: true, terrazzo: false, giardino: true, postoAuto: true, cantina: false,
+      portineria: false, climatizzazione: false, riscaldamento: 'Autonomo',
+      scuoleVicine: true, parchiVicini: true, trasportiPubbliciVicini: false, classeEnergetica: 'B',
+      tipologia: 'Vendita', latitudine: 41.0737, longitudine: 14.3349, fotoUrls: estateImagesB,
+    });
 
-    const immobileAffittoId = await ensureImmobile(
-      agenteLuciaId,
-      'Bilocale in centro storico',
-      'Bilocale ristrutturato ideale per professionisti, vicino metro e servizi',
-      900,
-      62,
-      'Via Roma 12, Napoli',
-      2,
-      1,
-      3,
-      true,
-      true,
-      false,
-      false,
-      false,
-      false,
-      true,
-      true,
-      'Autonomo',
-      true,
-      false,
-      true,
-      'C',
-      'Affitto',
-      40.8495,
-      14.2582,
-      estateImagesA
-    );
+    const immobileAffittoId = await ensureImmobile({
+      idAgente: agenteLuciaId, titolo: 'Bilocale in centro storico',
+      descrizione: 'Bilocale ristrutturato ideale per professionisti, vicino metro e servizi', prezzo: 900,
+      dimensioni: 62, indirizzo: 'Via Roma 12, Napoli', numeroStanze: 2, numeroBagni: 1, piano: 3,
+      ascensore: true, balcone: true, terrazzo: false, giardino: false, postoAuto: false, cantina: false,
+      portineria: true, climatizzazione: true, riscaldamento: 'Autonomo',
+      scuoleVicine: true, parchiVicini: false, trasportiPubbliciVicini: true, classeEnergetica: 'C',
+      tipologia: 'Affitto', latitudine: 40.8495, longitudine: 14.2582, fotoUrls: estateImagesA,
+    });
 
-    const immobileTrilocaleId = await ensureImmobile(
-      agenteLuciaId,
-      'Trilocale con posto auto',
-      'Trilocale luminoso in zona residenziale con posto auto coperto',
-      345000,
-      110,
-      'Viale Europa 87, Salerno',
-      3,
-      2,
-      2,
-      true,
-      true,
-      false,
-      false,
-      true,
-      true,
-      false,
-      true,
-      'Pompa di calore',
-      false,
-      true,
-      true,
-      'A+',
-      'Vendita',
-      40.6824,
-      14.7681,
-      estateImagesB
-    );
+    const immobileTrilocaleId = await ensureImmobile({
+      idAgente: agenteLuciaId, titolo: 'Trilocale con posto auto',
+      descrizione: 'Trilocale luminoso in zona residenziale con posto auto coperto', prezzo: 345000,
+      dimensioni: 110, indirizzo: 'Viale Europa 87, Salerno', numeroStanze: 3, numeroBagni: 2, piano: 2,
+      ascensore: true, balcone: true, terrazzo: false, giardino: false, postoAuto: true, cantina: true,
+      portineria: false, climatizzazione: true, riscaldamento: 'Pompa di calore',
+      scuoleVicine: false, parchiVicini: true, trasportiPubbliciVicini: true, classeEnergetica: 'A+',
+      tipologia: 'Vendita', latitudine: 40.6824, longitudine: 14.7681, fotoUrls: estateImagesB,
+    });
 
     const { rows: offerteRows } = await pool.query('SELECT IdOfferta FROM Offerta LIMIT 1');
     if (offerteRows.length === 0) {
