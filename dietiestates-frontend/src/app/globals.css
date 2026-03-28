@@ -757,6 +757,7 @@ a {
   box-shadow: 0 12px 30px rgba(15,23,42,.14);
   padding: 1.5rem;
   border: 1px solid #dbeafe;
+  overflow: hidden;
 }
 
 .immobile-card h1 {
@@ -981,6 +982,25 @@ a {
 .immobile-card .btn-secondary:hover,
 .immobile-card .btn-primary:hover {
   opacity: .9;
+}
+
+.immobile-photo-list {
+  max-width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.immobile-photo-item {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.immobile-photo-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {

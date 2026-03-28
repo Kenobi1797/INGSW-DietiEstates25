@@ -235,7 +235,7 @@ export async function rispondiControproposta(req: AuthRequest, res: Response) {
 // Per AmministratoreAgenzia restituisce tutte le offerte degli agenti della sua agenzia
 export async function getOffertePerAgente(req: AuthRequest, res: Response) {
   try {
-    if (req.user.ruolo === 'AmministratoreAgenzia') {
+    if (req.user.ruolo === 'AmministratoreAgenzia' || req.user.ruolo === 'Supporto') {
       const { rows } = await pool.query(
         'SELECT IdAgenzia FROM Utente WHERE IdUtente = $1',
         [req.user.id]

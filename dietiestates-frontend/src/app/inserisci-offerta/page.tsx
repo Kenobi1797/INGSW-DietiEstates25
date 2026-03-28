@@ -107,7 +107,7 @@ function InserisciOffertaContent() {
       }
 
       alert('Offerta inserita con successo!');
-      const back = urlIdImmobile ? `/miei-immobili/${urlIdImmobile}/storico` : '/storico-offerte';
+      const back = idImmobile ? `/miei-immobili/${idImmobile}/storico` : '/storico-offerte';
       router.push(back);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Errore durante l\'inserimento';

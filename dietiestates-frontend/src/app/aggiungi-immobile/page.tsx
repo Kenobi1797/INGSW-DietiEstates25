@@ -375,16 +375,16 @@ export default function PaginaCaricamentoImmobile() {
                   />
                 </label>
                 {fotoFiles.length > 0 && (
-                  <ul className="mt-3 space-y-2">
+                  <ul className="mt-3 space-y-2 immobile-photo-list">
                     {fotoFiles.map((f, i) => (
-                      <li key={f.name + f.size} className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg p-2">
+                      <li key={f.name + f.size} className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg p-2 immobile-photo-item">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={URL.createObjectURL(f)}
                           alt={f.name}
                           className="w-12 h-12 object-cover rounded flex-shrink-0"
                         />
-                        <span className="flex-1 text-sm text-gray-700 truncate">{f.name}</span>
+                        <span className="flex-1 min-w-0 text-sm text-gray-700 truncate immobile-photo-name">{f.name}</span>
                         <button
                           type="button"
                           onClick={() => removeFoto(i)}

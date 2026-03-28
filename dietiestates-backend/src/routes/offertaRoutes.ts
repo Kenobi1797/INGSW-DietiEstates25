@@ -18,10 +18,10 @@ const router = express.Router();
 router.post('/', authMiddleware, roleMiddleware('Cliente'), createOfferta);
 
 // Creazione offerta manuale (agente/admin)
-router.post('/manual', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), createManualOfferta);
+router.post('/manual', authMiddleware, roleMiddleware('Agente', 'Supporto', 'AmministratoreAgenzia'), createManualOfferta);
 
 // Storico offerte immobile (agente/admin)
-router.get('/immobile/:idImmobile', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), getOffertePerImmobile);
+router.get('/immobile/:idImmobile', authMiddleware, roleMiddleware('Agente', 'Supporto', 'AmministratoreAgenzia'), getOffertePerImmobile);
 
 // Storico offerte utente (cliente)
 router.get('/utente', authMiddleware, roleMiddleware('Cliente'), getOffertePerUtente);
@@ -30,7 +30,7 @@ router.get('/utente', authMiddleware, roleMiddleware('Cliente'), getOffertePerUt
 router.get('/storico', authMiddleware, getStoricoOfferte);
 
 // Offerte per agente (tutte le offerte sugli immobili dell'agente)
-router.get('/agente', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), getOffertePerAgente);
+router.get('/agente', authMiddleware, roleMiddleware('Agente', 'Supporto', 'AmministratoreAgenzia'), getOffertePerAgente);
 
 // Controfferte ricevute dal cliente
 router.get('/controfferte', authMiddleware, roleMiddleware('Cliente'), getControffertePerCliente);
@@ -39,6 +39,6 @@ router.get('/controfferte', authMiddleware, roleMiddleware('Cliente'), getContro
 router.patch('/:idOfferta/rispondi', authMiddleware, roleMiddleware('Cliente'), rispondiControproposta);
 
 // Aggiornamento stato offerta (solo agente/admin)
-router.put('/:idOfferta', authMiddleware, roleMiddleware('Agente', 'AmministratoreAgenzia'), updateOfferta);
+router.put('/:idOfferta', authMiddleware, roleMiddleware('Agente', 'Supporto', 'AmministratoreAgenzia'), updateOfferta);
 
 export default router;
