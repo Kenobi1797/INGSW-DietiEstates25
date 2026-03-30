@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.19)  30 MAR 2026 19:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.19)  30 MAR 2026 20:03
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -761,539 +761,359 @@ Overfull \hbox (16.98752pt too wide) in paragraph at lines 276--277
 []\T1/lmr/m/n/10.95 (-20) e no-to il flus-so di \T1/lmtt/m/n/10.95 getNearbyPlaces \T1/lmr/m/n/10.95 (-20) (3 cat-e-gorie fisse e let-tura di \T1/lmtt/m/n/10.95 process.env.GEOAPIFY_KEY
  []
 
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 286.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 286.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 286.
 
-Overfull \hbox (209.94199pt too wide) in alignment at lines 294--294
-[][][][][] 
+Overfull \hbox (4.59045pt too wide) in paragraph at lines 290--290
+[]|\T1/lmtt/m/n/10 updateStatoOfferta| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 290--290
+[]|\T1/lmtt/m/n/10 (idOfferta: number, nuovoStato:
+ []
+
+
+Overfull \hbox (4.59045pt too wide) in paragraph at lines 291--291
+[]|\T1/lmtt/m/n/10 assignUserToAgency| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 291--291
+[]|\T1/lmtt/m/n/10 (idUtente: number, idAgenzia:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 292--292
+[]|\T1/lmtt/m/n/10 (idImmobile: number, idUtente:
+ []
+
+
+Overfull \hbox (6.06955pt too wide) in paragraph at lines 293--293
+[]|\T1/lmtt/m/n/10 utils/geoapify| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 293--293
+[]|\T1/lmtt/m/n/10 (lat: number, lon: number, radius?:
+ []
+
+
+Overfull \hbox (12.02802pt too wide) in paragraph at lines 286--296
+ [][] 
  []
 
 
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 313--313
-[]|\T1/lmtt/m/n/10.95 idOfferta=42,
+Underfull \hbox (badness 10000) in paragraph at lines 312--312
+[]|\T1/lmtt/m/n/10 idOfferta=42,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 312--313
+[]|\T1/lmr/m/n/10 (+20) DTO con \T1/lmtt/m/n/10 stato='Accettata' \T1/lmr/m/n/10 (+20) e
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 313--313
-[]|\T1/lmr/m/n/10.95 (+20) DTO con
+[]|\T1/lmr/m/n/10 (+20) CE2 -- of-fer-ta in-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 313--313
-\T1/lmtt/m/n/10.95 stato='Accettata' \T1/lmr/m/n/10.95 (+20) e
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
+[]|\T1/lmtt/m/n/10 mapRowToOfferta(undefined) \T1/lmr/m/n/10 (+20) con ec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 313--313
-\T1/lmtt/m/n/10.95 prezzoOfferto=200000
- []
-
-
-Overfull \hbox (21.04202pt too wide) in paragraph at lines 313--313
-[]|\T1/lmtt/m/n/10.95 mapRowToOfferta(undefined)
- []
-
-
-Overfull \hbox (0.66803pt too wide) in paragraph at lines 317--318
+Overfull \hbox (0.66803pt too wide) in paragraph at lines 319--320
 \T1/lmr/m/n/10.95 (-20) query UP-DATE con parametri \T1/lmtt/m/n/10.95 ['Accettata', 42]\T1/lmr/m/n/10.95 (-20) , ver-i-fi-ca \T1/lmtt/m/n/10.95 stato\T1/lmr/m/n/10.95 (-20) , \T1/lmtt/m/n/10.95 idOfferta\T1/lmr/m/n/10.95 (-20) , \T1/lmtt/m/n/10.95 prezzoOfferto\T1/lmr/m/n/10.95 (-20) . 
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 333--333
-[]|\T1/lmtt/m/n/10.95 idUtente=7,
+[]|\T1/lmtt/m/n/10 idUtente=7, idAgenzia=3\T1/lmr/m/n/10 (+20) ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 333--333
-\T1/lmtt/m/n/10.95 idAgenzia=3\T1/lmr/m/n/10.95 (+20) , ruo-
+Underfull \hbox (badness 10000) in paragraph at lines 334--334
+[]|\T1/lmtt/m/n/10 idUtente=999,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 333--333
-[]|\T1/lmr/m/n/10.95 (+20) UPDATE con ruo-lo
- []
-
-
-Underfull \hbox (badness 1931) in paragraph at lines 333--333
-\T1/lmr/m/n/10.95 (+20) con-sen-ti-to, DTO con
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 333--333
-[]|\T1/lmtt/m/n/10.95 idUtente=999,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 333--333
-\T1/lmtt/m/n/10.95 idAgenzia=3\T1/lmr/m/n/10.95 (+20) , \T1/lmtt/m/n/10.95 rows:
+Overfull \hbox (29.53448pt too wide) in paragraph at lines 344--345
+ []\T1/lmr/bx/n/10.95 (-20) Non ba-nali-ta.[] \T1/lmr/m/n/10.95 (-20) Del-e-ga a \T1/lmtt/m/n/10.95 insertOfferta \T1/lmr/m/n/10.95 (-20) con \T1/lmtt/m/n/10.95 offertaManuale=false \T1/lmr/m/n/10.95 (-20) e \T1/lmtt/m/n/10.95 idOffertaOriginale=null\T1/lmr/m/n/10.95 (-20) ,
  []
 
 
 
 [7]
-Overfull \hbox (29.53448pt too wide) in paragraph at lines 341--342
- []\T1/lmr/bx/n/10.95 (-20) Non ba-nali-ta.[] \T1/lmr/m/n/10.95 (-20) Del-e-ga a \T1/lmtt/m/n/10.95 insertOfferta \T1/lmr/m/n/10.95 (-20) con \T1/lmtt/m/n/10.95 offertaManuale=false \T1/lmr/m/n/10.95 (-20) e \T1/lmtt/m/n/10.95 idOffertaOriginale=null\T1/lmr/m/n/10.95 (-20) ,
+Underfull \hbox (badness 10000) in paragraph at lines 354--354
+[]|\T1/lmtt/m/n/10 idImmobile=50,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-[]|\T1/lmr/m/n/10.95 (+20) Input
+Underfull \hbox (badness 10000) in paragraph at lines 354--354
+\T1/lmtt/m/n/10 idUtente=20,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmr/m/n/10.95 (+20) rap-p-re-
+Underfull \hbox (badness 10000) in paragraph at lines 354--355
+[]|\T1/lmr/m/n/10 (+20) INSERT con \T1/lmtt/m/n/10 [50, 20, 90000, false,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-[]|\T1/lmr/m/n/10.95 (+20) Output
+Underfull \hbox (badness 10000) in paragraph at lines 354--355
+\T1/lmtt/m/n/10 null]\T1/lmr/m/n/10 (+20) , \T1/lmtt/m/n/10 offertaManuale=false\T1/lmr/m/n/10 (+20) ,
  []
 
 
-Overfull \hbox (34.16338pt too wide) in paragraph at lines 353--353
-[]|\T1/lmtt/m/n/10.95 idImmobile=50,
+Underfull \hbox (badness 6825) in paragraph at lines 355--355
+[]|\T1/lmr/m/n/10 (+20) CE2 -- of-fer-ta con
  []
 
 
-Overfull \hbox (22.66591pt too wide) in paragraph at lines 353--353
-\T1/lmtt/m/n/10.95 idUtente=20,
+Underfull \hbox (badness 10000) in paragraph at lines 355--355
+\T1/lmtt/m/n/10 offertaOriginaleId
  []
 
 
-Overfull \hbox (65.78142pt too wide) in paragraph at lines 353--353
-\T1/lmtt/m/n/10.95 prezzoOfferto=90000| 
+Underfull \hbox (badness 10000) in paragraph at lines 355--355
+\T1/lmr/m/n/10 (+20) (path
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-[]|\T1/lmr/m/n/10.95 (+20) INSERT
+Overfull \hbox (4.65869pt too wide) in paragraph at lines 355--355
+\T1/lmtt/m/n/10 createManualOfferta\T1/lmr/m/n/10 (-20) )| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmr/m/n/10.95 (+20) con
+Underfull \hbox (badness 10000) in paragraph at lines 375--375
+[]|\T1/lmtt/m/n/10 lat=45.0, lon=9.0,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmtt/m/n/10.95 [50, 20,
+Underfull \hbox (badness 1460) in paragraph at lines 375--375
+\T1/lmtt/m/n/10 radius=500\T1/lmr/m/n/10 (+20) ; mock 1+0+1
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmtt/m/n/10.95 90000,
+Underfull \hbox (badness 10000) in paragraph at lines 376--376
+[]|\T1/lmtt/m/n/10 delete
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmtt/m/n/10.95 false,
+Underfull \hbox (badness 10000) in paragraph at lines 376--377
+[]|\T1/lmr/m/n/10 (+20) Eccezione \T1/lmtt/m/n/10 'Chiave Geoapify mancante'
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmtt/m/n/10.95 null]\T1/lmr/m/n/10.95 (+20) ,
+Underfull \hbox (badness 10000) in paragraph at lines 393--394
+[]|\T1/lmtt/m/n/10 idOfferta \T1/lmr/m/n/10 (+20) in-tero pos-i-ti-vo,
  []
 
 
-Overfull \hbox (72.9889pt too wide) in paragraph at lines 353--353
-\T1/lmtt/m/n/10.95 offertaManuale=false\T1/lmr/m/n/10.95 (-20) ,
+Underfull \hbox (badness 10000) in paragraph at lines 394--394
+[]|\T1/lmr/m/n/10 (+20) Si (check
  []
 
 
-Overfull \hbox (48.53522pt too wide) in paragraph at lines 353--353
-\T1/lmtt/m/n/10.95 stato='InAttesa'| 
+Overfull \hbox (5.38086pt too wide) in paragraph at lines 394--394
+\T1/lmtt/m/n/10 result.rows[0]\T1/lmr/m/n/10 (-20) )| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-[]|\T1/lmr/m/n/10.95 (+20) Non
+Underfull \hbox (badness 10000) in paragraph at lines 395--395
+[]|\T1/lmr/m/n/10 (+20) Si
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmr/m/n/10.95 (+20) tes-ta-ta
+Overfull \hbox (25.2108pt too wide) in paragraph at lines 395--395
+\T1/lmr/m/n/10 (-20) (\T1/lmtt/m/n/10 offertaOriginaleId
  []
 
 
-Overfull \hbox (4.61237pt too wide) in paragraph at lines 353--353
-[]|\T1/lmr/m/n/10.95 (-20) Copertura
+Underfull \hbox (badness 10000) in paragraph at lines 396--396
+[]|\T1/lmr/m/n/10 (+20) Si
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmr/m/n/10.95 (+20) pre-vista
+Overfull \hbox (2.77211pt too wide) in paragraph at lines 396--396
+\T1/lmr/m/n/10 (-20) (\T1/lmtt/m/n/10 !GEOAPIFY_KEY\T1/lmr/m/n/10 (-20) )| 
  []
 
 
-Underfull \hbox (badness 2980) in paragraph at lines 353--353
-\T1/lmr/m/n/10.95 (+20) a liv-el-lo
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmr/m/n/10.95 (+20) in-te-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmr/m/n/10.95 (+20) grazione
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 353--353
-\T1/lmr/m/n/10.95 (+20) con-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 374--374
-[]|\T1/lmtt/m/n/10.95 lat=45.0, lon=9.0,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 374--374
-[]|\T1/lmtt/m/n/10.95 delete
- []
-
-
-Overfull \hbox (14.7088pt too wide) in paragraph at lines 374--374
-\T1/lmtt/m/n/10.95 process.env.GEOAPIFY_KEY| 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 374--374
-[]|\T1/lmr/m/n/10.95 (+20) Eccezione \T1/lmtt/m/n/10.95 'Chiave
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 374--374
-\T1/lmtt/m/n/10.95 Geoapify mancante'
+Overfull \hbox (16.5348pt too wide) in paragraph at lines 389--399
+ [][] 
  []
 
 
 
 [8]
-
-Package tabularx Warning: X Columns too narrow (table too wide)
-(tabularx)                 on input line 392.
-
-
-Overfull \hbox (34.72816pt too wide) in paragraph at lines 392--392
-[]|\T1/lmr/m/n/10.95 (-20) Boundary
+Overfull \hbox (8.45187pt too wide) in paragraph at lines 411--411
+[]|\T1/lmtt/m/n/10 dietiestates-backend/test/backend.test.ts| 
  []
 
 
-Overfull \hbox (3.91544pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) val-
- []
-
-
-Overfull \hbox (40.7886pt too wide) in paragraph at lines 392--392
-[]|\T1/lmtt/m/n/10.95 idOfferta
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 in-
- []
-
-
-Overfull \hbox (7.56114pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) tero
- []
-
-
-Overfull \hbox (6.66245pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) pos-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (+20) i-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (+20) ti-
- []
-
-
-Overfull \hbox (0.94919pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) vo,
- []
-
-
-Overfull \hbox (63.78354pt too wide) in paragraph at lines 392--392
-\T1/lmtt/m/n/10.95 prezzoOfferto
- []
-
-
-Overfull \hbox (11.66422pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) float-
- []
-
-
-Overfull \hbox (32.03754pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) >number| 
- []
-
-
-Overfull \hbox (12.92636pt too wide) in paragraph at lines 392--392
-[]|\T1/lmr/m/n/10.95 (-20) ruolo
- []
-
-
-Overfull \hbox (6.89484pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) con-
- []
-
-
-Overfull \hbox (5.76218pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) sen-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (+20) ti-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (+20) to
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (+20) vs
- []
-
-
-Overfull \hbox (6.33868pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) non
- []
-
-
-Overfull \hbox (6.89484pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) con-
- []
-
-
-Overfull \hbox (5.76218pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) sen-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (+20) ti-
- []
-
-
-Overfull \hbox (63.78354pt too wide) in paragraph at lines 392--392
-[]|\T1/lmtt/m/n/10.95 prezzoOfferto
- []
-
-
-Overfull \hbox (9.33936pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) esat-
- []
-
-
-Overfull \hbox (23.5424pt too wide) in paragraph at lines 392--392
-[]|\T1/lmtt/m/n/10.95 radius
- []
-
-
-Overfull \hbox (1.52934pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) de-
- []
-
-
-Overfull \hbox (10.51437pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) fault
- []
-
-
-Overfull \hbox (9.69073pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) 1000
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (+20) vs
- []
-
-
-Overfull \hbox (5.14648pt too wide) in paragraph at lines 392--392
-\T1/lmr/m/n/10.95 (-20) 500| 
- []
-
-
-Overfull \hbox (41.03946pt too wide) in alignment at lines 392--392
-[][][][][] 
+Underfull \hbox (badness 10000) in paragraph at lines 413--414
+[]|\T1/lmr/m/n/10 (+20) Script test: \T1/lmtt/m/n/10 jest --runInBand
  []
 
 
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 408--408
-[]|\T1/lmr/m/n/10.95 (+20) Script test: \T1/lmtt/m/n/10.95 jest --runInBand
- []
-
-
-
-[10]
-Underfull \hbox (badness 4242) in paragraph at lines 469--470
+Underfull \hbox (badness 4242) in paragraph at lines 476--477
 \T1/lmr/m/n/10.95 (+20) co-mu-ni-cati nelle
  []
 
 
-Underfull \hbox (badness 1221) in paragraph at lines 470--471
+Underfull \hbox (badness 1221) in paragraph at lines 477--478
 []|\T1/lmr/m/n/10.95 (+20) Lessico uni-forme
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 471--472
+Underfull \hbox (badness 10000) in paragraph at lines 478--479
 \T1/lmr/m/n/10.95 (+20) nav-i-ga-bili sen-za
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 472--473
+Underfull \hbox (badness 10000) in paragraph at lines 479--480
 []|\T1/lmr/m/n/10.95 (+20) Riutilizzo di
  []
 
 
-Underfull \hbox (badness 5245) in paragraph at lines 472--473
+Underfull \hbox (badness 5245) in paragraph at lines 479--480
 \T1/lmr/m/n/10.95 (+20) navbar, card e
  []
 
 
-Underfull \hbox (badness 1087) in paragraph at lines 473--474
+Underfull \hbox (badness 1087) in paragraph at lines 480--481
 []|\T1/lmr/m/n/10.95 (+20) Form e back-end
  []
 
 
-Underfull \hbox (badness 1874) in paragraph at lines 473--474
+Underfull \hbox (badness 1874) in paragraph at lines 480--481
 \T1/lmr/m/n/10.95 (+20) e vin-coli di do-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 474--474
+Underfull \hbox (badness 10000) in paragraph at lines 481--481
 []|\T1/lmr/m/n/10.95 (+20) Parzialmente
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 476--476
+Underfull \hbox (badness 10000) in paragraph at lines 483--483
 []|\T1/lmr/m/n/10.95 (+20) Parzialmente
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 476--477
+Underfull \hbox (badness 10000) in paragraph at lines 483--484
 []|\T1/lmr/m/n/10.95 (+20) Opportuno ag-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 476--477
+Underfull \hbox (badness 10000) in paragraph at lines 483--484
 \T1/lmr/m/n/10.95 (+20) ev-i-den-za per-sis-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 477--478
+Underfull \hbox (badness 10000) in paragraph at lines 484--485
 []|\T1/lmr/m/n/10.95 (+20) Dashboard e
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 478--479
+Underfull \hbox (badness 10000) in paragraph at lines 485--486
 []|\T1/lmr/m/n/10.95 (+20) Struttura vi-si-va
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 479--479
+Underfull \hbox (badness 10000) in paragraph at lines 486--486
 []|\T1/lmr/m/n/10.95 (+20) Parzialmente
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
+Underfull \hbox (badness 10000) in paragraph at lines 486--487
 []|\T1/lmr/m/n/10.95 (+20) Migliorabile la
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
+Underfull \hbox (badness 10000) in paragraph at lines 486--487
 \T1/lmr/m/n/10.95 (+20) lo-cal-iz-zazione
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
+Underfull \hbox (badness 10000) in paragraph at lines 486--487
 \T1/lmr/m/n/10.95 (+20) degli er-rori in
  []
 
-
+[10]
 
 [11]
-
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 528--528
+Underfull \hbox (badness 10000) in paragraph at lines 535--535
 []|\T1/lmr/m/n/10.95 (+20) Accesso com-ple-ta-to
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 528--528
+Underfull \hbox (badness 10000) in paragraph at lines 535--535
 []|\T1/lmr/m/n/10.95 (+20) Visualizzazione dei
  []
 
 
-Underfull \hbox (badness 1789) in paragraph at lines 528--528
+Underfull \hbox (badness 1789) in paragraph at lines 535--535
 []|\T1/lmr/m/n/10.95 (+20) Comprensione cor-ret-
  []
 
 
-Underfull \hbox (badness 7221) in paragraph at lines 528--528
+Underfull \hbox (badness 7221) in paragraph at lines 535--535
 []|\T1/lmr/m/n/10.95 (+20) Storico rag-giun-to e
  []
 
 
-Underfull \hbox (badness 3088) in paragraph at lines 528--528
+Underfull \hbox (badness 3088) in paragraph at lines 535--535
 \T1/lmr/m/n/10.95 (+20) in-ter-pre-ta-to cor-ret-ta-
  []
 
 
-Underfull \hbox (badness 10000) in alignment at lines 528--528
+Underfull \hbox (badness 10000) in alignment at lines 535--535
 [][][] 
  []
 
 
 
-[13]
-Underfull \hbox (badness 10000) in alignment at lines 586--586
+[12]
+Underfull \hbox (badness 10000) in alignment at lines 593--593
 [][][][] 
  []
 
 
 
-[14]
+[13]
 
-[15]
-
-[16] (./testing-usabilita.aux)
+[14] (./testing-usabilita.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `testing-usabilita.out' has not changed.
-(rerunfilecheck)             Checksum: 2E7154528A6230312E37B5FA70D4C3A9;8414.
+(rerunfilecheck)             Checksum: 6DC82A86673A150C9BB5D6CF70EEBFA6;7986.
  ) 
 Here is how much of TeX's memory you used:
- 16661 strings out of 475102
- 267467 string characters out of 5764877
- 970806 words of memory out of 5000000
- 39193 multiletter control sequences out of 15000+600000
- 612917 words of font info for 135 fonts, out of 8000000 for 9000
+ 16696 strings out of 475102
+ 267933 string characters out of 5764877
+ 971746 words of memory out of 5000000
+ 39207 multiletter control sequences out of 15000+600000
+ 624734 words of font info for 157 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  75i,10n,79p,1080b,1269s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>
-Output written on testing-usabilita.pdf (18 pages, 248500 bytes).
+Output written on testing-usabilita.pdf (16 pages, 242598 bytes).
 PDF statistics:
- 449 PDF objects out of 1000 (max. 8388607)
- 409 compressed objects within 5 object streams
- 152 named destinations out of 1000 (max. 500000)
- 32561 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 420 PDF objects out of 1000 (max. 8388607)
+ 383 compressed objects within 4 object streams
+ 141 named destinations out of 1000 (max. 500000)
+ 38689 words of extra memory for PDF output out of 42996 (max. 10000000)
 

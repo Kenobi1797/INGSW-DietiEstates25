@@ -282,7 +282,8 @@ Il mocking di \texttt{pool} (PostgreSQL) e \texttt{axios} isola ogni unita dalle
 \subsubsection{Metodi testati (firma e tipo)}
 \begin{table}[H]
 \centering
-\begin{tabularx}{\textwidth}{@{}c l l l l@{}}
+\small
+\begin{tabular}{@{}p{0.04\textwidth}p{0.20\textwidth}p{0.15\textwidth}p{0.43\textwidth}p{0.10\textwidth}@{}}
 \toprule
 \# & Metodo & Modulo & Firma & Tipo \\
 \midrule
@@ -291,7 +292,7 @@ Il mocking di \texttt{pool} (PostgreSQL) e \texttt{axios} isola ogni unita dalle
 3 & \texttt{createOfferta} & \texttt{OffertaDAO} & \texttt{(idImmobile: number, idUtente: number, prezzoOfferto: number)} & White box \\
 4 & \texttt{getNearbyPlaces} & \texttt{utils/geoapify} & \texttt{(lat: number, lon: number, radius?: number)} & White box \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \caption{Metodi testati come riportati in Test-Doc.}
 \label{tab:testdoc-metodi}
 \end{table}
@@ -303,14 +304,15 @@ Esegue una UPDATE parametrizzata e rimappa il risultato in \texttt{OffertaDTO} v
 \paragraph{Classi di equivalenza (input/output).}
 \begin{table}[H]
 \centering
-\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\small
+\begin{tabular}{@{}p{0.22\textwidth}p{0.28\textwidth}p{0.43\textwidth}@{}}
 \toprule
 Classe & Input rappresentativo & Output atteso \\
 \midrule
 CE1 -- stato valido, offerta esistente & \texttt{idOfferta=42, nuovoStato='Accettata'} & DTO con \texttt{stato='Accettata'} e \texttt{prezzoOfferto=200000} (number) \\
 CE2 -- offerta inesistente & \texttt{rows: []} dal mock & \texttt{mapRowToOfferta(undefined)} con eccezione Zod (gestione controller, fuori scope unit) \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
 \paragraph{Criteri e test case.}
@@ -323,14 +325,15 @@ UPDATE con clausola ruolo \texttt{Ruolo IN ('Agente', 'Supporto')}, mapping in \
 \paragraph{Classi di equivalenza (input/output).}
 \begin{table}[H]
 \centering
-\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\small
+\begin{tabular}{@{}p{0.22\textwidth}p{0.28\textwidth}p{0.43\textwidth}@{}}
 \toprule
 Classe & Input rappresentativo & Output atteso \\
 \midrule
 CE1 -- utente Agente/Supporto assegnato & \texttt{idUtente=7, idAgenzia=3}, ruolo='Agente' & UPDATE con ruolo consentito, DTO con \texttt{idAgenzia=3} \\
 CE2 -- utente non esiste/non consentito & \texttt{idUtente=999, idAgenzia=3}, \texttt{rows: []} & \texttt{pool.query} vuoto, funzione ritorna \texttt{null} \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
 \paragraph{Criteri e test case.}
@@ -343,14 +346,15 @@ Delega a \texttt{insertOfferta} con \texttt{offertaManuale=false} e \texttt{idOf
 \paragraph{Classi di equivalenza (input/output).}
 \begin{table}[H]
 \centering
-\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\small
+\begin{tabular}{@{}p{0.22\textwidth}p{0.28\textwidth}p{0.43\textwidth}@{}}
 \toprule
 Classe & Input rappresentativo & Output atteso \\
 \midrule
 CE1 -- offerta standard senza controproposta & \texttt{idImmobile=50, idUtente=20, prezzoOfferto=90000} & INSERT con \texttt{[50, 20, 90000, false, null]}, \texttt{offertaManuale=false}, \texttt{stato='InAttesa'} \\
 CE2 -- offerta con \texttt{offertaOriginaleId} (path \texttt{createManualOfferta}) & Non testata in questa suite & Copertura prevista a livello integrazione controller \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
 \paragraph{Criteri e test case.}
@@ -363,7 +367,8 @@ Lettura chiave API a runtime, chiamate a Geoapify su 3 categorie fisse (\texttt{
 \paragraph{Classi di equivalenza (input/output).}
 \begin{table}[H]
 \centering
-\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\small
+\begin{tabular}{@{}p{0.22\textwidth}p{0.28\textwidth}p{0.43\textwidth}@{}}
 \toprule
 Classe & Input rappresentativo & Output atteso \\
 \midrule
@@ -371,7 +376,7 @@ CE1 -- chiave presente, API risponde & \texttt{lat=45.0, lon=9.0, radius=500}; m
 CE2 -- chiave assente & \texttt{delete process.env.GEOAPIFY\_KEY} & Eccezione \texttt{'Chiave Geoapify mancante'} prima di chiamate HTTP \\
 CE3 -- errore HTTP su una categoria & seconda call rigettata & Aggregazione delle altre categorie senza throw \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
 \paragraph{Criteri e test case.}
@@ -380,7 +385,8 @@ Branch coverage su ramo \texttt{!GEOAPIFY\_KEY}, ciclo \texttt{for...of} (3 iter
 \subsubsection{Riepilogo criteri strutturali (tabella Test-Doc)}
 \begin{table}[H]
 \centering
-\begin{tabularx}{\textwidth}{@{}l c c c X@{}}
+\small
+\begin{tabular}{@{}p{0.22\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.16\textwidth}p{0.33\textwidth}@{}}
 \toprule
 Test & Statement & Branch & Condition & Boundary value \\
 \midrule
@@ -389,7 +395,7 @@ Test & Statement & Branch & Condition & Boundary value \\
 \texttt{createOfferta} & Si & -- & Si (\texttt{offertaOriginaleId || null}) & \texttt{prezzoOfferto} esatto \\
 \texttt{getNearbyPlaces} & Si & Si (!KEY, ciclo, catch) & Si (\texttt{!GEOAPIFY\_KEY}) & \texttt{radius} default 1000 vs 500 \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \caption{Riepilogo criteri come da Test-Doc.}
 \label{tab:testdoc-criteri}
 \end{table}
@@ -397,7 +403,8 @@ Test & Statement & Branch & Condition & Boundary value \\
 \subsubsection{File e configurazione}
 \begin{table}[H]
 \centering
-\begin{tabularx}{\textwidth}{@{}l X@{}}
+\small
+\begin{tabular}{@{}p{0.46\textwidth}p{0.47\textwidth}@{}}
 \toprule
 File & Scopo \\
 \midrule
@@ -405,7 +412,7 @@ File & Scopo \\
 \texttt{dietiestates-backend/jest.config.ts} & Configurazione Jest (\texttt{ts-jest}, ambiente \texttt{node}) \\
 \texttt{dietiestates-backend/package.json} & Script test: \texttt{jest --runInBand --detectOpenHandles} \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \caption{File di riferimento riportati in Test-Doc.}
 \label{tab:testdoc-file-config}
 \end{table}
@@ -604,39 +611,5 @@ Nel complesso il sistema si colloca in una fascia di usabilita buona, ma con mar
 L'analisi dei file di test e della documentazione di progetto mostra che DietiEstates25 dispone gia di una suite xUnit coerente per quattro metodi backend non banali, progettata con criteri di equivalenza, copertura strutturale e isolamento delle dipendenze esterne. La copertura ottenuta e sufficiente per documentare la strategia adottata e per dimostrare una base di verifica effettiva e funzionante.
 
 Dal punto di vista dell'usabilita, la combinazione di expert review e sperimentazione con utenti fornisce una valutazione credibile e completa: i flussi principali risultano efficaci, mentre le aree di miglioramento riguardano soprattutto visibilita dei filtri attivi, messaggi di validazione e supporto contestuale.
-
-\appendix
-
-\section{Istruzioni di esecuzione dei test}
-Per eseguire la suite xUnit backend:
-
-\begin{lstlisting}[style=projectcode]
-cd ../dietiestates-backend
-npm install
-npm test
-\end{lstlisting}
-
-\section{Artefatti principali consultati}
-\begin{itemize}
-  \item \texttt{dietiestates-backend/test/backend.test.ts}
-  \item \texttt{dietiestates-backend/jest.config.ts}
-  \item \texttt{dietiestates-backend/package.json}
-  \item \texttt{Progettazione/Test-Doc.md}
-  \item \texttt{Progettazione/Requisiti.md}
-  \item \texttt{Progettazione/UC2 Caricamento Immobili.md}
-  \item \texttt{Progettazione/UC4 Gestione Offerte su.md}
-\end{itemize}
-
-\begin{thebibliography}{9}
-\bibitem{nielsen}
-Jakob Nielsen,
-\textit{Usability Engineering},
-Morgan Kaufmann, 1994.
-
-\bibitem{brooke}
-John Brooke,
-\textit{SUS: A Quick and Dirty Usability Scale},
-in P. W. Jordan et al. (eds.), Usability Evaluation in Industry, Taylor \& Francis, 1996.
-\end{thebibliography}
 
 \end{document}

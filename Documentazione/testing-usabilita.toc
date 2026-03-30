@@ -32,34 +32,32 @@
 \contentsline {subsubsection}{\numberline {2.6.4}Dettaglio metodo 2: \texttt {assignUserToAgency}}{7}{subsubsection.2.6.4}%
 \contentsline {paragraph}{Non banalita.}{7}{section*.21}%
 \contentsline {paragraph}{Classi di equivalenza (input/output).}{7}{table.caption.23}%
-\contentsline {paragraph}{Criteri e test case.}{8}{section*.24}%
+\contentsline {paragraph}{Criteri e test case.}{7}{section*.24}%
 \contentsline {subsubsection}{\numberline {2.6.5}Dettaglio metodo 3: \texttt {createOfferta}}{8}{subsubsection.2.6.5}%
 \contentsline {paragraph}{Non banalita.}{8}{section*.25}%
 \contentsline {paragraph}{Classi di equivalenza (input/output).}{8}{table.caption.27}%
 \contentsline {paragraph}{Criteri e test case.}{8}{section*.28}%
 \contentsline {subsubsection}{\numberline {2.6.6}Dettaglio metodo 4: \texttt {getNearbyPlaces}}{8}{subsubsection.2.6.6}%
 \contentsline {paragraph}{Non banalita.}{8}{section*.29}%
-\contentsline {paragraph}{Classi di equivalenza (input/output).}{9}{table.caption.31}%
-\contentsline {paragraph}{Criteri e test case.}{9}{section*.32}%
-\contentsline {subsubsection}{\numberline {2.6.7}Riepilogo criteri strutturali (tabella Test-Doc)}{10}{subsubsection.2.6.7}%
-\contentsline {subsubsection}{\numberline {2.6.8}File e configurazione}{10}{subsubsection.2.6.8}%
-\contentsline {subsection}{\numberline {2.7}Esito dell'esecuzione reale della suite}{11}{subsection.2.7}%
-\contentsline {section}{\numberline {3}Valutazione dell'usabilita}{11}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Obiettivi e collegamento ai requisiti}{11}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Expert review / inspection}{11}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}Metodo adottato}{11}{subsubsection.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.2.2}Checklist di review}{11}{subsubsection.3.2.2}%
-\contentsline {subsubsection}{\numberline {3.2.3}Esiti e priorita di intervento}{13}{subsubsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.3}Esperimento con utenti reali o potenziali}{13}{subsection.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.1}Soggetti reclutati}{13}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}Procedura sperimentale}{13}{subsubsection.3.3.2}%
-\contentsline {subsubsection}{\numberline {3.3.3}Task sperimentali}{13}{subsubsection.3.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.4}Metriche osservate}{14}{subsubsection.3.3.4}%
-\contentsline {subsubsection}{\numberline {3.3.5}Survey post-esperimento}{14}{subsubsection.3.3.5}%
-\contentsline {paragraph}{Questionario SUS.}{14}{section*.37}%
-\contentsline {paragraph}{Domande specifiche.}{14}{section*.38}%
-\contentsline {subsubsection}{\numberline {3.3.6}Risultati}{15}{subsubsection.3.3.6}%
-\contentsline {subsubsection}{\numberline {3.3.7}Discussione dei risultati}{15}{subsubsection.3.3.7}%
-\contentsline {section}{\numberline {4}Conclusioni}{15}{section.4}%
-\contentsline {section}{\numberline {A}Istruzioni di esecuzione dei test}{15}{appendix.A}%
-\contentsline {section}{\numberline {B}Artefatti principali consultati}{16}{appendix.B}%
+\contentsline {paragraph}{Classi di equivalenza (input/output).}{8}{table.caption.31}%
+\contentsline {paragraph}{Criteri e test case.}{8}{section*.32}%
+\contentsline {subsubsection}{\numberline {2.6.7}Riepilogo criteri strutturali (tabella Test-Doc)}{9}{subsubsection.2.6.7}%
+\contentsline {subsubsection}{\numberline {2.6.8}File e configurazione}{9}{subsubsection.2.6.8}%
+\contentsline {subsection}{\numberline {2.7}Esito dell'esecuzione reale della suite}{9}{subsection.2.7}%
+\contentsline {section}{\numberline {3}Valutazione dell'usabilita}{10}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Obiettivi e collegamento ai requisiti}{10}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Expert review / inspection}{10}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Metodo adottato}{10}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Checklist di review}{10}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Esiti e priorita di intervento}{11}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}Esperimento con utenti reali o potenziali}{11}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Soggetti reclutati}{11}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Procedura sperimentale}{12}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.3}Task sperimentali}{12}{subsubsection.3.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.4}Metriche osservate}{12}{subsubsection.3.3.4}%
+\contentsline {subsubsection}{\numberline {3.3.5}Survey post-esperimento}{12}{subsubsection.3.3.5}%
+\contentsline {paragraph}{Questionario SUS.}{13}{section*.37}%
+\contentsline {paragraph}{Domande specifiche.}{13}{section*.38}%
+\contentsline {subsubsection}{\numberline {3.3.6}Risultati}{13}{subsubsection.3.3.6}%
+\contentsline {subsubsection}{\numberline {3.3.7}Discussione dei risultati}{14}{subsubsection.3.3.7}%
+\contentsline {section}{\numberline {4}Conclusioni}{14}{section.4}%
