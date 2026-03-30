@@ -8,6 +8,10 @@ export async function fetchOfferteByImmobile<T>(idImmobile: string): Promise<T[]
     headers: { Authorization: `Bearer ${token}` },
   });
 
+  if (res.status === 404) {
+    return [];
+  }
+
   if (!res.ok) {
     throw new Error('Errore nel caricamento offerte');
   }

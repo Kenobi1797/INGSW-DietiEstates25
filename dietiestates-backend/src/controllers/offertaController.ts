@@ -106,6 +106,21 @@ export async function getOffertePerImmobile(req: AuthRequest, res: Response) {
     if (!Number.isInteger(idImmobile) || idImmobile <= 0) {
       return res.status(400).json({ error: 'Id immobile non valido' });
     }
+
+    const ownerResult = await pool.query(
+      'SELECT IdAgente FROM Immobile WHERE IdImmobile = $1',
+      [idImmobile]
+    );
+
+    if (ownerResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Immobile non trovato' });
+    }
+
+    const idAgente = Number(ownerResult.rows[0].idagente);
+    if (idAgente !== Number(req.user.id)) {
+      return res.status(403).json({ error: 'Non autorizzato ad accedere alle offerte di questo immobile' });
+    }
+
     const offerte = await OffertaDAO.getOffertePerImmobile(idImmobile);
     res.json(offerte);
   } catch (err) {

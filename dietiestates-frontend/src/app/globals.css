@@ -757,7 +757,7 @@ a {
   display: flex;
   justify-content: center;
   padding: 2rem 1rem;
-  background: linear-gradient(130deg, #f8fafc 0%, #e2e8f0 100%);
+  background: #ffffff;
   min-height: 100vh;
 }
 
@@ -941,6 +941,7 @@ a {
   align-items: center;
   gap: .4rem;
   font-size: .9rem;
+  color: #1e293b;
 }
 
 .label {

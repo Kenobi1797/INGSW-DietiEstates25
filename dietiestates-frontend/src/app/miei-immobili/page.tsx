@@ -24,7 +24,12 @@ export default function MieiImmobiliPage() {
         });
         if (!res.ok) throw new Error('Errore nel caricamento degli immobili');
         const data = await res.json();
-        setImmobili(Array.isArray(data) ? data : []);
+        const list = Array.isArray(data) ? data : [];
+        // Difesa lato UI: mostra solo immobili realmente associati all'utente corrente.
+        const miei = authuser?.idUtente
+          ? list.filter((imm) => Number(imm.idAgente) === Number(authuser.idUtente))
+          : list;
+        setImmobili(miei);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Errore');
       } finally {
@@ -32,7 +37,7 @@ export default function MieiImmobiliPage() {
       }
     }
     fetchMiei();
-  }, []);
+  }, [authuser?.idUtente]);
 
   if (!authuser) return (
     <div className="min-h-screen flex items-center justify-center">
