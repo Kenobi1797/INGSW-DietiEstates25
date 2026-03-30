@@ -265,6 +265,151 @@ Metodo & Equivalenza & Statement & Branch & Note \\
 \label{tab:coverage-strategy}
 \end{table}
 
+\subsection{Allineamento completo con Test-Doc}
+Questa sezione riporta in forma esplicita tutti gli elementi presenti in \texttt{Progettazione/Test-Doc.md}, in modo che il presente file \texttt{.tex} contenga integralmente il contenuto richiesto.
+
+\subsubsection{Tipologia di test: White box (dettaglio operativo)}
+Tutti i test adottati sono \textbf{white box}. In particolare:
+\begin{itemize}
+  \item e noto il testo delle query SQL prodotte (verifica di UPDATE parametrizzate);
+  \item e noto il comportamento di \texttt{insertOfferta} sui parametri \texttt{offertaManuale} e \texttt{offertaOriginaleId -> null};
+  \item e noto il flusso di \texttt{getNearbyPlaces} (3 categorie fisse e lettura di \texttt{process.env.GEOAPIFY\_KEY} a runtime);
+  \item sono noti i branch interni di \texttt{assignUserToAgency} (check su \texttt{result.rows[0]} e clausola \texttt{Ruolo IN (...)}).
+\end{itemize}
+
+Il mocking di \texttt{pool} (PostgreSQL) e \texttt{axios} isola ogni unita dalle dipendenze esterne, rendendo i test deterministici e ripetibili.
+
+\subsubsection{Metodi testati (firma e tipo)}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}c l l l l@{}}
+\toprule
+\# & Metodo & Modulo & Firma & Tipo \\
+\midrule
+1 & \texttt{updateStatoOfferta} & \texttt{OffertaDAO} & \texttt{(idOfferta: number, nuovoStato: string)} & White box \\
+2 & \texttt{assignUserToAgency} & \texttt{UtenteDAO} & \texttt{(idUtente: number, idAgenzia: number)} & White box \\
+3 & \texttt{createOfferta} & \texttt{OffertaDAO} & \texttt{(idImmobile: number, idUtente: number, prezzoOfferto: number)} & White box \\
+4 & \texttt{getNearbyPlaces} & \texttt{utils/geoapify} & \texttt{(lat: number, lon: number, radius?: number)} & White box \\
+\bottomrule
+\end{tabularx}
+\caption{Metodi testati come riportati in Test-Doc.}
+\label{tab:testdoc-metodi}
+\end{table}
+
+\subsubsection{Dettaglio metodo 1: \texttt{updateStatoOfferta}}
+\paragraph{Non banalita.}
+Esegue una UPDATE parametrizzata e rimappa il risultato in \texttt{OffertaDTO} validato con Zod (inclusa conversione \texttt{prezzoOfferto} stringa -> number).
+
+\paragraph{Classi di equivalenza (input/output).}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\toprule
+Classe & Input rappresentativo & Output atteso \\
+\midrule
+CE1 -- stato valido, offerta esistente & \texttt{idOfferta=42, nuovoStato='Accettata'} & DTO con \texttt{stato='Accettata'} e \texttt{prezzoOfferto=200000} (number) \\
+CE2 -- offerta inesistente & \texttt{rows: []} dal mock & \texttt{mapRowToOfferta(undefined)} con eccezione Zod (gestione controller, fuori scope unit) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Criteri e test case.}
+Statement coverage; verifica conversione \texttt{'200000' -> 200000}. Test case: query UPDATE con parametri \texttt{['Accettata', 42]}, verifica \texttt{stato}, \texttt{idOfferta}, \texttt{prezzoOfferto}.
+
+\subsubsection{Dettaglio metodo 2: \texttt{assignUserToAgency}}
+\paragraph{Non banalita.}
+UPDATE con clausola ruolo \texttt{Ruolo IN ('Agente', 'Supporto')}, mapping in \texttt{UtenteDTO}, restituzione \texttt{null} se non assegnabile.
+
+\paragraph{Classi di equivalenza (input/output).}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\toprule
+Classe & Input rappresentativo & Output atteso \\
+\midrule
+CE1 -- utente Agente/Supporto assegnato & \texttt{idUtente=7, idAgenzia=3}, ruolo='Agente' & UPDATE con ruolo consentito, DTO con \texttt{idAgenzia=3} \\
+CE2 -- utente non esiste/non consentito & \texttt{idUtente=999, idAgenzia=3}, \texttt{rows: []} & \texttt{pool.query} vuoto, funzione ritorna \texttt{null} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Criteri e test case.}
+Statement + branch coverage su \texttt{result.rows[0] ? ... : null}. Test cases: (1) assegnazione riuscita con parametri \texttt{[3, 7]}; (2) utente non assegnabile con ritorno \texttt{null}.
+
+\subsubsection{Dettaglio metodo 3: \texttt{createOfferta}}
+\paragraph{Non banalita.}
+Delega a \texttt{insertOfferta} con \texttt{offertaManuale=false} e \texttt{idOffertaOriginale=null}, stato iniziale \texttt{'InAttesa'}, mapping DTO validato.
+
+\paragraph{Classi di equivalenza (input/output).}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\toprule
+Classe & Input rappresentativo & Output atteso \\
+\midrule
+CE1 -- offerta standard senza controproposta & \texttt{idImmobile=50, idUtente=20, prezzoOfferto=90000} & INSERT con \texttt{[50, 20, 90000, false, null]}, \texttt{offertaManuale=false}, \texttt{stato='InAttesa'} \\
+CE2 -- offerta con \texttt{offertaOriginaleId} (path \texttt{createManualOfferta}) & Non testata in questa suite & Copertura prevista a livello integrazione controller \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Criteri e test case.}
+Statement coverage su \texttt{createOfferta}; verifica di \texttt{offertaOriginaleId || null} in \texttt{insertOfferta}. Test case: verifica parametri INSERT, \texttt{idOfferta}, \texttt{prezzoOfferto} numerico, \texttt{offertaManuale=false}.
+
+\subsubsection{Dettaglio metodo 4: \texttt{getNearbyPlaces}}
+\paragraph{Non banalita.}
+Lettura chiave API a runtime, chiamate a Geoapify su 3 categorie fisse (\texttt{education.school}, \texttt{leisure.park}, \texttt{public\_transport}), aggregazione risultati, gestione best-effort degli errori HTTP per categoria.
+
+\paragraph{Classi di equivalenza (input/output).}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\toprule
+Classe & Input rappresentativo & Output atteso \\
+\midrule
+CE1 -- chiave presente, API risponde & \texttt{lat=45.0, lon=9.0, radius=500}; mock 1+0+1 feature & Lista di 2 \texttt{Place}, 3 chiamate \texttt{axios.get} \\
+CE2 -- chiave assente & \texttt{delete process.env.GEOAPIFY\_KEY} & Eccezione \texttt{'Chiave Geoapify mancante'} prima di chiamate HTTP \\
+CE3 -- errore HTTP su una categoria & seconda call rigettata & Aggregazione delle altre categorie senza throw \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Criteri e test case.}
+Branch coverage su ramo \texttt{!GEOAPIFY\_KEY}, ciclo \texttt{for...of} (3 iterazioni), blocco \texttt{catch}. Boundary value su \texttt{radius} default 1000 vs esplicito 500. Test cases: percorso nominale (2 risultati) e chiave mancante (eccezione).
+
+\subsubsection{Riepilogo criteri strutturali (tabella Test-Doc)}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l c c c X@{}}
+\toprule
+Test & Statement & Branch & Condition & Boundary value \\
+\midrule
+\texttt{updateStatoOfferta} & Si & -- & -- & \texttt{idOfferta} intero positivo, \texttt{prezzoOfferto} float->number \\
+\texttt{assignUserToAgency} & Si & Si (rows vs null) & Si (check \texttt{result.rows[0]}) & ruolo consentito vs non consentito \\
+\texttt{createOfferta} & Si & -- & Si (\texttt{offertaOriginaleId || null}) & \texttt{prezzoOfferto} esatto \\
+\texttt{getNearbyPlaces} & Si & Si (!KEY, ciclo, catch) & Si (\texttt{!GEOAPIFY\_KEY}) & \texttt{radius} default 1000 vs 500 \\
+\bottomrule
+\end{tabularx}
+\caption{Riepilogo criteri come da Test-Doc.}
+\label{tab:testdoc-criteri}
+\end{table}
+
+\subsubsection{File e configurazione}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\toprule
+File & Scopo \\
+\midrule
+\texttt{dietiestates-backend/test/backend.test.ts} & Suite Jest con 4 describe e 6 test case \\
+\texttt{dietiestates-backend/jest.config.ts} & Configurazione Jest (\texttt{ts-jest}, ambiente \texttt{node}) \\
+\texttt{dietiestates-backend/package.json} & Script test: \texttt{jest --runInBand --detectOpenHandles} \\
+\bottomrule
+\end{tabularx}
+\caption{File di riferimento riportati in Test-Doc.}
+\label{tab:testdoc-file-config}
+\end{table}
+
 \subsection{Esito dell'esecuzione reale della suite}
 L'esecuzione della suite backend ha prodotto i seguenti risultati:
 \begin{itemize}
