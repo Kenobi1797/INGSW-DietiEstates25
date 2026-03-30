@@ -7,10 +7,10 @@ Cartella test: `dietiestates-backend/test/`
 ### Tipologia di test: White box
 
 Tutti i test adottati sono **white box**: sfruttano la piena conoscenza dell'implementazione interna dei metodi sotto test. In particolare:
-- si conosce il testo esatto delle query SQL prodotte (per verificare costruzione dinamica di `SET` e parametri `$i`);
+- si conosce il testo esatto delle query SQL prodotte (per verificare UPDATE parametrizzate);
 - si conosce la struttura alternativa dei parametri passati da `insertOfferta` (`offertaManuale`, `offertaOriginaleId ??? null`);
 - si conosce il flusso di controllo di `getNearbyPlaces` (iterazione su 3 categorie fisse, lettura di `process.env.GEOAPIFY_KEY` a runtime);
-- si conoscono i branch interni (`safeFields.length === 0 → throw`) di `updateAgenziaDB`.
+- si conoscono i branch interni (`result.rows[0]` check) di `assignUserToAgency` (clausola `WHERE Ruolo IN (...)`in UPDATE condizionato).
 
 Il mocking di `pool` (PostgreSQL) e `axios` permette di isolare ogni unità dal sistema esterno, rendendo i test deterministici e ripetibili senza DB né rete.
 
@@ -23,7 +23,7 @@ Il mocking di `pool` (PostgreSQL) e `axios` permette di isolare ogni unità dal 
 | 3 | `createOfferta` | `OffertaDAO` | `(idImmobile: number, idUtente: number, prezzoOfferto: number)` | White box |
 | 4 | `getNearbyPlaces` | `utils/geoapify` | `(lat: number, lon: number, radius?: number)` | White box |
 
-Tutti i metodi hanno almeno 2 parametri formali dichiarati e implementano logica non banale (query UPDATE/INSERT dinamiche, filtraggio campi consentiti, validazione Zod, chiamate HTTP esterne multi-categoria).
+Tutti i metodi hanno almeno 2 parametri formali dichiarati e implementano logica non banale (query UPDATE/INSERT parametrizzate, UPDATE condizionato su ruolo, validazione Zod, chiamate HTTP esterne multi-categoria, gestione null).
 
 ---
 
