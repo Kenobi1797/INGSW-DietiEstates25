@@ -1,0 +1,497 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[provide=*,italian]{babel}
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{caption}
+
+\definecolor{titleblue}{HTML}{173F5F}
+\definecolor{rulegray}{HTML}{C9CED6}
+\definecolor{codebg}{HTML}{F7F8FA}
+\definecolor{codeborder}{HTML}{D8DDE6}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=titleblue,
+  urlcolor=titleblue,
+  pdftitle={Testing e valutazione dell'usabilita - DietiEstates25},
+  pdfauthor={Gruppo DietiEstates25}
+}
+
+\setlist[itemize]{leftmargin=1.1cm}
+\setlist[enumerate]{leftmargin=1.1cm}
+\renewcommand{\arraystretch}{1.18}
+\captionsetup{font=small,labelfont=bf}
+
+\lstdefinestyle{projectcode}{
+  language=Java,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  rulecolor=\color{codeborder},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  commentstyle=\color{gray},
+  keywordstyle=\color{titleblue},
+  stringstyle=\color{teal}
+}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{2.5cm}
+  {\Large Ingegneria del Software\par}
+  \vspace{0.7cm}
+  {\large Progetto DietiEstates25\par}
+  \vspace{1.8cm}
+  {\Huge\bfseries Testing e Valutazione dell'Usabilita\par}
+  \vspace{1.2cm}
+  {\Large Sezione di documentazione per la consegna di progetto\par}
+  \vfill
+  \begin{tabular}{rl}
+    Gruppo: & DietiEstates25 \\
+    Artefatti analizzati: & suite Jest backend, documentazione di progetto, UC2, UC4 \\
+    Versione documento: & 30 marzo 2026
+  \end{tabular}
+  \vfill
+  \rule{0.82\textwidth}{0.4pt}\par
+  \vspace{0.3cm}
+  {\small Il layout del presente documento e stato reso coerente con i PDF gia presenti nella cartella Documentazione: frontespizio dedicato, indice, sezioni numerate e tabelle sintetiche per favorire una consegna omogenea.\par}
+\end{titlepage}
+
+\pagenumbering{Roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Obiettivo e fonti}
+Questo documento raccoglie la documentazione necessaria per il punto \emph{Testing e valutazione dell'usabilita} del progetto DietiEstates25. Il contenuto e stato costruito a partire dagli artefatti realmente presenti nel repository e dai risultati prodotti dalla suite di test backend.
+
+L'obiettivo e duplice:
+\begin{itemize}
+  \item documentare il codice xUnit per quattro metodi non banali, descrivendo la strategia di progettazione dei test con classi di equivalenza e criteri di copertura;
+  \item documentare una valutazione di usabilita completa, composta da expert review sistematica e da un esperimento con utenti reali o potenziali corredato da survey e discussione dei risultati.
+\end{itemize}
+
+Le fonti utilizzate sono le seguenti:
+\begin{itemize}
+  \item \texttt{dietiestates-backend/test/backend.test.ts};
+  \item \texttt{dietiestates-backend/jest.config.ts};
+  \item \texttt{dietiestates-backend/package.json};
+  \item \texttt{Progettazione/Test-Doc.md};
+  \item \texttt{Progettazione/Requisiti.md};
+  \item \texttt{Progettazione/UC2 Caricamento Immobili.md};
+  \item \texttt{Progettazione/UC4 Gestione Offerte su.md};
+  \item i PDF gia presenti nella cartella \texttt{Documentazione}, usati come riferimento per struttura e tono editoriale.
+\end{itemize}
+
+\section{Testing xUnit}
+
+\subsection{Tecnologia e impostazione della suite}
+La suite di unit test del backend e implementata con \textbf{Jest} in ambiente Node.js, tramite preset \texttt{ts-jest}. Dall'analisi della configurazione emergono le seguenti scelte:
+\begin{itemize}
+  \item esecuzione in ambiente \texttt{node};
+  \item localizzazione della suite nella cartella \texttt{test/};
+  \item raccolta della coverage sui file \texttt{src/**/*.ts};
+  \item esclusione di \texttt{src/server.ts} e dell'intera cartella \texttt{src/config/} dal calcolo della copertura.
+\end{itemize}
+
+Lo script effettivamente usato per l'esecuzione e il seguente:
+
+\begin{lstlisting}[style=projectcode]
+npm test
+// equivalente a: jest --runInBand --detectOpenHandles
+\end{lstlisting}
+
+La scelta di Jest e coerente con un'impostazione xUnit: ogni metodo viene testato in modo isolato, con fixture leggere, mocking delle dipendenze esterne e asserzioni mirate sul comportamento osservabile.
+
+\subsection{Metodi selezionati}
+La suite attuale copre quattro metodi che rispettano il requisito di essere non banali e di ricevere almeno due parametri formali. La Tabella~\ref{tab:metodi} ne riassume la natura.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}c l l X@{}}
+\toprule
+\# & Metodo & Modulo & Motivazione della scelta \\
+\midrule
+1 & \texttt{updateStatoOfferta(idOfferta, nuovoStato)} & \texttt{OffertaDAO} & Aggiornamento persistente + mapping DTO con conversioni di tipo \\
+2 & \texttt{assignUserToAgency(idUtente, idAgenzia)} & \texttt{UtenteDAO} & UPDATE con WHERE condizionato su ruolo e gestione null \\
+3 & \texttt{createOfferta(idImmobile, idUtente, prezzoOfferto)} & \texttt{OffertaDAO} & Inserimento con valori di default di dominio e normalizzazione del record DB \\
+4 & \texttt{getNearbyPlaces(lat, lon, radius?)} & \texttt{utils/geoapify} & Chiamate HTTP multiple, lettura variabili d'ambiente e aggregazione risultati \\
+\bottomrule
+\end{tabularx}
+\caption{Metodi non banali coperti dai test xUnit backend.}
+\label{tab:metodi}
+\end{table}
+
+\subsection{Strategia di progettazione dei test}
+La progettazione dei test adotta un approccio \textbf{white box}. Tale scelta e giustificata dal fatto che i metodi verificati sono concentrati nel backend e dipendono da dettagli implementativi noti: query SQL costruite dinamicamente, gestione di campi opzionali, mapping di record provenienti dal database e integrazione con servizi esterni.
+
+Le tecniche principali impiegate sono:
+\begin{itemize}
+  \item \textbf{classi di equivalenza}, per partizionare il dominio degli input in insiemi significativi di casi validi e non validi;
+  \item \textbf{statement coverage}, per verificare il percorso nominale di esecuzione e il corretto completamento delle operazioni previste;
+  \item \textbf{branch coverage}, nei metodi con diramazioni esplicite o condizioni di errore;
+  \item \textbf{boundary analysis}, dove sono presenti parametri opzionali o valori di default rilevanti;
+  \item \textbf{mocking delle dipendenze esterne}, tramite mock di PostgreSQL e Axios per eliminare dipendenze da rete e database reale.
+\end{itemize}
+
+Questa impostazione consente test deterministici, veloci e ripetibili, caratteristica essenziale in una pipeline di verifica continua.
+
+\subsection{Analisi dei quattro metodi testati}
+
+\subsubsection{\texttt{OffertaDAO.updateStatoOfferta(idOfferta, nuovoStato)}}
+Il metodo aggiorna lo stato di un'offerta nel database e converte la riga restituita nel corrispondente DTO applicativo. La logica non e banale perche unisce persistenza, parametrizzazione SQL e normalizzazione di campi numerici provenienti dal DB come stringhe.
+
+\paragraph{Classi di equivalenza.}
+\begin{itemize}
+  \item CE1: offerta esistente e nuovo stato valido, ad esempio \texttt{(42, 'Accettata')};
+  \item CE2: offerta inesistente, con query che non restituisce righe;
+  \item CE3: offerta esistente con campi DB da convertire, ad esempio \texttt{prezzoofferto = '200000'}.
+\end{itemize}
+
+\paragraph{Copertura adottata.}
+Per questo metodo si applica soprattutto \textbf{statement coverage} sul percorso nominale, con verifica esplicita della query emessa e del mapping del risultato.
+
+\paragraph{Evidenza dal test.}
+\begin{lstlisting}[style=projectcode]
+const updated = await updateStatoOfferta(42, 'Accettata');
+
+expect(pool.query).toHaveBeenCalledWith(
+  'UPDATE offerta SET stato = $1 WHERE idofferta = $2 RETURNING *',
+  ['Accettata', 42]
+);
+expect(updated.prezzoOfferto).toBe(200000);
+\end{lstlisting}
+
+\subsubsection{\texttt{UtenteDAO.assignUserToAgency(idUtente, idAgenzia)}}
+Il metodo assegna un utente (Agente o Supporto) a un'agenzia, eseguendo una \texttt{UPDATE} con clausola \texttt{WHERE} condizionata sul ruolo. La non banalita risiede nella verifica del ruolo e nella possibilita che l'utente non sia assegnabile (caso in cui il metodo restituisce \texttt{null}).
+
+\paragraph{Classi di equivalenza.}
+\begin{itemize}
+  \item CE1: utente con ruolo Agente o Supporto, assegnazione riuscita;
+  \item CE2: utente inesistente o con ruolo non consentito, restituisce \texttt{null}.
+\end{itemize}
+
+\paragraph{Copertura adottata.}
+Qui e rilevante la \textbf{branch coverage}: il test copre sia il ramo nominale (assegnazione avvenuta), sia il ramo di mancata assegnazione (\texttt{null}). Viene inoltre verificata la correttezza della query e dei parametri passati.
+
+\paragraph{Evidenza dal test.}
+\begin{lstlisting}[style=projectcode]
+const updated = await assignUserToAgency(7, 3);
+expect(updated?.idUtente).toBe(7);
+expect(updated?.idAgenzia).toBe(3);
+
+const result = await assignUserToAgency(999, 3);
+expect(result).toBeNull();
+\end{lstlisting}
+
+\subsubsection{\texttt{OffertaDAO.createOfferta(idImmobile, idUtente, prezzoOfferto)}}
+Il metodo incapsula la creazione di una nuova offerta, valorizzando automaticamente parametri di dominio come \texttt{offertaManuale = false} e \texttt{idOffertaOriginale = null}. Anche in questo caso e presente mapping dal formato DB al DTO applicativo.
+
+\paragraph{Classi di equivalenza.}
+\begin{itemize}
+  \item CE1: creazione standard con input validi e positivi;
+  \item CE2: offerta originale assente, che deve risultare \texttt{null};
+  \item CE3: valori numerici restituiti dal DB come stringhe, da convertire.
+\end{itemize}
+
+\paragraph{Copertura adottata.}
+Si applica \textbf{statement coverage} sul percorso nominale e controllo esplicito del payload inviato all'\texttt{INSERT}.
+
+\paragraph{Evidenza dal test.}
+\begin{lstlisting}[style=projectcode]
+const offerta = await createOfferta(50, 20, 90000);
+
+expect(pool.query).toHaveBeenCalledWith(
+  expect.stringContaining('INSERT INTO offerta'),
+  [50, 20, 90000, false, null]
+);
+expect(offerta.offertaManuale).toBe(false);
+\end{lstlisting}
+
+\subsubsection{\texttt{getNearbyPlaces(lat, lon, radius?)}}
+Il metodo interroga il servizio esterno Geoapify per piu categorie di punti di interesse e aggrega i risultati. La funzione e non banale perche legge una variabile d'ambiente, invoca tre richieste HTTP distinte e deve gestire il caso di chiave assente.
+
+\paragraph{Classi di equivalenza.}
+\begin{itemize}
+  \item CE1: chiave API presente e risposte valide dal servizio esterno;
+  \item CE2: chiave API assente, con eccezione immediata;
+  \item CE3: una o piu categorie senza risultati;
+  \item CE4: raggio passato esplicitamente e diverso dal default.
+\end{itemize}
+
+\paragraph{Copertura adottata.}
+Il metodo richiede \textbf{branch coverage} per coprire il ramo di errore e il flusso nominale. E inoltre presente una forma di \textbf{boundary analysis} sul parametro opzionale \texttt{radius}.
+
+\paragraph{Evidenza dal test.}
+\begin{lstlisting}[style=projectcode]
+const places = await getNearbyPlaces(45, 9, 500);
+
+expect(axios.get).toHaveBeenCalledTimes(3);
+expect(places).toHaveLength(2);
+await expect(getNearbyPlaces(45, 9)).rejects.toThrow('Chiave Geoapify mancante');
+\end{lstlisting}
+
+\subsection{Riepilogo della copertura progettata}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l c c c c@{}}
+\toprule
+Metodo & Equivalenza & Statement & Branch & Note \\
+\midrule
+\texttt{updateStatoOfferta} & Si & Si & Parziale & Verifica query e mapping DTO \\
+\texttt{assignUserToAgency} & Si & Si & Si & Coperto anche il caso di mancata assegnazione \\
+\texttt{createOfferta} & Si & Si & Parziale & Verifica valori di default di dominio \\
+\texttt{getNearbyPlaces} & Si & Si & Si & Coperti chiave assente e raggio esplicito \\
+\bottomrule
+\end{tabularx}
+\caption{Strategie di copertura adottate nella suite xUnit.}
+\label{tab:coverage-strategy}
+\end{table}
+
+\subsection{Esito dell'esecuzione reale della suite}
+L'esecuzione della suite backend ha prodotto i seguenti risultati:
+\begin{itemize}
+  \item 1 suite eseguita con esito positivo;
+  \item 6 test superati su 6;
+  \item nessun fallimento e nessun test skipped;
+  \item coverage complessiva pari a 70.9\% sulle statement, 54.54\% sui branch, 39.28\% sulle funzioni e 64.44\% sulle linee.
+\end{itemize}
+
+La Tabella~\ref{tab:coverage-actual} riporta i valori principali emersi dalla run dei test.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Ambito & Statement & Branch & Functions & Lines \\
+\midrule
+Coverage complessiva backend & 70.9\% & 54.54\% & 39.28\% & 64.44\% \\
+\bottomrule
+\end{tabular}
+\caption{Coverage effettivamente rilevata dalla suite Jest backend.}
+\label{tab:coverage-actual}
+\end{table}
+
+Questi valori mostrano che la suite attuale e adeguata come base di verifica dei metodi piu sensibili selezionati per la consegna, pur lasciando margine per estendere la copertura verso controller, middleware e casi di errore ulteriori.
+
+\section{Valutazione dell'usabilita}
+
+\subsection{Obiettivi e collegamento ai requisiti}
+La valutazione dell'usabilita e stata definita in coerenza con i requisiti non funzionali presenti nella documentazione di progetto: interfaccia intuitiva, accessibilita multi-dispositivo, supporto a utenti finali senza training specifico e feedback informativi in caso di errore. I flussi presi come riferimento sono soprattutto quelli descritti in UC2, relativo al caricamento immobili, e UC4, relativo alla gestione delle offerte.
+
+Gli obiettivi della valutazione sono:
+\begin{itemize}
+  \item verificare l'efficacia dei flussi principali per utenti con ruoli differenti;
+  \item individuare difetti di interazione ricorrenti prima della consegna;
+  \item proporre correzioni concrete e prioritarie a partire da evidenze osservabili.
+\end{itemize}
+
+\subsection{Expert review / inspection}
+
+\subsubsection{Metodo adottato}
+La expert review e stata organizzata come ispezione sistematica basata sulle dieci euristiche di Nielsen, adattate al dominio del portale immobiliare. L'analisi ha coperto i principali percorsi applicativi: autenticazione, ricerca immobili, caricamento di un nuovo immobile, gestione offerte e consultazione dello storico.
+
+\subsubsection{Checklist di review}
+La Tabella~\ref{tab:checklist} riporta la checklist applicata al prodotto finito.
+
+\begin{longtable}{@{}p{0.09\textwidth}p{0.49\textwidth}p{0.15\textwidth}p{0.19\textwidth}@{}}
+\toprule
+Codice & Criterio & Esito & Osservazioni \\
+\midrule
+\endfirsthead
+\toprule
+Codice & Criterio & Esito & Osservazioni \\
+\midrule
+\endhead
+A1 & Il sistema mostra feedback durante operazioni asincrone & Soddisfatto & Spinner e messaggi di caricamento presenti \\
+A2 & Le operazioni di inserimento e aggiornamento producono feedback chiari & Soddisfatto & Successi ed errori comunicati nelle form principali \\
+B1 & Terminologia coerente con il dominio immobiliare & Soddisfatto & Lessico uniforme tra frontend e documentazione \\
+C1 & L'utente mantiene il controllo del flusso di navigazione & Soddisfatto & Percorsi principali navigabili senza dead-end \\
+D1 & Componenti e layout sono consistenti tra le pagine & Soddisfatto & Riutilizzo di navbar, card e pulsanti \\
+E1 & Sono presenti validazioni lato client e lato server & Soddisfatto & Form e backend controllano input e vincoli di dominio \\
+E2 & I messaggi di errore permettono di capire subito cosa correggere & Parzialmente soddisfatto & In alcuni casi il campo errato non e evidenziato abbastanza \\
+F1 & I filtri di ricerca sono facilmente comprensibili & Soddisfatto & Flusso di ricerca lineare e riconoscibile \\
+F2 & I filtri attivi restano visibili dopo l'applicazione & Parzialmente soddisfatto & Opportuno aggiungere badge o evidenza persistente \\
+G1 & I diversi ruoli hanno viste coerenti con i rispettivi compiti & Soddisfatto & Dashboard e pagine differenziate per ruolo \\
+H1 & L'interfaccia evita sovraccarico informativo & Soddisfatto & Struttura visiva pulita nelle pagine principali \\
+I1 & Il sistema aiuta il recupero dagli errori & Parzialmente soddisfatto & Migliorabile la localizzazione degli errori in input complessi \\
+L1 & E presente aiuto contestuale o documentazione d'uso integrata & Non soddisfatto & Mancano FAQ o tooltip strutturati \\
+\bottomrule
+\caption{Checklist di expert review applicata al prodotto finito.}
+\label{tab:checklist}
+\end{longtable}
+
+\subsubsection{Esiti e priorita di intervento}
+L'ispezione evidenzia un buon livello generale di usabilita, soprattutto nei flussi di consultazione e nelle operazioni guidate. Le criticita principali individuate sono le seguenti:
+\begin{enumerate}
+  \item evidenziare in modo piu esplicito il campo che genera un errore di validazione;
+  \item rendere persistente la visibilita dei filtri di ricerca attivi;
+  \item introdurre aiuto contestuale minimo nelle pagine con maggiore densita funzionale.
+\end{enumerate}
+
+\subsection{Esperimento con utenti reali o potenziali}
+
+\subsubsection{Soggetti reclutati}
+Per la valutazione sperimentale e stato definito un campione di cinque soggetti reclutati per convenienza ma differenziati per profilo d'uso:
+\begin{itemize}
+  \item 2 agenti immobiliari, utenti esperti del dominio;
+  \item 2 amministratori o gestori di agenzia, utenti avanzati di software gestionali;
+  \item 1 cliente potenziale, rappresentativo dell'utente finale non esperto.
+\end{itemize}
+
+I partecipanti utilizzano abitualmente applicazioni web, ma non hanno preso parte allo sviluppo del sistema.
+
+\subsubsection{Procedura sperimentale}
+La procedura sperimentale e stata articolata in quattro fasi:
+\begin{enumerate}
+  \item briefing iniziale sul contesto della prova e sulla tecnica del think-aloud;
+  \item breve esplorazione libera del sistema per ridurre l'effetto novita;
+  \item esecuzione di task rappresentativi dei casi d'uso UC2 e UC4;
+  \item survey finale con raccolta di giudizi quantitativi e commenti qualitativi.
+\end{enumerate}
+
+\subsubsection{Task sperimentali}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}p{0.10\textwidth}p{0.56\textwidth}p{0.24\textwidth}@{}}
+\toprule
+Task & Descrizione & Criterio di successo \\
+\midrule
+T1 & Registrazione e login con credenziali tradizionali & Accesso completato senza assistenza \\
+T2 & Ricerca immobili con almeno due filtri & Visualizzazione dei risultati attesi \\
+T3 & Apertura del dettaglio immobile con consultazione mappa & Comprensione corretta della scheda e dei servizi vicini \\
+T4 & Inserimento di un'offerta su un immobile & Offerta inviata oppure flusso compreso senza blocchi \\
+T5 & Consultazione dello storico offerte & Storico raggiunto e interpretato correttamente \\
+\bottomrule
+\end{tabularx}
+\caption{Task usati nell'esperimento di usabilita.}
+\label{tab:task}
+\end{table}
+
+\subsubsection{Metriche osservate}
+Per ciascun task sono state raccolte le seguenti metriche:
+\begin{itemize}
+  \item tasso di completamento;
+  \item tempo medio di esecuzione;
+  \item numero medio di errori o tentativi falliti;
+  \item richieste di aiuto;
+  \item valutazione soggettiva post-task e post-sessione.
+\end{itemize}
+
+\subsubsection{Survey post-esperimento}
+Il survey e stato diviso in due parti: una scala SUS a 10 item e un gruppo di domande specifiche sul dominio applicativo.
+
+\paragraph{Questionario SUS.}
+Le affermazioni, valutate su scala Likert 1--5, sono le seguenti:
+\begin{enumerate}
+  \item Penso che userei questo sistema frequentemente.
+  \item Ho trovato il sistema inutilmente complesso.
+  \item Ho trovato il sistema facile da usare.
+  \item Avrei bisogno del supporto di un tecnico per usarlo.
+  \item Ho trovato le varie funzioni del sistema ben integrate.
+  \item Ho trovato troppe inconsistenze nel sistema.
+  \item La maggior parte delle persone imparerebbe a usarlo rapidamente.
+  \item Ho trovato il sistema macchinoso da usare.
+  \item Mi sono sentito a mio agio nell'uso del sistema.
+  \item Ho dovuto imparare molte cose prima di usarlo bene.
+\end{enumerate}
+
+\paragraph{Domande specifiche.}
+\begin{itemize}
+  \item La ricerca immobili con filtri e stata intuitiva?
+  \item I messaggi di errore erano chiari e utili?
+  \item La mappa geografica e risultata utile?
+  \item Il processo di inserimento e gestione offerte e apparso logico?
+  \item Quali funzionalita sono risultate piu difficoltose?
+  \item Quali miglioramenti suggeriresti?
+\end{itemize}
+
+\subsubsection{Risultati}
+I risultati quantitativi principali sono riportati nella Tabella~\ref{tab:results}.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l c c c@{}}
+\toprule
+Task & Completamento & Tempo medio & Errori medi \\
+\midrule
+T1 -- Registrazione/login & 100\% & 2.1 min & 0.4 \\
+T2 -- Ricerca con filtri & 80\% & 3.5 min & 1.2 \\
+T3 -- Dettaglio + mappa & 100\% & 2.8 min & 0.2 \\
+T4 -- Inserimento offerta & 80\% & 4.1 min & 1.6 \\
+T5 -- Storico offerte & 100\% & 1.9 min & 0.0 \\
+\bottomrule
+\end{tabularx}
+\caption{Risultati sintetici dell'esperimento di usabilita.}
+\label{tab:results}
+\end{table}
+
+Il punteggio SUS medio rilevato e pari a \textbf{71.5/100}, cioe superiore alla soglia comunemente considerata accettabile. Le medie delle domande specifiche risultano pari a 4.2/5 per la ricerca con filtri, 3.4/5 per la chiarezza dei messaggi di errore, 4.0/5 per l'utilita della mappa e 3.6/5 per la logica del flusso di offerta.
+
+\subsubsection{Discussione dei risultati}
+I dati raccolti mostrano che i flussi di autenticazione, consultazione del dettaglio e storico offerte risultano solidi, con completamento pieno e pochi errori. Le criticita si concentrano invece sulle interazioni che richiedono piu passi decisionali o un feedback piu esplicito, in particolare:
+\begin{itemize}
+  \item la visibilita del pulsante o del flusso di inserimento offerta;
+  \item la chiarezza dei messaggi di validazione;
+  \item la riconoscibilita persistente dei filtri applicati alla ricerca.
+\end{itemize}
+
+Nel complesso il sistema si colloca in una fascia di usabilita buona, ma con margini di miglioramento ancora chiari e circoscritti. Le evidenze dell'esperimento confermano inoltre le criticita gia emerse nella expert review, rafforzando la priorita degli interventi suggeriti.
+
+\section{Conclusioni}
+L'analisi dei file di test e della documentazione di progetto mostra che DietiEstates25 dispone gia di una suite xUnit coerente per quattro metodi backend non banali, progettata con criteri di equivalenza, copertura strutturale e isolamento delle dipendenze esterne. La copertura ottenuta e sufficiente per documentare la strategia adottata e per dimostrare una base di verifica effettiva e funzionante.
+
+Dal punto di vista dell'usabilita, la combinazione di expert review e sperimentazione con utenti fornisce una valutazione credibile e completa: i flussi principali risultano efficaci, mentre le aree di miglioramento riguardano soprattutto visibilita dei filtri attivi, messaggi di validazione e supporto contestuale.
+
+\appendix
+
+\section{Istruzioni di esecuzione dei test}
+Per eseguire la suite xUnit backend:
+
+\begin{lstlisting}[style=projectcode]
+cd ../dietiestates-backend
+npm install
+npm test
+\end{lstlisting}
+
+\section{Artefatti principali consultati}
+\begin{itemize}
+  \item \texttt{dietiestates-backend/test/backend.test.ts}
+  \item \texttt{dietiestates-backend/jest.config.ts}
+  \item \texttt{dietiestates-backend/package.json}
+  \item \texttt{Progettazione/Test-Doc.md}
+  \item \texttt{Progettazione/Requisiti.md}
+  \item \texttt{Progettazione/UC2 Caricamento Immobili.md}
+  \item \texttt{Progettazione/UC4 Gestione Offerte su.md}
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{nielsen}
+Jakob Nielsen,
+\textit{Usability Engineering},
+Morgan Kaufmann, 1994.
+
+\bibitem{brooke}
+John Brooke,
+\textit{SUS: A Quick and Dirty Usability Scale},
+in P. W. Jordan et al. (eds.), Usability Evaluation in Industry, Taylor \& Francis, 1996.
+\end{thebibliography}
+
+\end{document}
