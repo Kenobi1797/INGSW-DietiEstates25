@@ -21,23 +21,7 @@ export async function getAgenziaById(idAgenzia: number): Promise<AgenziaDTO | nu
   return result.rows[0] ? mapRowToAgenzia(result.rows[0]) : null;
 }
 
-export const updateAgenziaDB = async (idAgenzia: number, fields: Partial<AgenziaDTO>): Promise<AgenziaDTO> => {
-  const allowedFields = new Set<keyof AgenziaDTO>(['nome', 'attiva']);
-  const safeFields = Object.keys(fields).filter(f => allowedFields.has(f as keyof AgenziaDTO));
 
-  if (!safeFields.length) throw new Error('Nessun campo valido da aggiornare');
-
-  const setClause = safeFields.map((f, i) => `"${f}" = $${i + 1}`).join(', ');
-  const values = safeFields.map(f => (fields as any)[f]);
-  values.push(idAgenzia);
-
-  const result = await pool.query(
-    `UPDATE Agenzia SET ${setClause} WHERE IdAgenzia = $${values.length} RETURNING *`,
-    values
-  );
-
-  return mapRowToAgenzia(result.rows[0]);
-};
 
 export async function getAgenziaByAdminId(idAmministratore: number): Promise<AgenziaDTO | null> {
   const result = await pool.query(

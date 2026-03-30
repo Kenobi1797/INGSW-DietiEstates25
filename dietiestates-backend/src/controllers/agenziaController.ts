@@ -78,25 +78,4 @@ export async function assignStaffToAgenzia(req: AuthRequest, res: Response) {
   }
 }
 
-export async function updateAgenzia(req: AuthRequest, res: Response) {
-  const { idAgenzia } = req.params;
 
-  const parsed = AgenziaSchema.partial().safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error });
-
-  try {
-    const id = Number(idAgenzia);
-    if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({ error: 'Id agenzia non valido' });
-    }
-
-    const agenziaEsistente = await AgenzieDAO.getAgenziaById(id);
-    if (!agenziaEsistente) return res.status(404).json({ error: 'Agenzia non trovata' });
-
-    const agenziaAggiornata = await AgenzieDAO.updateAgenziaDB(id, parsed.data);
-    res.json(agenziaAggiornata);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Errore durante l\'aggiornamento dell\'agenzia' });
-  }
-}

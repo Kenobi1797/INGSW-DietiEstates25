@@ -1,7 +1,7 @@
 import pool from '../src/config/db';
 import axios from 'axios';
 import { updateStatoOfferta, createOfferta } from '../src/dao/OffertaDAO';
-import { updateAgenziaDB } from '../src/dao/AgenziaDAO';
+import { assignUserToAgency } from '../src/dao/UtenteDAO';
 import { getNearbyPlaces } from '../src/utils/geoapify';
 
 jest.mock('../src/config/db');
@@ -40,26 +40,41 @@ describe('Backend unit tests', () => {
     });
   });
 
-  // Metodo 2: updateAgenziaDB(idAgenzia, fields) - 2 parametri
-  describe('AgenziaDAO.updateAgenziaDB', () => {
-    it('aggiorna i campi consentiti e restituisce il record', async () => {
+  // Metodo 2: assignUserToAgency(idUtente, idAgenzia) - 2 parametri
+  describe('UtenteDAO.assignUserToAgency', () => {
+    it('assegna un utente a un\'agenzia e restituisce l\'utente aggiornato', async () => {
       (pool.query as jest.Mock).mockResolvedValue({
-        rows: [{ idagenzia: 5, nome: 'Nuova', idamministratore: 11, attiva: false }],
+        rows: [{
+          idutente: 7,
+          nome: 'Mario',
+          cognome: 'Rossi',
+          email: 'mario@example.com',
+          passwordhash: 'hashedpwd',
+          ruolo: 'Agente',
+          idagenzia: 3,
+          datacreazione: new Date('2025-01-15T10:00:00Z'),
+        }],
       });
 
-      const updated = await updateAgenziaDB(5, { nome: 'Nuova', attiva: false });
+      const updated = await assignUserToAgency(7, 3);
 
       expect(pool.query).toHaveBeenCalledWith(
-        'UPDATE Agenzia SET "nome" = $1, "attiva" = $2 WHERE IdAgenzia = $3 RETURNING *',
-        ['Nuova', false, 5]
+        expect.stringContaining('UPDATE Utente'),
+        [3, 7]
       );
-      expect(updated.nome).toBe('Nuova');
-      expect(updated.attiva).toBe(false);
+      expect(updated?.idUtente).toBe(7);
+      expect(updated?.idAgenzia).toBe(3);
+      expect(updated?.ruolo).toBe('Agente');
     });
 
-    it('lancia un\'eccezione se non vengono forniti campi validi', async () => {
-      await expect(updateAgenziaDB(5, { idAmministratore: 99 } as any)).rejects.toThrow('Nessun campo valido da aggiornare');
-      expect(pool.query).not.toHaveBeenCalled();
+    it('restituisce null se l\'utente non esiste o non è Agente/Supporto', async () => {
+      (pool.query as jest.Mock).mockResolvedValue({
+        rows: [],
+      });
+
+      const result = await assignUserToAgency(999, 3);
+
+      expect(result).toBeNull();
     });
   });
 

@@ -19,7 +19,7 @@ Il mocking di `pool` (PostgreSQL) e `axios` permette di isolare ogni unità dal 
 | # | Metodo | Modulo | Firma | Tipo |
 |---|--------|--------|-------|------|
 | 1 | `updateStatoOfferta` | `OffertaDAO` | `(idOfferta: number, nuovoStato: string)` | White box |
-| 2 | `updateAgenziaDB` | `AgenziaDAO` | `(idAgenzia: number, fields: Partial<AgenziaDTO>)` | White box |
+| 2 | `assignUserToAgency` | `UtenteDAO` | `(idUtente: number, idAgenzia: number)` | White box |
 | 3 | `createOfferta` | `OffertaDAO` | `(idImmobile: number, idUtente: number, prezzoOfferto: number)` | White box |
 | 4 | `getNearbyPlaces` | `utils/geoapify` | `(lat: number, lon: number, radius?: number)` | White box |
 
@@ -45,23 +45,23 @@ Tutti i metodi hanno almeno 2 parametri formali dichiarati e implementano logica
 
 ---
 
-### 2. `AgenziaDAO.updateAgenziaDB(idAgenzia, fields)`
+### 2. `UtenteDAO.assignUserToAgency(idUtente, idAgenzia)`
 
 **Tipo di test**: White box
 
-**Non banalità**: filtra dinamicamente i campi consentiti (`nome`, `attiva`), costruisce la clausola `SET` con indici `$i` progressivi, lancia eccezione se nessun campo valido è presente.
+**Non banalità**: esegue una `UPDATE` con clausola `WHERE` condizionale su ruolo (`WHERE … Ruolo IN ('Agente', 'Supporto')`), rimappa il risultato in `UtenteDTO` validato con Zod, restituisce `null` se l'utente non ha i ruoli consentiti (losso logico non triviale).
 
 **Classi di equivalenza**:
 | Classe | Input rappresentativo | Output atteso |
 |--------|----------------------|---------------|
-| CE1 — almeno un campo valido | `idAgenzia=5, fields={nome:'Nuova', attiva:false}` | `UPDATE … SET "nome"=$1, "attiva"=$2 WHERE …`, DTO restituito |
-| CE2 — solo campi non consentiti | `fields={idAmministratore:99}` | `throw 'Nessun campo valido da aggiornare'`, `pool.query` non chiamato |
+| CE1 — utente Agente/Supporto assegnato | `idUtente=7, idAgenzia=3`, ruolo='Agente' | `UPDATE Utente SET IdAgenzia=$1 WHERE IdUtente=$2 AND Ruolo IN (...)`, DTO restituito con `idAgenzia=3` |
+| CE2 — utente non esiste o non è Agente/Supporto | `idUtente=999, idAgenzia=3`, `rows: []` dal mock | `pool.query` restituisce array vuoto, funzione ritorna `null` |
 
-**Criteri di copertura strutturale**: branch coverage — branch `safeFields.length === 0` (CE2) e branch `safeFields.length > 0` (CE1). La costruzione dinamica di `setClause` con `$i` progressivi è verificata indirettamente dall'asserzione sulla stringa SQL esatta.
+**Criteri di copertura strutturale**: statement coverage della funzione; branch coverage del controllo `result.rows[0] ? mapRowToUtente(...) : null` (CE1 vs CE2). Verifica della clausola `Ruolo IN ('Agente', 'Supporto')` nella query generata.
 
 **Test cases** (2 `it`):
-1. Aggiornamento con `{ nome, attiva }`: verifica query e campi DTO.
-2. Solo campo non consentito: verifica throw e assenza di chiamate a `pool.query`.
+1. Assegnazione riuscita: verifica query `UPDATE` con parametri `[3, 7]`, `idUtente`, `idAgenzia` e `ruolo` nel DTO mappato.
+2. Utente non assegnabile: verifica che `pool.query` restituisca array vuoto e la funzione ritorni `null`.
 
 ---
 
@@ -109,7 +109,7 @@ Tutti i metodi hanno almeno 2 parametri formali dichiarati e implementano logica
 | Test | Statement | Branch | Condition | Boundary value |
 |------|-----------|--------|-----------|----------------|
 | `updateStatoOfferta` | ✓ | — | — | `idOfferta` intero positivo, `prezzoOfferto` float→number |
-| `updateAgenziaDB` | ✓ | ✓ (throw vs UPDATE) | ✓ (`safeFields.length === 0`) | campi consentiti vs non consentiti |
+| `assignUserToAgency` | ✓ | ✓ (rows vs null) | ✓ (`result.rows[0]` exist check) | ruolo consentito (Agente/Supporto) vs non consentito |
 | `createOfferta` | ✓ | — | ✓ (`offertaOriginaleId \|\| null`) | `prezzoOfferto` esatto |
 | `getNearbyPlaces` | ✓ | ✓ (!KEY, ciclo 3 iter., catch) | ✓ (`!GEOAPIFY_KEY`) | `radius` default (1000) vs esplicito (500) |
 
