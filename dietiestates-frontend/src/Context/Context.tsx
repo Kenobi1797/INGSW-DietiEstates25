@@ -8,14 +8,14 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface UserContextData {
   authuser: AuthUser | null;
-  setAuthUser: (Authuser: AuthUser | null) => void;
+  setAuthUser: (authUser: AuthUser | null) => void;
   logout: () => void;
 }
 
 const UserContext = createContext<UserContextData | undefined>(undefined);
 
 export function UserProvider({ children }: { readonly children: ReactNode }) {
-  const [authuser, setAuthUser] = useState<AuthUser | null>(null);
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
 
   // Rehydrate user from token on mount
   useEffect(() => {
@@ -36,7 +36,7 @@ export function UserProvider({ children }: { readonly children: ReactNode }) {
     }
   }, []);
 
-  const contextValue = useMemo(() => ({ authuser, setAuthUser, logout }), [authuser, logout]);
+  const contextValue = useMemo(() => ({ authuser: authUser, setAuthUser, logout }), [authUser, logout]);
 
   return (
     <UserContext.Provider value={contextValue}>

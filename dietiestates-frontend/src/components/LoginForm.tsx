@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { login } from '@/Services/authservice';
 import { useUser } from "@/Context/Context";
 
@@ -64,7 +65,7 @@ export default function LoginForm() {
         onClick={handleGoogleLogin}
         className="flex items-center justify-center gap-3 w-full bg-white text-slate-900 border border-gray-300 rounded-xl py-2.5 px-4 text-sm font-medium hover:bg-gray-50 transition-colors"
       >
-        <img src="/GoogleLogo.svg" alt="Google" width={18} height={18} />{' '}
+          <Image src="/GoogleLogo.svg" alt="Google" width={18} height={18} />{' '}
         Continua con Google
       </button>
 

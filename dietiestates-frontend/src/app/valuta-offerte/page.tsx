@@ -67,7 +67,9 @@ export default function ValutaOffertePage() {
   }, [authuser?.ruolo]);
 
   useEffect(() => {
-    void fetchOfferte();
+    fetchOfferte().catch(() => {
+      // Gli errori sono gia' gestiti dentro fetchOfferte.
+    });
   }, [fetchOfferte]);
 
   const toggleContropropostaForm = (idOfferta: number) => {

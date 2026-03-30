@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { AuthRequest } from '../middleware/authMiddleware';
 import * as AgenzieDAO from '../dao/AgenziaDAO';
 import * as UtenteDAO from '../dao/UtenteDAO';
-import { AgenziaSchema } from '../dto/AgenziaDTO';
 import { z } from 'zod';
 
 export async function createAgenzia(req: AuthRequest, res: Response) {
