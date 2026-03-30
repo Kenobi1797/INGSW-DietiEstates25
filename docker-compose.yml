@@ -19,11 +19,13 @@ services:
   dietiestates-backend:
     build:
       context: ./dietiestates-backend
+    user: "0:0"
     env_file:
       - ./dietiestates-backend/.env
     volumes:
       - ./dietiestates-backend:/usr/src/app
       - backend_node_modules:/usr/src/app/node_modules
+      - backend_uploads:/usr/src/app/uploads
     ports:
       - "5000:5000"
     environment:
@@ -71,5 +73,6 @@ services:
 volumes:
   db_data:
   backend_node_modules:
+  backend_uploads:
   frontend_node_modules:
   frontend_next:
