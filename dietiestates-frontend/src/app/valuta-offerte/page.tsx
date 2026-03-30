@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useUser } from '@/Context/Context';
 import Link from 'next/link';
 import PrezzoInput from '@/components/PrezzoInput';
@@ -27,13 +27,7 @@ export default function ValutaOffertePage() {
   const [contropropostaForms, setContropropostaForms] = useState<Record<number, number>>({});
   const [actionLoadingId, setActionLoadingId] = useState<number | null>(null);
 
-  useEffect(() => {
-    fetchOfferte();
-    // Il fetch viene rieseguito esplicitamente dopo ogni azione; qui serve solo all'ingresso pagina.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authuser?.ruolo]);
-
-  const fetchOfferte = async () => {
+  const fetchOfferte = useCallback(async () => {
     setLoading(true);
     try {
       const token = sessionStorage.getItem('token');
@@ -70,7 +64,11 @@ export default function ValutaOffertePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [authuser?.ruolo]);
+
+  useEffect(() => {
+    void fetchOfferte();
+  }, [fetchOfferte]);
 
   const toggleContropropostaForm = (idOfferta: number) => {
     setContropropostaForms(prev => {
