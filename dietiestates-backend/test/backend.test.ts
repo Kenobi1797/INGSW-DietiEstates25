@@ -12,7 +12,7 @@ describe('Backend unit tests', () => {
     jest.clearAllMocks();
   });
 
-  // Metodo 1: updateStatoOfferta(idOfferta, nuovoStato) — 2 parametri
+  // Metodo 1: updateStatoOfferta(idOfferta, nuovoStato) - 2 parametri
   describe('OffertaDAO.updateStatoOfferta', () => {
     it('aggiorna lo stato dell\'offerta e restituisce il record aggiornato', async () => {
       (pool.query as jest.Mock).mockResolvedValue({
@@ -40,7 +40,7 @@ describe('Backend unit tests', () => {
     });
   });
 
-  // Metodo 2: updateAgenziaDB(idAgenzia, fields) — 2 parametri
+  // Metodo 2: updateAgenziaDB(idAgenzia, fields) - 2 parametri
   describe('AgenziaDAO.updateAgenziaDB', () => {
     it('aggiorna i campi consentiti e restituisce il record', async () => {
       (pool.query as jest.Mock).mockResolvedValue({
@@ -63,7 +63,7 @@ describe('Backend unit tests', () => {
     });
   });
 
-  // Metodo 3: createOfferta(idImmobile, idUtente, prezzoOfferto) — 3 parametri
+  // Metodo 3: createOfferta(idImmobile, idUtente, prezzoOfferto) - 3 parametri
   describe('OffertaDAO.createOfferta', () => {
     it('crea un\'offerta con offertaManuale false e restituisce il DTO validato', async () => {
       (pool.query as jest.Mock).mockResolvedValue({
@@ -91,7 +91,7 @@ describe('Backend unit tests', () => {
     });
   });
 
-  // Metodo 4: getNearbyPlaces(lat, lon, radius) — 3 parametri
+  // Metodo 4: getNearbyPlaces(lat, lon, radius) - 3 parametri
   describe('geoapify.getNearbyPlaces', () => {
     it('restituisce i luoghi vicini aggregati per categoria', async () => {
       const previousKey = process.env.GEOAPIFY_KEY;
@@ -116,7 +116,7 @@ describe('Backend unit tests', () => {
       else process.env.GEOAPIFY_API_KEY = previousApiKey;
     });
 
-    it('lancia un\'eccezione se la chiave API è mancante', async () => {
+    it('lancia un\'eccezione se la chiave API e mancante', async () => {
       const previousKey = process.env.GEOAPIFY_KEY;
       const previousApiKey = process.env.GEOAPIFY_API_KEY;
       delete process.env.GEOAPIFY_KEY;
