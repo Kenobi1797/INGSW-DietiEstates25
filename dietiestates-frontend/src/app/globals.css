@@ -605,6 +605,64 @@ a {
 
 .btn-apply:hover { background-color: #1d4ed8; }
 
+@media (prefers-color-scheme: dark) {
+  .filtri-modal-container {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .filtri-header {
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .filtri-header h4 {
+    color: #1e293b;
+  }
+
+  .btn-close {
+    color: #64748b;
+  }
+
+  .btn-close:hover {
+    color: #0f172a;
+  }
+
+  .filtro-group label {
+    color: #475569;
+  }
+
+  .dual-input input, .filtro-group input, .filtro-group select {
+    background: #ffffff;
+    color: #111827;
+    border-color: #cbd5e1;
+  }
+
+  .dual-input input::placeholder, .filtro-group input::placeholder {
+    color: #6b7280;
+  }
+
+  .btn-reset {
+    background-color: transparent;
+    border-color: #cbd5e1;
+    color: #64748b;
+  }
+
+  .btn-reset:hover {
+    background-color: #f8fafc;
+  }
+
+  .btn-apply {
+    background-color: #2563eb;
+    color: #ffffff;
+  }
+
+  .btn-apply:hover {
+    background-color: #1d4ed8;
+  }
+}
+
 /* Wrapper esterno con radius 8/10px */
 .pagina-ricerca-wrapper {
   border-radius: 10px;
@@ -727,6 +785,94 @@ a {
 
 .search-address-wrapper input::placeholder {
   color: #6b7280;
+}
+
+.address-results-list {
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.address-result-item button {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: transparent;
+  color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.address-result-item button:hover {
+  background: #f3f4f6;
+}
+
+.address-error-msg {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #dc2626;
+}
+
+@media (prefers-color-scheme: dark) {
+  .search-bar-inner {
+    background-color: #ffffff;
+    color: #111827;
+    border-color: #d1d5db;
+  }
+
+  .search-divider {
+    color: #9ca3af;
+  }
+
+  .search-input-reset {
+    color: #111827;
+  }
+
+  .search-input-reset::placeholder {
+    color: #6b7280;
+  }
+
+  .search-address-wrapper input {
+    color: #111827;
+  }
+
+  .search-address-wrapper input::placeholder {
+    color: #6b7280;
+  }
+
+  .search-bar-container {
+    border-bottom-color: #d1d5db;
+    background: #ffffff;
+  }
+
+  .btn-cerca-main {
+    background-color: #2563eb;
+  }
+
+  .btn-cerca-main:hover {
+    background-color: #1d4ed8;
+  }
+
+  .address-results-list {
+    background: #ffffff;
+    color: #111827;
+    border-color: #e5e7eb;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .address-result-item button:hover {
+    background: #f3f4f6;
+  }
+
+  .address-error-msg {
+    color: #f87171;
+  }
 }
 .search-grid-container {
   display: grid;

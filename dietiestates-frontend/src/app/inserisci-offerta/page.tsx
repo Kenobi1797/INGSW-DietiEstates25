@@ -10,6 +10,7 @@ interface ImmobileItem {
   id: number;
   titolo: string;
   indirizzo: string;
+  venduto: boolean;
 }
 
 export default function InserisciOffertaPage() {
@@ -32,6 +33,9 @@ function InserisciOffertaContent() {
   const [loadingImmobili, setLoadingImmobili] = useState(false);
   const [error, setError] = useState('');
 
+  const selectedImmobile = immobili.find((immobile) => String(immobile.id) === idImmobile);
+  const selectedImmobileVenduto = Boolean(selectedImmobile?.venduto);
+
   React.useEffect(() => {
     const fetchImmobili = async () => {
       setLoadingImmobili(true);
@@ -49,18 +53,30 @@ function InserisciOffertaContent() {
 
         const data = await response.json();
         const list = Array.isArray(data)
-          ? data.map((item: { id?: number | string; titolo?: string; indirizzo?: string }) => ({
+          ? data.map((item: { id?: number | string; titolo?: string; indirizzo?: string; venduto?: boolean }) => ({
               id: Number(item.id),
               titolo: item.titolo || `Immobile ${item.id}`,
               indirizzo: item.indirizzo || 'Indirizzo non disponibile',
+              venduto: Boolean(item.venduto),
             }))
           : [];
 
         setImmobili(list);
-        let defaultId = list.length > 0 ? String(list[0].id) : '';
-        if (urlIdImmobile && list.some((i) => i.id === Number(urlIdImmobile))) {
+        const immobiliDisponibili = list.filter((immobile) => !immobile.venduto);
+
+        let defaultId = immobiliDisponibili.length > 0 ? String(immobiliDisponibili[0].id) : '';
+        if (urlIdImmobile && list.some((i) => i.id === Number(urlIdImmobile) && !i.venduto)) {
           defaultId = urlIdImmobile;
         }
+
+        if (urlIdImmobile && list.some((i) => i.id === Number(urlIdImmobile) && i.venduto)) {
+          setError('L\'immobile selezionato risulta venduto: non puoi inserire offerte manuali.');
+        }
+
+        if (immobiliDisponibili.length === 0) {
+          setError('Non hai immobili disponibili: quelli venduti non accettano offerte manuali.');
+        }
+
         setIdImmobile(defaultId);
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Errore caricamento immobili';
@@ -71,7 +87,7 @@ function InserisciOffertaContent() {
     };
 
     fetchImmobili();
-  }, []);
+  }, [urlIdImmobile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,6 +97,7 @@ function InserisciOffertaContent() {
     try {
       const token = sessionStorage.getItem('token');
       if (!token) throw new Error('Token mancante');
+      if (selectedImmobileVenduto) throw new Error('Impossibile inserire un\'offerta manuale su un immobile venduto.');
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offerte/manual`, {
         method: 'POST',
@@ -126,46 +143,51 @@ function InserisciOffertaContent() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f9fafb', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-      <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '480px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-        <h1 style={{ fontSize: '1.4rem', fontWeight: 700, color: '#111827', marginBottom: '24px' }}>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-6 dark:bg-white">
+      <div className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-200 dark:bg-white">
+        <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-900">
           Inserisci Offerta Manuale
         </h1>
 
         {error && (
-          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', padding: '10px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
+            <div className="mb-4 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 dark:border-red-300 dark:bg-red-50 dark:text-red-700">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {loadingImmobili ? (
-            <p style={{ color: '#6b7280', fontSize: '0.9rem' }}>Caricamento immobili...</p>
+              <p className="text-sm text-gray-500 dark:text-gray-500">Caricamento immobili...</p>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <label htmlFor="select-immobile" style={{ fontSize: '0.8rem', fontWeight: 600, color: '#374151' }}>Immobile</label>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="select-immobile" className="text-xs font-semibold text-gray-700 dark:text-gray-700">Immobile</label>
               <select
                 id="select-immobile"
                 value={idImmobile}
                 onChange={(e) => setIdImmobile(e.target.value)}
                 required
-                style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1.5px solid #d1d5db', fontSize: '0.9rem', outline: 'none', boxSizing: 'border-box', background: '#fff' }}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition-colors focus:border-red-500 dark:border-gray-300 dark:bg-white dark:text-gray-900 dark:focus:border-red-500"
               >
                 {immobili.length === 0 ? (
                   <option value="">Nessun immobile disponibile</option>
                 ) : (
                   immobili.map((immobile) => (
-                    <option key={immobile.id} value={immobile.id}>
-                      #{immobile.id} — {immobile.titolo} ({immobile.indirizzo})
+                    <option key={immobile.id} value={immobile.id} disabled={immobile.venduto}>
+                      #{immobile.id} - {immobile.titolo} ({immobile.indirizzo}){immobile.venduto ? ' - VENDUTO' : ''}
                     </option>
                   ))
                 )}
               </select>
+              {selectedImmobileVenduto && (
+                  <p className="text-xs text-amber-700 dark:text-amber-700">
+                  L&apos;immobile selezionato e venduto: scegli un immobile disponibile.
+                </p>
+              )}
             </div>
           )}
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <label htmlFor="input-importo" style={{ fontSize: '0.8rem', fontWeight: 600, color: '#374151' }}>Importo offerta</label>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="input-importo" className="text-xs font-semibold text-gray-700 dark:text-gray-700">Importo offerta</label>
             <PrezzoInput
               id="input-importo"
               value={importo}
@@ -179,7 +201,7 @@ function InserisciOffertaContent() {
             type="submit"
             className="btn-primary"
             loading={loading}
-            disabled={loading || loadingImmobili || !idImmobile || immobili.length === 0 || importo <= 0}
+            disabled={loading || loadingImmobili || !idImmobile || immobili.length === 0 || importo <= 0 || selectedImmobileVenduto}
           >
             Inserisci Offerta
           </BaseButton>

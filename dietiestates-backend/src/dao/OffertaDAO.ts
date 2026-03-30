@@ -33,6 +33,19 @@ export const isImmobileInVendita = async (idImmobile: number): Promise<boolean> 
   return result.rows[0]?.tipologia === 'Vendita';
 };
 
+export const getImmobileVendutoState = async (idImmobile: number): Promise<boolean | null> => {
+  const result = await pool.query(
+    'SELECT venduto FROM immobile WHERE idimmobile = $1',
+    [idImmobile]
+  );
+
+  if (result.rows.length === 0) {
+    return null;
+  }
+
+  return Boolean(result.rows[0].venduto);
+};
+
 export const hasAcceptedOffertaForImmobile = async (idImmobile: number, excludeIdOfferta?: number): Promise<boolean> => {
   const result = await pool.query(
     `SELECT 1
