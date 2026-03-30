@@ -623,6 +623,7 @@ a {
   align-items: center;
   width: 100%;
   background-color: #fff;
+  color: #111827;
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 4px 16px;
@@ -644,10 +645,15 @@ a {
   border: none;
   outline: none;
   background: none;
+  color: #111827;
   padding: 10px;
   cursor: pointer;
   font-family: inherit;
   font-size: 14px;
+}
+
+.search-input-reset::placeholder {
+  color: #6b7280;
 }
 
 /* Tasto Cerca separato */
@@ -715,7 +721,12 @@ a {
   border: none;
   outline: none;
   font-size: 16px;
+  color: #111827;
   background: transparent;
+}
+
+.search-address-wrapper input::placeholder {
+  color: #6b7280;
 }
 .search-grid-container {
   display: grid;

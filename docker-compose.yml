@@ -53,9 +53,11 @@ services:
   dietiestates-frontend:
     build:
       context: ./dietiestates-frontend
+    user: "0:0"
     volumes:
       - ./dietiestates-frontend:/usr/src/app
       - frontend_node_modules:/usr/src/app/node_modules
+      - frontend_next:/usr/src/app/.next
     ports:
       - "3000:3000"
     environment:
@@ -70,4 +72,4 @@ volumes:
   db_data:
   backend_node_modules:
   frontend_node_modules:
-
+  frontend_next:

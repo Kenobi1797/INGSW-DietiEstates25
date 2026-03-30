@@ -134,7 +134,20 @@ export default function RicercaIndirizzo({
       {errore && <p className="address-error-msg">{errore}</p>}
 
       {risultati.length > 0 && (
-        <ul className="address-results-list" style={{ position: 'absolute', zIndex: 1000, background: 'white', width: '100%' }}>
+        <ul
+          className="address-results-list"
+          style={{
+            position: 'absolute',
+            zIndex: 1000,
+            background: 'white',
+            width: '100%',
+            color: '#111827',
+            border: '1px solid #e5e7eb',
+            borderRadius: '10px',
+            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.12)',
+            overflow: 'hidden'
+          }}
+        >
           {risultati.map((r) => (
             <li
               key={`${r.display_name}-${r.lat}-${r.lon}`}
@@ -143,7 +156,7 @@ export default function RicercaIndirizzo({
               <button
                 type="button"
                 onClick={() => seleziona(r)}
-                className="w-full text-left"
+                className="w-full text-left text-gray-900"
               >
                 {r.display_name}
               </button>
