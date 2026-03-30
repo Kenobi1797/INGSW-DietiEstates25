@@ -27,7 +27,11 @@ export default function ValutaOffertePage() {
   const [contropropostaForms, setContropropostaForms] = useState<Record<number, number>>({});
   const [actionLoadingId, setActionLoadingId] = useState<number | null>(null);
 
-  useEffect(() => { fetchOfferte(); }, []);
+  useEffect(() => {
+    fetchOfferte();
+    // Il fetch viene rieseguito esplicitamente dopo ogni azione; qui serve solo all'ingresso pagina.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authuser?.ruolo]);
 
   const fetchOfferte = async () => {
     setLoading(true);
@@ -39,7 +43,28 @@ export default function ValutaOffertePage() {
       });
       if (!response.ok) throw new Error('Errore nel caricamento offerte');
       const data = await response.json();
-      setOfferte(Array.isArray(data) ? data : []);
+      let offerteList = Array.isArray(data) ? data : [];
+
+      if (authuser?.ruolo === 'Supporto') {
+        const immobiliResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/miei`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!immobiliResponse.ok) {
+          throw new Error('Errore nel caricamento degli immobili del supporto');
+        }
+
+        const immobiliData = await immobiliResponse.json();
+        const mieiImmobiliIds = new Set(
+          Array.isArray(immobiliData)
+            ? immobiliData.map((immobile) => Number(immobile.id ?? immobile.idImmobile))
+            : []
+        );
+
+        offerteList = offerteList.filter((offerta) => mieiImmobiliIds.has(Number(offerta.idImmobile)));
+      }
+
+      setOfferte(offerteList);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Errore nel caricamento offerte');
     } finally {
