@@ -84,8 +84,8 @@
     \begin{minipage}{0.45\textwidth}
         \raggedright
         \textbf{Studenti:}\\
-        Pietro Orefice (N86004948)\\
-        Gino Pandozzi-Trani (N86004852)
+        Pietro Orefice\\
+        Gino Pandozzi-Trani
     \end{minipage}
     \hfill
     \begin{minipage}{0.45\textwidth}
@@ -100,34 +100,6 @@
 \end{titlepage}
 
 % === FRONT MATTER ===
-\newpage
-\section*{Lista di Distribuzione}
-\addcontentsline{toc}{section}{Lista di Distribuzione}
-\begin{table}[h]
-\centering
-\begin{tabularx}{\textwidth}{|l|l|c|}
-\hline
-\rowcolor[HTML]{010066} 
-{\color[HTML]{FFFFFF} \textbf{Nome}} & {\color[HTML]{FFFFFF} \textbf{Ruolo}} & {\color[HTML]{FFFFFF} \textbf{Contatto}} \\ \hline
-Pietro Orefice & Studente & pietoro.orefice@unina.it \\ \hline
-Gino Pandozzi-Trani & Studente & gino.pandozzi@unina.it \\ \hline
-Prof. Sergio DI MARTINO & Docente & s.dimartino@unina.it \\ \hline
-Prof. Luigi Libero Lucio STARACE & Docente & l.starace@unina.it \\ \hline
-\end{tabularx}
-\end{table}
-
-\newpage
-\section*{Documenti di Riferimento}
-\addcontentsline{toc}{section}{Documenti di Riferimento}
-\begin{itemize}
-\item Università degli Studi di Napoli Federico II -- Corso di Ingegneria del Software (A.A. 2024/2025)
-\item Documento Progettuale DietiEstates25 -- Versione 1.0
-\item Linee guida per la documentazione software -- INGSW Standards
-\item Progettazione/Requisiti.md -- Specifica formale dei requisiti
-\item Progettazione/Test-Doc.md -- Strategia di testing
-\item dietiestates-backend/test/backend.test.ts -- Suite di test unità
-\end{itemize}
-
 \newpage
 \section*{Cronologia Revisioni}
 \addcontentsline{toc}{section}{Cronologia Revisioni}
@@ -156,6 +128,18 @@ Il documento è organizzato nelle seguenti macrosezioni:
 \item \textbf{Testing e Qualità} -- Documentazione dei test xUnit, strategia di copertura e evidenze di qualità del codice (SonarQube, GitHub).
 \item \textbf{Processo di Sviluppo} -- Metriche di versioning, frequenza di commit, e evidenze di collaborazione del team.
 \end{enumerate}
+
+\subsection*{Funzionalità Assegnate}
+Il gruppo di lavoro è composto da due componenti. La somma delle ultime cifre delle matricole determina il valore $x$; il modulo $x \bmod 4$ seleziona il sottoinsieme di funzionalità da realizzare secondo il Protocollo UNI-01-2025.
+
+Le funzionalità assegnate al presente gruppo sono le seguenti:
+\begin{itemize}
+  \item \textbf{F1} -- Gestione degli account: registrazione, login, autenticazione OAuth (Google), creazione account Supporto e Agente da parte dei ruoli superiori.
+  \item \textbf{F2} -- Caricamento immobili: inserimento di nuovi immobili con dettagli (foto, descrizione, prezzo, dimensioni, indirizzo, classe energetica, servizi) e categorizzazione vendita/affitto, con posizionamento su mappa interattiva.
+  \item \textbf{F3} -- Ricerca avanzata: filtri multipli (tipologia, prezzo, stanze, classe energetica, posizione geografica), visualizzazione risultati su mappa interattiva.
+  \item \textbf{F8} -- Gestione offerte: invio offerta da parte del cliente, accettazione/rifiuto/controproposta dell'agente, storico offerte per agenti e clienti, inserimento manuale di offerte ricevute fuori sistema.
+  \item \textbf{F9} -- Servizi di prossimità: al caricamento di un immobile il sistema interroga l'API Geoapify per rilevare automaticamente scuole, parchi e fermate del trasporto pubblico nelle vicinanze, associando all'inserzione i relativi indicatori.
+\end{itemize}
 
 \subsection*{Metodologia e Approccio}
 Il documento integra artefatti reali dal repository, risultati da suite di test automatizzati, e valutazioni sistematiche di usabilità basate su criteri accademici consolidati (Nielsen's 10 Usability Heuristics). L'approccio è di tipo evidence-driven, con riferimenti espliciti ai file sorgente e ai dati misurati.
@@ -293,6 +277,22 @@ utilizzare la piattaforma in modo semplice e intuitivo e aumentare
 la visibilità della sua agenzia.
 \end{itemize}
 
+\vspace{1em}
+\subsubsection{Personas 4: Visitatore non registrato}
+\noindent
+\begin{minipage}[c]{0.55\textwidth}
+    \begin{itemize}
+        \item \textbf{Nome:} Sofia Esposito
+        \item \textbf{Età:} 28 anni
+        \item \textbf{Occupazione:} Insegnante, in cerca di primo appartamento
+    \end{itemize}
+\end{minipage}
+
+\begin{itemize}
+    \item \textbf{Descrizione:} Sofia esplora il portale per la prima volta senza registrarsi. Vuole farsi un'idea del mercato immobiliare nella sua città, consultare annunci, visualizzare le foto e leggere i dettagli degli immobili disponibili senza dover creare un account. Solo se trova qualcosa di interessante considera di registrarsi per fare un'offerta.
+
+    \item \textbf{Obiettivo:} Navigare liberamente le inserzioni, usare i filtri di ricerca avanzata e visualizzare i dettagli degli immobili senza barriere d'accesso. Apprezza un'interfaccia pulita che non la forzi a creare un account prima di aver trovato qualcosa di interessante.
+\end{itemize}
 
 \newpage
 \subsection{Formalizzazione dei casi d'uso}
@@ -353,6 +353,8 @@ che ciascuno di essi può compiere.
 
 \caption{Tabella di Cockburn - UC01}
 \end{table}
+\smallskip
+\noindent\textit{Prototipazione: le schermate di riferimento per questo caso d'uso sono riportate nella Sezione~\ref{subsec:mockup}, in particolare i mock-up UC01\_M01 (dashboard amministratore) e il flusso di creazione supporto.}
 
 
 
@@ -393,10 +395,10 @@ che ciascuno di essi può compiere.
    & 3.1 & inserisce Email già esistente & \\ \cline{2-4}
    & 3.2 & clicca bottone per creare & \\ \cline{2-4}
    & 3.3 & & Mostra errore \\ \hline
-   \multirow{3}{3cm}{\textbf{Estensione \#1}} 
-   & \textbf{Passo} & \textbf{Proprietario} & \textbf{Sistema} \\ \cline{2-4}
-   & 3.1 & clicca su annulla & \\ \cline{2-4}
-   & 3.3 & & ritorna alla dasbaord \\ \hline
+   \multirow{3}{3cm}{\textbf{Estensione \#2}} 
+   & \textbf{Passo} & \textbf{Supporto} & \textbf{Sistema} \\ \cline{2-4}
+   & 3.1 & Clicca su ``Annulla'' & \\ \cline{2-4}
+   & 3.2 & & Ritorna alla dashboard \\ \hline
 \multirow{3}{3cm}{\textbf{Estensione \#2}} 
    & \textbf{Passo} & \textbf{Proprietario} & \textbf{Sistema} \\ \cline{2-4}
    & 3.1 & Clicca su uno dei bottoni \newline cliccabili nella barra di navigazione
@@ -405,6 +407,8 @@ che ciascuno di essi può compiere.
 \end{tabular}
 \caption{Tabella di Cockburn - UC02: Creazione Agente}
 \end{table}
+\smallskip
+\noindent\textit{Prototipazione: le schermate di riferimento per questo caso d'uso sono riportate nella Sezione~\ref{subsec:mockup}, sottosezione ``Creazione agente -- flusso nominale e gestione errori''.}
 \clearpage
 
 
@@ -453,6 +457,8 @@ che ciascuno di essi può compiere.
 \end{tabular}
 \caption{Tabella di Cockburn - UC03: Offerta Manuale}
 \end{table}
+\smallskip
+\noindent\textit{Prototipazione: la schermata di riferimento per questo caso d'uso è riportata nella Sezione~\ref{subsec:mockup}, mock-up ``Dettaglio immobile e gestione offerte''.}
 
 \clearpage
 
@@ -493,6 +499,49 @@ che ciascuno di essi può compiere.
 \end{tabular}
 \caption{Tabella di Cockburn - UC04: Visualizza Immobile}
 \end{table}
+\smallskip
+\noindent\textit{Prototipazione: le schermate di riferimento per questo caso d'uso sono riportate nella Sezione~\ref{subsec:mockup}, mock-up ``Navigazione e ricerca immobili'' e ``Dettaglio immobile''.}
+
+\clearpage
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|p{2.8cm}|p{0.8cm}|p{4.2cm}|p{4.2cm}|}
+\hline
+\rowcolor[HTML]{010066}
+{\color[HTML]{EFEFEF} \textbf{Caso d'uso \#05}} & \multicolumn{3}{l|}{\color[HTML]{FFFFFF} \textbf{Caricamento Immobile}} \\ \hline
+\textbf{Scopo} & \multicolumn{3}{l|}{Un agente vuole pubblicare un nuovo immobile con tutti i dettagli richiesti.} \\ \hline
+\textbf{Precondizioni} & \multicolumn{3}{l|}{Agente autenticato, visualizza la sezione ``Aggiungi Immobile''.} \\ \hline
+\textbf{Condizione Successo} & \multicolumn{3}{l|}{Immobile salvato nel sistema, indicatori di prossimità calcolati tramite Geoapify.} \\ \hline
+\textbf{Condizione Fallimento} & \multicolumn{3}{l|}{Errore di validazione: inserzione non salvata.} \\ \hline
+\textbf{Attore principale} & \multicolumn{3}{l|}{Agente immobiliare.} \\ \hline
+\textbf{Trigger} & \multicolumn{3}{l|}{L'agente clicca su ``Inserisci Immobile'' dalla dashboard.} \\ \hline
+
+\multirow{8}{2.8cm}{\textbf{Scenario Principale}}
+   & \textbf{Passo} & \textbf{Agente} & \textbf{Sistema} \\ \cline{2-4}
+   & 01 & Clicca ``Inserisci Immobile'' & \\ \cline{2-4}
+   & 02 & & Mostra modulo con campi obbligatori \\ \cline{2-4}
+   & 03 & Compila titolo, descrizione, prezzo, stanze, piano, classe energetica, tipologia & \\ \cline{2-4}
+   & 04 & Carica le foto e seleziona la posizione sulla mappa interattiva & \\ \cline{2-4}
+   & 05 & Clicca ``Salva'' & \\ \cline{2-4}
+   & 06 & & Valida i dati; persiste l'immobile nel DB \\ \cline{2-4}
+   & 07 & & Interroga Geoapify: rileva scuole, parchi, trasporti nelle vicinanze \\ \cline{2-4}
+   & 08 & & Associa indicatori all'inserzione; termina caso d'uso \\ \hline
+
+\multirow{3}{2.8cm}{\textbf{Estensione \#1}}
+   & \textbf{Passo} & \textbf{Agente} & \textbf{Sistema} \\ \cline{2-4}
+   & 3.1 & Lascia campi obbligatori vuoti e clicca ``Salva'' & \\ \cline{2-4}
+   & 3.2 & & Evidenzia i campi mancanti; non salva \\ \hline
+\multirow{3}{2.8cm}{\textbf{Estensione \#2}}
+   & \textbf{Passo} & \textbf{Agente} & \textbf{Sistema} \\ \cline{2-4}
+   & 7.1 & --- & \\ \cline{2-4}
+   & 7.2 & & API Geoapify non disponibile: immobile salvato senza indicatori di prossimità \\ \hline
+\end{tabular}
+\caption{Tabella di Cockburn - UC05: Caricamento Immobile (F2 + F9)}
+\end{table}
+\smallskip
+\noindent\textit{Prototipazione: le schermate di riferimento per questo caso d'uso sono riportate nella Sezione~\ref{subsec:mockup}, mock-up ``Dashboard per ruolo'' (accesso agente) e ``Navigazione e ricerca immobili''.}
 
 \clearpage
 
@@ -753,6 +802,7 @@ In questa sezione viene illustrata la dinamica del sistema attraverso i Diagramm
 \end{figure}
 
 \subsection{Mock-up delle schermate principali}
+\label{subsec:mockup}
 
 I mock-up presentati in questa sezione illustrano le principali schermate dell'applicazione DietiEstates25 cosí come sono state progettate e implementate. I mock-up coprono i flussi piú rilevanti per ciascun ruolo utente: amministratore, supporto, agente immobiliare e cliente. Vengono mostrati sia i casi nominali (operazioni completate con successo) sia i casi di errore (validazione del form, email non valida) al fine di documentare la gestione degli errori lato interfaccia.
 
