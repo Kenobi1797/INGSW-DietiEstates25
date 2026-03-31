@@ -84,8 +84,8 @@
     \begin{minipage}{0.45\textwidth}
         \raggedright
         \textbf{Studenti:}\\
-        Pietro Orefice\\
-        Gino Pandozzi-Trani
+        Pietro Orefice (N86004948)\\
+        Gino Pandozzi-Trani (N86004852)
     \end{minipage}
     \hfill
     \begin{minipage}{0.45\textwidth}
@@ -99,8 +99,71 @@
 
 \end{titlepage}
 
+% === FRONT MATTER ===
+\newpage
+\section*{Lista di Distribuzione}
+\addcontentsline{toc}{section}{Lista di Distribuzione}
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|l|l|c|}
+\hline
+\rowcolor[HTML]{010066} 
+{\color[HTML]{FFFFFF} \textbf{Nome}} & {\color[HTML]{FFFFFF} \textbf{Ruolo}} & {\color[HTML]{FFFFFF} \textbf{Contatto}} \\ \hline
+Pietro Orefice & Studente & pietoro.orefice@unina.it \\ \hline
+Gino Pandozzi-Trani & Studente & gino.pandozzi@unina.it \\ \hline
+Prof. Sergio DI MARTINO & Docente & s.dimartino@unina.it \\ \hline
+Prof. Luigi Libero Lucio STARACE & Docente & l.starace@unina.it \\ \hline
+\end{tabularx}
+\end{table}
+
+\newpage
+\section*{Documenti di Riferimento}
+\addcontentsline{toc}{section}{Documenti di Riferimento}
+\begin{itemize}
+\item Università degli Studi di Napoli Federico II -- Corso di Ingegneria del Software (A.A. 2024/2025)
+\item Documento Progettuale DietiEstates25 -- Versione 1.0
+\item Linee guida per la documentazione software -- INGSW Standards
+\item Progettazione/Requisiti.md -- Specifica formale dei requisiti
+\item Progettazione/Test-Doc.md -- Strategia di testing
+\item dietiestates-backend/test/backend.test.ts -- Suite di test unità
+\end{itemize}
+
+\newpage
+\section*{Cronologia Revisioni}
+\addcontentsline{toc}{section}{Cronologia Revisioni}
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|c|l|l|X|}
+\hline
+\rowcolor[HTML]{010066} 
+{\color[HTML]{FFFFFF} \textbf{Ver.}} & {\color[HTML]{FFFFFF} \textbf{Data}} & {\color[HTML]{FFFFFF} \textbf{Autore}} & {\color[HTML]{FFFFFF} \textbf{Note di rilascio}} \\ \hline
+1.0 & 31 Mar 2026 & Gruppo DietiEstates25 & Versione iniziale completa con integrazione Doc-Start, testing xUnit, evidenze GitHub/Sonar e front-matter formale. \\ \hline
+\end{tabularx}
+\end{table}
+
+\newpage
+\section*{Introduzione}
+\addcontentsline{toc}{section}{Introduzione}
+\subsection*{Contesto e Scopo}
+Il presente documento raccoglie la documentazione tecnica, progettuale e di testing del progetto DietiEstates25, un'applicazione web per l'intermediazione immobiliare sviluppata nell'ambito del corso di Ingegneria del Software presso l'Università degli Studi di Napoli Federico II. L'obiettivo è fornire una vista d'insieme completa del progetto, dalle specifiche dei requisiti alla valutazione dell'usabilità, dalle decisioni progettuali alla copertura dei test.
+
+\subsection*{Struttura del Documento}
+Il documento è organizzato nelle seguenti macrosezioni:
+\begin{enumerate}
+\item \textbf{Documento dei Requisiti Software} -- Formalizzazione dei requisiti funzionali e non funzionali attraverso glossario, casi d'uso, personas e specifiche di design.
+\item \textbf{Architettura e Progettazione} -- Descrizione dell'architettura tecnica, scelte di tecnologia e modello dati.
+\item \textbf{Analisi di Usabilità} -- Valutazione dell'esperienza utente tramite expert review sistematica secondo le euristiche di Nielsen.
+\item \textbf{Testing e Qualità} -- Documentazione dei test xUnit, strategia di copertura e evidenze di qualità del codice (SonarQube, GitHub).
+\item \textbf{Processo di Sviluppo} -- Metriche di versioning, frequenza di commit, e evidenze di collaborazione del team.
+\end{enumerate}
+
+\subsection*{Metodologia e Approccio}
+Il documento integra artefatti reali dal repository, risultati da suite di test automatizzati, e valutazioni sistematiche di usabilità basate su criteri accademici consolidati (Nielsen's 10 Usability Heuristics). L'approccio è di tipo evidence-driven, con riferimenti espliciti ai file sorgente e ai dati misurati.
+
 \newpage
 \tableofcontents
+\newpage
+\listoffigures
 \newpage
 \section{Documento dei Requisiti Software}
 
