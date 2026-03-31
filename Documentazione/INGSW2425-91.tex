@@ -992,30 +992,6 @@ U5 & Marco P.    & 4 & 4 & 5 & 4 & No & 4 & No  & 5 \\ \hline
 \end{itemize}
 
 \clearpage
-\section{Integrazione contenuti da Doc-Start}
-I contenuti seguenti integrano integralmente la sezione \textit{testing-usabilita} presente in Doc-Start, mantenendo lo stile del documento principale.
-
-\section{Obiettivo e fonti}
-Questo documento raccoglie la documentazione necessaria per il punto \emph{Testing e valutazione dell'usabilita} del progetto DietiEstates25. Il contenuto e stato costruito a partire dagli artefatti realmente presenti nel repository e dai risultati prodotti dalla suite di test backend.
-
-L'obiettivo e duplice:
-\begin{itemize}
-  \item documentare il codice xUnit per quattro metodi non banali, descrivendo la strategia di progettazione dei test con classi di equivalenza e criteri di copertura;
-  \item documentare una valutazione di usabilita completa, composta da expert review sistematica e da un esperimento con utenti reali o potenziali corredato da survey e discussione dei risultati.
-\end{itemize}
-
-Le fonti utilizzate sono le seguenti:
-\begin{itemize}
-  \item \texttt{dietiestates-backend/test/backend.test.ts};
-  \item \texttt{dietiestates-backend/jest.config.ts};
-  \item \texttt{dietiestates-backend/package.json};
-  \item \texttt{Progettazione/Test-Doc.md};
-  \item \texttt{Progettazione/Requisiti.md};
-  \item \texttt{Progettazione/UC2 Caricamento Immobili.md};
-  \item \texttt{Progettazione/UC4 Gestione Offerte su.md};
-  \item i PDF gia presenti nella cartella \texttt{Documentazione}, usati come riferimento per struttura e tono editoriale.
-\end{itemize}
-
 \section{Testing xUnit}
 
 \subsection{Tecnologia e impostazione della suite}
@@ -1332,6 +1308,151 @@ File & Scopo \\
 \caption{File di riferimento riportati in Test-Doc.}
 \label{tab:testdoc-file-config}
 \end{table}
+
+\subsection{Codice dei quattro test principali}
+Di seguito sono riportati i quattro blocchi di test principali presenti in \texttt{dietiestates-backend/test/backend.test.ts}, come richiesto.
+
+\subsubsection{Test 1: \texttt{updateStatoOfferta(idOfferta, nuovoStato)}}
+\begin{lstlisting}[style=projectcode]
+describe('OffertaDAO.updateStatoOfferta', () => {
+  it('aggiorna lo stato dell\'offerta e restituisce il record aggiornato', async () => {
+    (pool.query as jest.Mock).mockResolvedValue({
+      rows: [{
+        idofferta: 42,
+        idimmobile: 10,
+        idutente: 5,
+        prezzoofferto: '200000',
+        stato: 'Accettata',
+        dataofferta: new Date('2025-04-01T10:00:00Z'),
+        offertamanuale: false,
+        idoffertaoriginale: null,
+      }],
+    });
+
+    const updated = await updateStatoOfferta(42, 'Accettata');
+
+    expect(pool.query).toHaveBeenCalledWith(
+      'UPDATE offerta SET stato = $1 WHERE idofferta = $2 RETURNING *',
+      ['Accettata', 42]
+    );
+    expect(updated.stato).toBe('Accettata');
+    expect(updated.idOfferta).toBe(42);
+    expect(updated.prezzoOfferto).toBe(200000);
+  });
+});
+\end{lstlisting}
+
+\subsubsection{Test 2: \texttt{assignUserToAgency(idUtente, idAgenzia)}}
+\begin{lstlisting}[style=projectcode]
+describe('UtenteDAO.assignUserToAgency', () => {
+  it('assegna un utente a un\'agenzia e restituisce l\'utente aggiornato', async () => {
+    (pool.query as jest.Mock).mockResolvedValue({
+      rows: [{
+        idutente: 7,
+        nome: 'Mario',
+        cognome: 'Rossi',
+        email: 'mario@example.com',
+        passwordhash: 'hashedpwd',
+        ruolo: 'Agente',
+        idagenzia: 3,
+        datacreazione: new Date('2025-01-15T10:00:00Z'),
+      }],
+    });
+
+    const updated = await assignUserToAgency(7, 3);
+
+    expect(pool.query).toHaveBeenCalledWith(
+      expect.stringContaining('UPDATE Utente'),
+      [3, 7]
+    );
+    expect(updated?.idUtente).toBe(7);
+    expect(updated?.idAgenzia).toBe(3);
+    expect(updated?.ruolo).toBe('Agente');
+  });
+
+  it('restituisce null se l\'utente non esiste o non e Agente/Supporto', async () => {
+    (pool.query as jest.Mock).mockResolvedValue({
+      rows: [],
+    });
+
+    const result = await assignUserToAgency(999, 3);
+
+    expect(result).toBeNull();
+  });
+});
+\end{lstlisting}
+
+\subsubsection{Test 3: \texttt{createOfferta(idImmobile, idUtente, prezzoOfferto)}}
+\begin{lstlisting}[style=projectcode]
+describe('OffertaDAO.createOfferta', () => {
+  it('crea un\'offerta con offertaManuale false e restituisce il DTO validato', async () => {
+    (pool.query as jest.Mock).mockResolvedValue({
+      rows: [{
+        idofferta: 100,
+        idimmobile: 50,
+        idutente: 20,
+        prezzoofferto: '90000',
+        stato: 'InAttesa',
+        dataofferta: new Date('2025-03-01T10:00:00Z'),
+        offertamanuale: false,
+        idoffertaoriginale: null,
+      }],
+    });
+
+    const offerta = await createOfferta(50, 20, 90000);
+
+    expect(pool.query).toHaveBeenCalledWith(
+      expect.stringContaining('INSERT INTO offerta'),
+      [50, 20, 90000, false, null]
+    );
+    expect(offerta.idOfferta).toBe(100);
+    expect(offerta.prezzoOfferto).toBe(90000);
+    expect(offerta.offertaManuale).toBe(false);
+  });
+});
+\end{lstlisting}
+
+\subsubsection{Test 4: \texttt{getNearbyPlaces(lat, lon, radius)}}
+\begin{lstlisting}[style=projectcode]
+describe('geoapify.getNearbyPlaces', () => {
+  it('restituisce i luoghi vicini aggregati per categoria', async () => {
+    const previousKey = process.env.GEOAPIFY_KEY;
+    const previousApiKey = process.env.GEOAPIFY_API_KEY;
+    process.env.GEOAPIFY_KEY = 'testkey';
+    delete process.env.GEOAPIFY_API_KEY;
+
+    (axios.get as jest.Mock)
+      .mockResolvedValueOnce({ data: { features: [{ properties: { name: 'Scuola ABC', distance: 100, categories: ['education.school'] } }] } })
+      .mockResolvedValueOnce({ data: { features: [] } })
+      .mockResolvedValueOnce({ data: { features: [{ properties: { name: 'Fermata Bus', distance: 300, categories: ['public_transport.bus_stop'] } }] } });
+
+    const places = await getNearbyPlaces(45, 9, 500);
+    expect(axios.get).toHaveBeenCalledTimes(3);
+    expect(places).toHaveLength(2);
+    expect(places.map(p => p.name)).toEqual(['Scuola ABC', 'Fermata Bus']);
+
+    if (previousKey === undefined) delete process.env.GEOAPIFY_KEY;
+    else process.env.GEOAPIFY_KEY = previousKey;
+
+    if (previousApiKey === undefined) delete process.env.GEOAPIFY_API_KEY;
+    else process.env.GEOAPIFY_API_KEY = previousApiKey;
+  });
+
+  it('lancia un\'eccezione se la chiave API e mancante', async () => {
+    const previousKey = process.env.GEOAPIFY_KEY;
+    const previousApiKey = process.env.GEOAPIFY_API_KEY;
+    delete process.env.GEOAPIFY_KEY;
+    delete process.env.GEOAPIFY_API_KEY;
+    await expect(getNearbyPlaces(45, 9)).rejects.toThrow('Chiave Geoapify mancante');
+
+    if (previousKey === undefined) delete process.env.GEOAPIFY_KEY;
+    else process.env.GEOAPIFY_KEY = previousKey;
+
+    if (previousApiKey === undefined) delete process.env.GEOAPIFY_API_KEY;
+    else process.env.GEOAPIFY_API_KEY = previousApiKey;
+  });
+});
+\end{lstlisting}
 
 \subsection{Esito dell'esecuzione reale della suite}
 L'esecuzione della suite backend ha prodotto i seguenti risultati:
