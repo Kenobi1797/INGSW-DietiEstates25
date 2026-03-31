@@ -21,7 +21,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{svg}
 
-\graphicspath{{../Doc-Start/INGSW2425/}{../Doc-Start/ImmaginiDoc/}}
+\graphicspath{{../Doc-Start/INGSW2425/}{../Doc-Start/ImmaginiDoc/}{../Doc-Start/mokcup/}}
 
 \definecolor{titleblue}{HTML}{173F5F}
 \definecolor{rulegray}{HTML}{C9CED6}
@@ -751,6 +751,125 @@ In questa sezione viene illustrata la dinamica del sistema attraverso i Diagramm
     \caption{Diagramma di sequenza -- Visualizzazione Dettaglio Immobile}
     \label{fig:seq-visualizza-immobile}
 \end{figure}
+
+\subsection{Mock-up delle schermate principali}
+
+I mock-up presentati in questa sezione illustrano le principali schermate dell'applicazione DietiEstates25 cosí come sono state progettate e implementate. I mock-up coprono i flussi piú rilevanti per ciascun ruolo utente: amministratore, supporto, agente immobiliare e cliente. Vengono mostrati sia i casi nominali (operazioni completate con successo) sia i casi di errore (validazione del form, email non valida) al fine di documentare la gestione degli errori lato interfaccia.
+
+\subsubsection{Dashboard per ruolo}
+
+Le seguenti schermate mostrano la dashboard personalizzata per l'amministratore dell'agenzia e per il profilo di supporto, evidenziando le azioni disponibili in funzione del ruolo assegnato.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{dashboardAdmin.png}
+    \caption{Dashboard -- Amministratore}
+    \label{fig:mock-dashboard-admin}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Dasboardsupporto01.png}
+    \caption{Dashboard -- Profilo Supporto}
+    \label{fig:mock-dashboard-supporto}
+  \end{minipage}
+\end{figure}
+
+\subsubsection{Navigazione e ricerca immobili}
+
+Le schermate seguenti documentano il flusso di ricerca degli immobili e la vista dedicata dell'agente per la gestione del proprio portafoglio.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{ricerca.png}
+    \caption{Schermata ricerca avanzata immobili}
+    \label{fig:mock-ricerca}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Mieiimmobili.png}
+    \caption{Vista ``I miei immobili'' dell'agente}
+    \label{fig:mock-miei-immobili}
+  \end{minipage}
+\end{figure}
+
+\subsubsection{Dettaglio immobile e gestione offerte}
+
+La seguente coppia di schermate mostra il dettaglio di un immobile con mappa e informazioni catastali, e il form di inserimento di un'offerta manuale da parte dell'agente.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{visualizzaimmobile.png}
+    \caption{Dettaglio immobile con mappa e dati}
+    \label{fig:mock-visualizza-immobile}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{offertamanuale.png}
+    \caption{Inserimento offerta manuale da agente}
+    \label{fig:mock-offerta-manuale}
+  \end{minipage}
+\end{figure}
+
+\subsubsection{Creazione agente -- flusso nominale e gestione errori}
+
+Le tre schermate seguenti documentano il flusso completo di creazione di un nuovo agente: il caso di successo e i due casi di errore (email non valida e form incompleto). La gestione degli errori avviene interamente lato client prima dell'invio al backend.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.55\textwidth]{creaagentegiusto.png}
+  \caption{Creazione agente -- form compilato correttamente}
+  \label{fig:mock-crea-agente-ok}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{ageente_mailnonvalida.png}
+    \caption{Creazione agente -- email non valida}
+    \label{fig:mock-agente-mail-invalid}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{{agente_formnon valido}.png}
+    \caption{Creazione agente -- form non valido}
+    \label{fig:mock-agente-form-invalid}
+  \end{minipage}
+\end{figure}
+
+\subsubsection{Creazione supporto -- gestione errori e feedback}
+
+Analogamente al flusso agente, le schermate seguenti mostrano i casi di errore nella creazione di un profilo supporto (email non valida, form incompleto) e il messaggio di conferma dopo un inserimento completato con successo.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{emailnonvalida_supporto.png}
+    \caption{Creazione supporto -- email non valida}
+    \label{fig:mock-supporto-mail-invalid}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{formnonvalidosupporto.png}
+    \caption{Creazione supporto -- form non valido}
+    \label{fig:mock-supporto-form-invalid}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.55\textwidth]{{inserimento con successo}.png}
+  \caption{Feedback -- inserimento completato con successo}
+  \label{fig:mock-inserimento-successo}
+\end{figure}
+
 \clearpage
 \section{Testing e Qualità del Codice}
 
