@@ -84,8 +84,8 @@
     \begin{minipage}{0.45\textwidth}
         \raggedright
         \textbf{Studenti:}\\
-        Pietro\\
-        Gino
+        Pietro Orefice\\
+        Gino Pandozzi-Trani
     \end{minipage}
     \hfill
     \begin{minipage}{0.45\textwidth}
@@ -543,6 +543,14 @@ Di seguito viene fornita una breve descrizione delle principali entità che comp
     \item \textbf{Agenzia:} rappresenta l'agenzia immobiliare a cui appartengono gli agenti e gli immobili gestiti.
     \item \textbf{OAuth:} gestisce l'autenticazione tramite provider esterni come Google.
 \end{itemize}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{schemadb.png}
+    \caption{Schema concettuale sintetico del dominio dati.}
+    \label{fig:schema-db-sintetico}
+  \end{figure}
+
 \newpage
 \begin{figure}[htbp]
     \centering
@@ -1721,39 +1729,41 @@ Membro secondario & \texttt{pietrodok} & 13 \\
 \subsubsection{Evidenze grafiche da GitHub e SonarQube}
 Le seguenti immagini, acquisite dagli strumenti di analisi del repository, completano la documentazione quantitativa del processo di sviluppo e della qualita del codice.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.95\textwidth]{Github-Contributors.png}
-  \caption{Contributi per autore su GitHub.}
-  \label{fig:github-contributors}
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Github-Contributors.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Github-Pulse.png}
+  \end{minipage}
+  \caption{Evidenze GitHub: (sinistra) contributi per autore, (destra) attivita recente del repository (Pulse).}
+  \label{fig:github-evidenze}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.95\textwidth]{Github-Pulse.png}
-  \caption{Attivita recente del repository (GitHub Pulse).}
-  \label{fig:github-pulse}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\textwidth]{CodeFrequency.png}
+  \includegraphics[width=0.92\textwidth]{CodeFrequency.png}
   \caption{Andamento della frequenza del codice nel tempo.}
   \label{fig:github-code-frequency}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.95\textwidth]{Sonar-OverallCode.png}
-  \caption{Panoramica complessiva della qualita del codice su SonarQube.}
-  \label{fig:sonar-overall-code}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\textwidth]{Sonar-NewCode.png}
-  \caption{Indicatori di qualita relativi al nuovo codice su SonarQube.}
-  \label{fig:sonar-new-code}
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Sonar-OverallCode.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Sonar-NewCode.png}
+  \end{minipage}
+  \caption{Evidenze SonarQube: (sinistra) panoramica complessiva, (destra) indicatori relativi al nuovo codice.}
+  \label{fig:sonar-evidenze}
 \end{figure}
 
 \paragraph{Frequenza dei commit per settimana.}
