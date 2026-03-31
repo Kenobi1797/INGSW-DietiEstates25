@@ -186,6 +186,15 @@ Agente immobiliare     & Operatore che gestisce il portafoglio immobili e la rel
 Cliente                & Utente registrato che interagisce per acquisto, vendita o affitto di immobili. \\ \hline
 Cliente non registrato & Visitatore che consulta pubblicamente gli annunci senza autenticazione. \\ \hline
 Immobile               & Entità fisica e catastale oggetto dell'attività di intermediazione. \\ \hline
+Offerta                & Proposta formale di acquisto o affitto di un immobile a un determinato prezzo, inviata da un cliente registrato e gestita da un agente. \\ \hline
+Controproposta         & Risposta a un'offerta ricevuta con condizioni modificate, implementata come offerta manuale da parte dell'agente. \\ \hline
+Agenzia immobiliare    & Organizzazione registrata che impiega agenti immobiliari e gestisce un portafoglio di annunci. \\ \hline
+JWT (JSON Web Token)   & Standard per la trasmissione sicura di informazioni tra client e server tramite token firmati e con scadenza. \\ \hline
+OAuth                  & Protocollo di delega dell'autorizzazione; nel progetto consente l'accesso tramite account Google senza gestire direttamente le credenziali. \\ \hline
+Geoapify               & Servizio API esterno per il recupero di punti di interesse (scuole, parchi, trasporti) nelle vicinanze di un indirizzo geografico. \\ \hline
+API REST               & Interfaccia di comunicazione tra frontend e backend basata su HTTP; le risorse sono identificate tramite URL e i dati scambiati in formato JSON. \\ \hline
+DTO (Data Transfer Object) & Oggetto intermediario usato per trasferire dati tra i livelli dell'applicazione; nel progetto validato con la libreria Zod. \\ \hline
+DAO (Data Access Object)   & Strato di accesso al database che astrae le query SQL dal resto della logica applicativa, garantendo separazione delle responsabilità. \\ \hline
 \end{tabularx}
 \end{table}
 
@@ -508,7 +517,9 @@ NFR03 &Il caricamento delle pagine deve essere inferiore a 3 secondi.  \\ \hline
 NFR04 & Tutte le password devono essere salvate in modo sicuro \\ \hline
 NFR05 & Il sistema dovrebbe essere operativo e accessibile il 99.9\% del tempo. \\ \hline
 NFR06 & Supporto di almeno 100 utenti simultanei.\\ \hline
-NFR07 & l’interfaccia deve essere semplice e facilmente utilizzabile da tutti gli utenti.\\ \hline
+NFR07 & L’interfaccia deve essere semplice e facilmente utilizzabile da tutti gli utenti.\\ \hline
+NFR08 & I dati personali degli utenti devono essere trattati in conformità con il Regolamento GDPR (UE 2016/679); le password sono salvate come hash irreversibili. \\ \hline
+NFR09 & Il sistema deve supportare l’autenticazione tramite provider OAuth esterno (Google), garantendo sicurezza nella gestione dei token di accesso. \\ \hline
 
 \end{tabularx}
 \end{table}
@@ -677,6 +688,7 @@ Le \textit{Call to Action} (CTA) sono di dimensioni generose e posizionate in ar
 \end{itemize}
 
 \subsubsection{Tipografia}
+L'interfaccia utilizza il font di sistema predefinito di Next.js, con gerarchia tipografica gestita tramite le classi utili di Tailwind CSS (\texttt{text-xs}, \texttt{text-sm}, \texttt{text-base}, \texttt{text-lg}, \texttt{text-xl}). I titoli adottano \texttt{font-bold} per massimizzare il contrasto visivo, mentre il testo corrente usa \texttt{font-normal}. La scelta di non adottare un font web personalizzato riduce i tempi di caricamento e garantisce coerenza cross-browser.
 
 \subsection{Classi di design}
 In questa parte della documentazione sono mostrate le classi di design del back end e front end.
@@ -706,365 +718,41 @@ In questa parte della documentazione sono mostrate le classi di design del back 
 \subsection{Sequenze diagram}
 In questa sezione viene illustrata la dinamica del sistema attraverso i Diagrammi di Sequenza riferiti al punto sugli use case.
 \newpage
-\subsubsection{Crea agente}
+\subsubsection{Creazione Agente}
 \begin{figure}[htbp]
     \centering
-    % Usa includegraphics per i file PDF
-    % Assicurati che il file si chiami esattamente dietiestate-classidesign2.pdf su Overleaf
     \includegraphics[width=\textwidth]{Sequence Diagram crea agente.pdf}
-    \caption{crea agente}
-    \label{crea agente}
+    \caption{Diagramma di sequenza -- Creazione Agente}
+    \label{fig:seq-crea-agente}
 \end{figure}
 \newpage
 
-\subsubsection{Crea supporto}
+\subsubsection{Creazione Supporto}
 \begin{figure}[htbp]
     \centering
-    % Usa includegraphics per i file PDF
-    % Assicurati che il file si chiami esattamente dietiestate-classidesign2.pdf su Overleaf
     \includegraphics[width=\textwidth]{Sequence Diagram creazione supporto.pdf}
-    \caption{crea supporto}
-    \label{crea supporto}
+    \caption{Diagramma di sequenza -- Creazione Supporto}
+    \label{fig:seq-crea-supporto}
 \end{figure}
 \newpage
-\subsubsection{Offerta manuale}
+\subsubsection{Inserimento Offerta Manuale}
 \begin{figure}[htbp]
     \centering
-    % Usa includegraphics per i file PDF
-    % Assicurati che il file si chiami esattamente dietiestate-classidesign2.pdf su Overleaf
     \includegraphics[width=\textwidth]{Sequence Diagram Offerta manuale.pdf}
-    \caption{Offerta manuale}
-    \label{Offerta manuale}
+    \caption{Diagramma di sequenza -- Inserimento Offerta Manuale}
+    \label{fig:seq-offerta-manuale}
 \end{figure}
 \newpage
 
-\subsubsection{visualizza immobile}
+\subsubsection{Visualizzazione Immobile}
 \begin{figure}[htbp]
     \centering
-    % Usa includegraphics per i file PDF
-    % Assicurati che il file si chiami esattamente dietiestate-classidesign2.pdf su Overleaf
     \includegraphics[width=\textwidth]{Sequence Diagram Dietiestates.pdf}
-    \caption{visualizza immobile}
-    \label{visualizza immobile}
+    \caption{Diagramma di sequenza -- Visualizzazione Dettaglio Immobile}
+    \label{fig:seq-visualizza-immobile}
 \end{figure}
-\newpage
-\section{Artefatti Software e documentazione del processo di sviluppo}
-Al fine di garantire elevati standard di affidabilità, manutenibilità e sicurezza del software sviluppato, il progetto è stato sottoposto a cicli sistematici di Analisi Statica del Codice (Static Application Security Testing - SAST). Per tale scopo è stato integrato nella pipeline di sviluppo SonarQube, una piattaforma leader nel settore per l'ispezione continua della qualità del codice. Nelle sezioni seguenti verranno analizzati i report generati, con particolare attenzione alle metriche di Reliability, Security e Maintainability.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{sonarqube.jpg}
-    \caption{Report della qualità del codice generato da SonarQube.}
-    \label{fig:sonarqube_report}
-\end{figure}
-
-\newpage
-\subsection{Report di qualità del codice, generati da SonarQube}
-\section{Testing e valutazione dell’usabilità.}
-
-\subsection{Expert Review}
-La valutazione è stata condotta tramite ispezione euristica, usando le \textbf{10 euristiche di Nielsen} come base della checklist, adattate alle funzionalità specifiche di DietiEstates25.
-
-\subsubsection{Checklist di Usabilità}
-
-\begin{enumerate}
-    \item \textbf{Visibilità dello Stato del Sistema}
-    \begin{itemize}
-        \item L'utente riceve un feedback immediato per ogni azione eseguita (es. indicatori di caricamento, messaggi di conferma)?
-        \item Lo stato di avanzamento nei processi complessi è sempre chiaramente indicato (es. stepper per form multi-fase)?
-        \item Il sistema comunica visivamente eventuali ritardi causati da servizi esterni o caricamento dati?
-    \end{itemize}
-
-    \item \textbf{Corrispondenza col Mondo Reale}
-    \begin{itemize}
-        \item La terminologia utilizzata è familiare all'utente e coerente con il dominio applicativo?
-        \item Le icone e le metafore visive sono intuitive e universalmente riconoscibili nel contesto d'uso?
-    \end{itemize}
-
-    \item \textbf{Controllo e Libertà dell'Utente}
-    \begin{itemize}
-        \item L'utente può annullare, correggere o resettare le proprie azioni senza perdita di dati non necessaria?
-        \item È possibile navigare liberamente tra le diverse fasi di un processo lineare (es. tasti "Avanti" e "Indietro")?
-        \item Esistono vie d'uscita chiaramente contrassegnate per abbandonare uno stato indesiderato?
-    \end{itemize}
-
-    \item \textbf{Consistenza e Standard}
-    \begin{itemize}
-        \item Il linguaggio e la terminologia sono coerenti in tutte le sezioni dell'interfaccia?
-        \item Il layout, i colori e i componenti grafici seguono standard visivi uniformi per tutti i ruoli utente?
-    \end{itemize}
-
-    \item \textbf{Prevenzione degli Errori}
-    \begin{itemize}
-        \item Il sistema impedisce attivamente azioni errate (es. disabilitando pulsanti se i vincoli non sono rispettati)?
-        \item I vincoli e i campi obbligatori sono comunicati chiaramente prima che l'utente commetta un errore?
-    \end{itemize}
-
-    \item \textbf{Riconoscimento piuttosto che Richiamo}
-    \begin{itemize}
-        \item Le informazioni necessarie (es. filtri attivi o dati inseriti precedentemente) sono sempre visibili o facilmente reperibili?
-        \item L'interfaccia riduce il carico mnemonico dell'utente proponendo opzioni di scelta visibili (es. menu a tendina, checkbox)?
-    \end{itemize}
-
-    \item \textbf{Flessibilità ed Efficienza}
-    \begin{itemize}
-        \item L'interfaccia è ottimizzata per i diversi profili utente, offrendo funzionalità specifiche per ogni ruolo?
-        \item Sono presenti "acceleratori" (es. azioni rapide, scorciatoie) per velocizzare le operazioni più frequenti?
-        \item Il sistema offre diverse modalità di interazione per soddisfare sia l'utente inesperto che quello avanzato?
-    \end{itemize}
-
-    \item \textbf{Design Minimalista}
-    \begin{itemize}
-        \item Le schermate mostrano solo le informazioni essenziali per il compito corrente, evitando il sovraccarico visivo?
-        \item L'interfaccia è priva di elementi decorativi o informativi ridondanti che potrebbero distrarre l'utente?
-    \end{itemize}
-
-    \item \textbf{Gestione e Recupero degli Errori}
-    \begin{itemize}
-        \item I messaggi di errore sono espressi in linguaggio semplice, indicano con precisione il problema e suggeriscono una soluzione?
-        \item In caso di guasto dei servizi di terze parti, il sistema fornisce un feedback comprensibile invece di bloccarsi?
-        \item Gli errori sono segnalati in prossimità del punto in cui si sono verificati per facilitarne la correzione?
-    \end{itemize}
-
-    \item \textbf{Guida e Documentazione}
-    \begin{itemize}
-        \item Il sistema fornisce aiuti contestuali e indicazioni chiare sulla compilazione dei dati (es. tooltip, placeholder)?
-        \item La navigazione permette all'utente di orientarsi facilmente, indicando chiaramente la posizione attuale all'interno dell'applicazione?
-    \end{itemize}
-\end{enumerate}
-\newpage
-\subsubsection{Applicazione della checklist al prodotto}
-
-\subsubsection*{Autenticazione (Login e Registrazione)}
-
-\textbf{Punti di forza:}
-\begin{itemize}
-    \item Il messaggio di errore appare comunque, quindi l'utente sa che qualcosa è andato storto.
-    \item \textbf{Controllo e libertà dell'utente:} È presente il pulsante ``mostra password'', che permette all'utente di verificare quanto sta digitando prima di confermare.
-\end{itemize}
-
-\textbf{Criticità:}
-\begin{itemize}
-    \item \textbf{Gestione errori:} Il messaggio di errore è generico (es. ``autenticazione fallita'') e non specifica la causa del problema.
-    \item \textbf{Prevenzione degli errori:} I campi obbligatori non sono chiaramente indicati, manca un segnale visivo come l'asterisco (*).
-    \item \textbf{Guida e documentazione:} Nessun requisito sulla password viene comunicato all'utente (es. lunghezza minima, caratteri richiesti).
-\end{itemize}
-
-\subsubsection*{Navbar}
-
-\textbf{Punti di forza:}
-\begin{itemize}
-    \item \textbf{Flessibilità ed efficienza:} La navbar si adatta al ruolo dell'utente autenticato, mostrando solo le voci pertinenti (cliente, agente, supporto, admin).
-    \item \textbf{Corrispondenza col mondo reale:} Le voci di navigazione sono chiare e visibili, senza ambiguità terminologiche.
-    \item \textbf{Gestione dei ruoli:} La struttura dei permessi segue una gerarchia esplicita: Admin è specializzazione di Supporto e Supporto è specializzazione di Agente.
-\end{itemize}
-
-\textbf{Criticità:}
-\begin{itemize}
-    \item \textbf{Visibilità dello stato:} La navbar indica la sezione corrente, ma in alcune schermate l'indicatore risulta poco evidente (contrasto o enfasi visiva non sempre immediati), riducendo la rapidità di orientamento.
-\end{itemize}
-\subsubsection*{Inserimento Immobile}
-
-\textbf{Punti di forza:}
-\begin{itemize}
-    \item \textbf{Design minimalista:} Il form è diviso in step logici, presentando un sottoinsieme di informazioni alla volta e riducendo il carico cognitivo dell'utente.
-    \item \textbf{Controllo e libertà dell'utente:} L'utente può navigare liberamente avanti e indietro tra gli step senza perdere i dati già inseriti.
-\end{itemize}
-
-\textbf{Criticità:}
-\begin{itemize}
-    \item \textbf{Prevenzione degli errori:} Il sistema non indica i campi obbligatori mancanti prima di consentire il passaggio allo step successivo. L'utente scopre le omissioni solo al momento della pubblicazione, ed è costretto a navigare tra gli step per individuare i campi mancanti senza alcuna indicazione su dove si trovino.
-\end{itemize}
-
-\subsubsection*{Ricerca (Filtri e Mappa)}
-
-\textbf{Punti di forza:}
-\begin{itemize}
-    \item \textbf{Design minimalista:} La pagina di ricerca è semplice e pulita, rendendo la funzione principale immediatamente accessibile anche per utenti con poca esperienza.
-\end{itemize}
-
-\textbf{Criticità:}
-\begin{itemize}
-    \item \textbf{Riconoscimento piuttosto che richiamo:} Dopo aver applicato i filtri il pannello si chiude, e non è presente un riepilogo visivo dei filtri attivi. L'utente è costretto a riaprire il pannello per ricordare cosa ha impostato.
-    \item \textbf{Gestione e recupero degli errori:} I suggerimenti restituiti dal servizio di geocodifica possono apparire duplicati nel dropdown, senza che il sistema li filtri o segnali il problema all'utente, generando confusione nella scelta.
-\end{itemize}
-
-\subsubsection{Progettazione e conduzione di un esperimento con utenti reali o potenziali per la
-valutazione dell'usabilità del sistema realizzato}
-
-\paragraph{Descrizione dei soggetti reclutati}
-Sono stati reclutati 5 partecipanti, selezionati per rappresentare un campione 
-eterogeneo in termini di età, familiarità con la tecnologia ed esperienza con 
-applicazioni immobiliari.
-
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{|c|l|l|c|l|l|}
-\hline
-\rowcolor[HTML]{010066}
-{\color{white}\textbf{ID}} & {\color{white}\textbf{Nome}} & {\color{white}\textbf{Profilo}} & {\color{white}\textbf{Età}} & {\color{white}\textbf{Exp. digitale}} & {\color{white}\textbf{Exp. app imm.}} \\
-\hline
-U1 & Luca M.     & Studente universitario & 22 & Alta  & Bassa \\ \hline
-U2 & Serena R.   & Impiegata              & 35 & Media & Media \\ \hline
-U3 & Giuseppe T. & Agente immobiliare     & 48 & Media & Alta  \\ \hline
-U4 & Rosa D.     & Pensionata             & 67 & Bassa & Bassa \\ \hline
-U5 & Marco P.    & Lib. professionista    & 31 & Alta  & Media \\ \hline
-\end{tabular}
-\caption{Soggetti reclutati per l'esperimento}
-\end{table}
-
-\paragraph{Procedura Sperimentale}
-I test sono stati condotti in un ambiente semi-controllato, con il partecipante 
-davanti a un laptop con il browser già aperto sulla homepage di DietiEstates25. 
-Per i task che richiedevano l'autenticazione, ai partecipanti sono state fornite 
-credenziali preimpostate. È stato adottato il protocollo \textit{think-aloud}: 
-i partecipanti sono stati invitati a verbalizzare pensieri e dubbi durante 
-l'esecuzione. Un moderatore ha osservato senza intervenire, salvo in caso 
-di blocco totale. La durata prevista era di 25--35 minuti per partecipante.
-
-\paragraph{Task Assegnati}
-
-\subparagraph{Task 1 -- Ricerca Immobile (Tempo target: 4 minuti)}
-
-\textbf{Scenario:} \textit{``Stai cercando un immobile. Usa il sistema di 
-ricerca per trovare annunci in una zona specifica, seleziona la tipologia 
-di contratto e applica i filtri avanzati.''}
-
-\textbf{Azioni attese:}
-\begin{enumerate}
-    \item Accedere alla pagina di ricerca.
-    \item Inserire la posizione desiderata nel campo apposito.
-    \item Selezionare la tipologia di contratto (vendita o affitto).
-    \item Aprire e applicare i filtri avanzati.
-    \item Avviare la ricerca.
-\end{enumerate}
-
-\textbf{Obiettivo:} Verificare la chiarezza e la fluidità del flusso di 
-ricerca, e valutare se i filtri avanzati sono facilmente individuabili 
-e comprensibili.
-
-\subparagraph{Task 2 -- Inserimento Annuncio (Tempo target: 8 minuti)}
-
-\textbf{Scenario:} \textit{``Accedi come agente e pubblica un nuovo annuncio 
-immobiliare compilando tutte le informazioni richieste.''}
-
-\textbf{Azioni attese:}
-\begin{enumerate}
-    \item Navigare alla pagina di inserimento immobile.
-    \item Compilare il primo step con le informazioni base.
-    \item Completare il secondo step con le caratteristiche dell'immobile.
-    \item Completare il terzo step e pubblicare l'annuncio.
-\end{enumerate}
-
-\textbf{Obiettivo:} Valutare la fluidità del form multi-step e verificare 
-se la suddivisione in passi è chiara. Osservare se la mancanza di 
-validazione per step causa difficoltà o blocchi.
-
-\subparagraph{Task 3 -- Inserimento Offerta (Tempo target: 3 minuti)}
-
-\textbf{Scenario:} \textit{``Hai trovato un immobile di tuo interesse. 
-Visualizza la scheda dell'annuncio e invia un'offerta.''}
-
-\textbf{Azioni attese:}
-\begin{enumerate}
-    \item Selezionare un immobile dai risultati di ricerca.
-    \item Visualizzare la scheda dettagliata dell'immobile.
-    \item Compilare e inviare un'offerta.
-\end{enumerate}
-
-\textbf{Obiettivo:} Verificare se il percorso verso il form dell'offerta 
-è intuitivo e se le informazioni di riferimento (es. prezzo richiesto) 
-sono sufficientemente visibili durante la compilazione.
-
-\paragraph{Questionario}
-
-Per ciascuna domanda indica il tuo grado di accordo su una scala da 1 a 5,
-dove 1 indica \textit{Per niente soddisfatto} e 5 indica \textit{Molto soddisfatto}.
-
-\begin{enumerate}
-    \item Quanto hai trovato il sistema facile da usare in generale?
-    
-    \textit{1 \quad 2 \quad 3 \quad 4 \quad 5}
-
-    \item Quanto è stato semplice orientarti tra le diverse sezioni del sito?
-    
-    \textit{1 \quad 2 \quad 3 \quad 4 \quad 5}
-
-    \item Il design dell'interfaccia ti è sembrato chiaro e ordinato?
-    
-    \textit{1 \quad 2 \quad 3 \quad 4 \quad 5}
-
-    \item Le funzionalità principali erano facili da trovare?
-    
-    \textit{1 \quad 2 \quad 3 \quad 4 \quad 5}
-
-    \item Hai riscontrato messaggi di errore poco chiari o confusi?
-    
-    \textit{Sì \quad No}
-
-    \item Quanto sei rimasto soddisfatto delle funzionalità offerte dal sistema?
-    
-    \textit{1 \quad 2 \quad 3 \quad 4 \quad 5}
-
-    \item Hai avuto difficoltà a completare qualcuno dei task assegnati?
-    
-    \textit{Sì \quad No}
-
-    \item Consiglieresti DietiEstates25 a un amico o collega?
-    
-    \textit{1 \quad 2 \quad 3 \quad 4 \quad 5}
-\end{enumerate}
-
-\paragraph{Risultati del Survey}
-
-Di seguito sono riportati i risultati del questionario post-test, 
-raccolti al termine dell'esperimento.
-
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{|c|l|c|c|c|c|c|c|c|c|}
-\hline
-\rowcolor[HTML]{010066}
-{\color{white}\textbf{ID}} & {\color{white}\textbf{Nome}} & {\color{white}\textbf{D1}} & {\color{white}\textbf{D2}} & {\color{white}\textbf{D3}} & {\color{white}\textbf{D4}} & {\color{white}\textbf{D5}} & {\color{white}\textbf{D6}} & {\color{white}\textbf{D7}} & {\color{white}\textbf{D8}} \\
-\hline
-U1 & Luca M.     & 4 & 4 & 5 & 4 & No & 4 & No  & 5 \\ \hline
-U2 & Serena R.   & 4 & 3 & 4 & 4 & No & 4 & Sì  & 4 \\ \hline
-U3 & Giuseppe T. & 5 & 4 & 4 & 5 & No & 5 & No  & 5 \\ \hline
-U4 & Rosa D.     & 3 & 3 & 4 & 3 & Sì & 3 & Sì  & 3 \\ \hline
-U5 & Marco P.    & 4 & 4 & 5 & 4 & No & 4 & No  & 5 \\ \hline
-\multicolumn{2}{|l|}{\textbf{Media}} & \textbf{4.0} & \textbf{3.6} & \textbf{4.4} & \textbf{4.0} & -- & \textbf{4.0} & -- & \textbf{4.4} \\ \hline
-\end{tabular}
-\caption{Risultati del questionario post-test}
-\end{table}
-
-\textbf{Sintesi dei risultati:}
-\begin{itemize}
-    \item \textbf{D1 -- Facilità d'uso generale:} media 4.0/5. Il sistema 
-    è risultato generalmente facile da usare, con qualche difficoltà 
-    per l'utente con minore esperienza digitale (U4).
-    \item \textbf{D2 -- Orientamento:} media 3.6/5. Il punteggio più basso, 
-    coerente con la criticità emersa nella expert review sulla ridotta 
-    evidenza dell'indicatore di sezione attiva nella navbar.
-    \item \textbf{D3 -- Design:} media 4.4/5. Il design minimalista è stato 
-    il punto più apprezzato da tutti i partecipanti.
-    \item \textbf{D4 -- Reperibilità delle funzionalità:} media 4.0/5. 
-    Le funzioni principali sono state trovate senza particolari difficoltà.
-    \item \textbf{D5 -- Messaggi di errore:} 1 su 5 ha risposto Sì (U4), 
-    in linea con la criticità emersa durante l'inserimento dell'annuncio.
-    \item \textbf{D6 -- Soddisfazione:} media 4.0/5. La soddisfazione 
-    complessiva è buona, con U3 (agente) particolarmente soddisfatto.
-    \item \textbf{D7 -- Difficoltà nei task:} 2 su 5 hanno risposto Sì 
-    (U2 e U4), corrispondenti agli utenti che hanno avuto difficoltà 
-    nell'inserimento dell'annuncio.
-    \item \textbf{D8 -- Raccomandazione:} media 4.4/5. La maggioranza 
-    consiglierebbe il sistema, con U4 meno convinta per via delle 
-    difficoltà riscontrate.
-\end{itemize}
-
 \clearpage
-\section{Testing xUnit}
+\section{Testing e Qualità del Codice}
 
 \subsection{Tecnologia e impostazione della suite}
 La suite di unit test del backend e implementata con \textbf{Jest} in ambiente Node.js, tramite preset \texttt{ts-jest}. Dall'analisi della configurazione emergono le seguenti scelte:
@@ -1227,158 +915,6 @@ Metodo & Equivalenza & Statement & Branch & Note \\
 \end{tabularx}
 \caption{Strategie di copertura adottate nella suite xUnit.}
 \label{tab:coverage-strategy}
-\end{table}
-
-\subsection{Allineamento completo con Test-Doc}
-Questa sezione riporta in forma esplicita tutti gli elementi presenti in \texttt{Progettazione/Test-Doc.md}, in modo che il presente file \texttt{.tex} contenga integralmente il contenuto richiesto.
-
-\subsubsection{Tipologia di test: White box (dettaglio operativo)}
-Tutti i test adottati sono \textbf{white box}. In particolare:
-\begin{itemize}
-  \item e noto il testo delle query SQL prodotte (verifica di UPDATE parametrizzate);
-  \item e noto il comportamento di \texttt{insertOfferta} sui parametri \texttt{offertaManuale} e \texttt{offertaOriginaleId -> null};
-  \item e noto il flusso di \texttt{getNearbyPlaces} (3 categorie fisse e lettura di \texttt{process.env.GEOAPIFY\_KEY} a runtime);
-  \item sono noti i branch interni di \texttt{assignUserToAgency} (check su \texttt{result.rows[0]} e clausola \texttt{Ruolo IN (...)}).
-\end{itemize}
-
-Il mocking di \texttt{pool} (PostgreSQL) e \texttt{axios} isola ogni unita dalle dipendenze esterne, rendendo i test deterministici e ripetibili.
-
-\subsubsection{Metodi testati (firma e tipo)}
-\begin{table}[H]
-\centering
-\small
-\begin{tabular}{@{}p{0.04\textwidth}p{0.20\textwidth}p{0.15\textwidth}p{0.43\textwidth}p{0.10\textwidth}@{}}
-\toprule
-\# & Metodo & Modulo & Firma & Tipo \\
-\midrule
-1 & \texttt{updateStatoOfferta} & \texttt{OffertaDAO} & \texttt{(idOfferta: number, nuovoStato: string)} & White box \\
-2 & \texttt{assignUserToAgency} & \texttt{UtenteDAO} & \texttt{(idUtente: number, idAgenzia: number)} & White box \\
-3 & \texttt{createOfferta} & \texttt{OffertaDAO} & \texttt{(idImmobile: number, idUtente: number, prezzoOfferto: number)} & White box \\
-4 & \texttt{getNearbyPlaces} & \texttt{utils/geoapify} & \texttt{(lat: number, lon: number, radius?: number)} & White box \\
-\bottomrule
-\end{tabular}
-\caption{Metodi testati come riportati in Test-Doc.}
-\label{tab:testdoc-metodi}
-\end{table}
-
-\subsubsection{Dettaglio metodo 1: \texttt{updateStatoOfferta}}
-\paragraph{Non banalita.}
-Esegue una UPDATE parametrizzata e rimappa il risultato in \texttt{OffertaDTO} validato con Zod (inclusa conversione \texttt{prezzoOfferto} stringa -> number).
-
-\paragraph{Classi di equivalenza (input/output).}
-\begin{table}[H]
-\centering
-\small
-\begin{tabular}{@{}p{0.22\textwidth}p{0.28\textwidth}p{0.43\textwidth}@{}}
-\toprule
-Classe & Input rappresentativo & Output atteso \\
-\midrule
-CE1 -- stato valido, offerta esistente & \texttt{idOfferta=42, nuovoStato='Accettata'} & DTO con \texttt{stato='Accettata'} e \texttt{prezzoOfferto=200000} (number) \\
-CE2 -- offerta inesistente & \texttt{rows: []} dal mock & \texttt{mapRowToOfferta(undefined)} con eccezione Zod (gestione controller, fuori scope unit) \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{Criteri e test case.}
-Statement coverage; verifica conversione \texttt{'200000' -> 200000}. Test case: query UPDATE con parametri \texttt{['Accettata', 42]}, verifica \texttt{stato}, \texttt{idOfferta}, \texttt{prezzoOfferto}.
-
-\subsubsection{Dettaglio metodo 2: \texttt{assignUserToAgency}}
-\paragraph{Non banalita.}
-UPDATE con clausola ruolo \texttt{Ruolo IN ('Agente', 'Supporto')}, mapping in \texttt{UtenteDTO}, restituzione \texttt{null} se non assegnabile.
-
-\paragraph{Classi di equivalenza (input/output).}
-\begin{table}[H]
-\centering
-\small
-\begin{tabular}{@{}p{0.22\textwidth}p{0.28\textwidth}p{0.43\textwidth}@{}}
-\toprule
-Classe & Input rappresentativo & Output atteso \\
-\midrule
-CE1 -- utente Agente/Supporto assegnato & \texttt{idUtente=7, idAgenzia=3}, ruolo='Agente' & UPDATE con ruolo consentito, DTO con \texttt{idAgenzia=3} \\
-CE2 -- utente non esiste/non consentito & \texttt{idUtente=999, idAgenzia=3}, \texttt{rows: []} & \texttt{pool.query} vuoto, funzione ritorna \texttt{null} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{Criteri e test case.}
-Statement + branch coverage su \texttt{result.rows[0] ? ... : null}. Test cases: (1) assegnazione riuscita con parametri \texttt{[3, 7]}; (2) utente non assegnabile con ritorno \texttt{null}.
-
-\subsubsection{Dettaglio metodo 3: \texttt{createOfferta}}
-\paragraph{Non banalita.}
-Delega a \texttt{insertOfferta} con \texttt{offertaManuale=false} e \texttt{idOffertaOriginale=null}, stato iniziale \texttt{'InAttesa'}, mapping DTO validato.
-
-\paragraph{Classi di equivalenza (input/output).}
-\begin{table}[H]
-\centering
-\small
-\begin{tabular}{@{}p{0.22\textwidth}p{0.28\textwidth}p{0.43\textwidth}@{}}
-\toprule
-Classe & Input rappresentativo & Output atteso \\
-\midrule
-CE1 -- offerta standard senza controproposta & \texttt{idImmobile=50, idUtente=20, prezzoOfferto=90000} & INSERT con \texttt{[50, 20, 90000, false, null]}, \texttt{offertaManuale=false}, \texttt{stato='InAttesa'} \\
-CE2 -- offerta con \texttt{offertaOriginaleId} (path \texttt{createManualOfferta}) & Non testata in questa suite & Copertura prevista a livello integrazione controller \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{Criteri e test case.}
-Statement coverage su \texttt{createOfferta}; verifica di \texttt{offertaOriginaleId || null} in \texttt{insertOfferta}. Test case: verifica parametri INSERT, \texttt{idOfferta}, \texttt{prezzoOfferto} numerico, \texttt{offertaManuale=false}.
-
-\subsubsection{Dettaglio metodo 4: \texttt{getNearbyPlaces}}
-\paragraph{Non banalita.}
-Lettura chiave API a runtime, chiamate a Geoapify su 3 categorie fisse (\texttt{education.school}, \texttt{leisure.park}, \texttt{public\_transport}), aggregazione risultati, gestione best-effort degli errori HTTP per categoria.
-
-\paragraph{Classi di equivalenza (input/output).}
-\begin{table}[H]
-\centering
-\small
-\begin{tabular}{@{}p{0.22\textwidth}p{0.28\textwidth}p{0.43\textwidth}@{}}
-\toprule
-Classe & Input rappresentativo & Output atteso \\
-\midrule
-CE1 -- chiave presente, API risponde & \texttt{lat=45.0, lon=9.0, radius=500}; mock 1+0+1 feature & Lista di 2 \texttt{Place}, 3 chiamate \texttt{axios.get} \\
-CE2 -- chiave assente & \texttt{delete process.env.GEOAPIFY\_KEY} & Eccezione \texttt{'Chiave Geoapify mancante'} prima di chiamate HTTP \\
-CE3 -- errore HTTP su una categoria & seconda call rigettata & Aggregazione delle altre categorie senza throw \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{Criteri e test case.}
-Branch coverage su ramo \texttt{!GEOAPIFY\_KEY}, ciclo \texttt{for...of} (3 iterazioni), blocco \texttt{catch}. Boundary value su \texttt{radius} default 1000 vs esplicito 500. Test cases: percorso nominale (2 risultati) e chiave mancante (eccezione).
-
-\subsubsection{Riepilogo criteri strutturali (tabella Test-Doc)}
-\begin{table}[H]
-\centering
-\small
-\begin{tabular}{@{}p{0.22\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.16\textwidth}p{0.33\textwidth}@{}}
-\toprule
-Test & Statement & Branch & Condition & Boundary value \\
-\midrule
-\texttt{updateStatoOfferta} & Si & -- & -- & \texttt{idOfferta} intero positivo, \texttt{prezzoOfferto} float->number \\
-\texttt{assignUserToAgency} & Si & Si (rows vs null) & Si (check \texttt{result.rows[0]}) & ruolo consentito vs non consentito \\
-\texttt{createOfferta} & Si & -- & Si (\texttt{offertaOriginaleId || null}) & \texttt{prezzoOfferto} esatto \\
-\texttt{getNearbyPlaces} & Si & Si (!KEY, ciclo, catch) & Si (\texttt{!GEOAPIFY\_KEY}) & \texttt{radius} default 1000 vs 500 \\
-\bottomrule
-\end{tabular}
-\caption{Riepilogo criteri come da Test-Doc.}
-\label{tab:testdoc-criteri}
-\end{table}
-
-\subsubsection{File e configurazione}
-\begin{table}[H]
-\centering
-\small
-\begin{tabular}{@{}p{0.46\textwidth}p{0.47\textwidth}@{}}
-\toprule
-File & Scopo \\
-\midrule
-\texttt{dietiestates-backend/test/backend.test.ts} & Suite Jest con 4 describe e 6 test case \\
-\texttt{dietiestates-backend/jest.config.ts} & Configurazione Jest (\texttt{ts-jest}, ambiente \texttt{node}) \\
-\texttt{dietiestates-backend/package.json} & Script test: \texttt{jest --runInBand --detectOpenHandles} \\
-\bottomrule
-\end{tabular}
-\caption{File di riferimento riportati in Test-Doc.}
-\label{tab:testdoc-file-config}
 \end{table}
 
 \subsection{Codice dei quattro test principali}
@@ -1551,6 +1087,16 @@ Coverage complessiva backend & 70.9\% & 54.54\% & 39.28\% & 64.44\% \\
 \end{table}
 
 Questi valori mostrano che la suite attuale e adeguata come base di verifica dei metodi piu sensibili selezionati per la consegna, pur lasciando margine per estendere la copertura verso controller, middleware e casi di errore ulteriori.
+
+\subsection{Qualità del Codice: Analisi Statica con SonarQube}
+Al fine di garantire elevati standard di affidabilità, manutenibilità e sicurezza, il progetto è stato sottoposto ad analisi statica del codice (SAST) tramite \textbf{SonarQube}. Lo strumento monitora in modo continuo le metriche di Reliability, Security e Maintainability, identificando code smell, vulnerabilità e duplicazioni.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{sonarqube.jpg}
+    \caption{Report della qualità del codice generato da SonarQube -- Overall Code.}
+    \label{fig:sonarqube_report}
+\end{figure}
 
 \section{Valutazione dell'usabilita}
 
