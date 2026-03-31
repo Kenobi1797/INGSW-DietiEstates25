@@ -1597,6 +1597,44 @@ Membro secondario & \texttt{pietrodok} & 13 \\
 \label{tab:contributors}
 \end{table}
 
+\subsubsection{Evidenze grafiche da GitHub e SonarQube}
+Le seguenti immagini, acquisite dagli strumenti di analisi del repository, completano la documentazione quantitativa del processo di sviluppo e della qualita del codice.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{Github-Contributors.png}
+  \caption{Contributi per autore su GitHub.}
+  \label{fig:github-contributors}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{Github-Pulse.png}
+  \caption{Attivita recente del repository (GitHub Pulse).}
+  \label{fig:github-pulse}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{CodeFrequency.png}
+  \caption{Andamento della frequenza del codice nel tempo.}
+  \label{fig:github-code-frequency}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{Sonar-OverallCode.png}
+  \caption{Panoramica complessiva della qualita del codice su SonarQube.}
+  \label{fig:sonar-overall-code}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{Sonar-NewCode.png}
+  \caption{Indicatori di qualita relativi al nuovo codice su SonarQube.}
+  \label{fig:sonar-new-code}
+\end{figure}
+
 \paragraph{Frequenza dei commit per settimana.}
 La Tabella~\ref{tab:commit-freq} riporta la distribuzione settimanale dei commit secondo i dati di \emph{GitHub Insights} (\url{https://github.com/Kenobi1797/INGSW-DietiEstates25/graphs/commit-activity}), che registra solo le settimane con almeno un commit. Si individuano tre fasi distinte: una fase di avvio (agosto--ottobre 2025) con attivita regolare, un lungo periodo di inattivita quasi totale (novembre 2025 -- inizio marzo 2026) e uno sprint finale concentrato nelle ultime due settimane di marzo 2026, che da soli rappresentano il 60\% dell'intera attivita.
 
@@ -1724,12 +1762,5 @@ Frontend & \texttt{npm run lint} & Analisi statica del codice con ESLint \\
 \caption{Script di build e sviluppo definiti nei \texttt{package.json}.}
 \label{tab:build-scripts}
 \end{table}
-
-\section{Conclusioni}
-L'analisi dei file di test e della documentazione di progetto mostra che DietiEstates25 dispone gia di una suite xUnit coerente per quattro metodi backend non banali, progettata con criteri di equivalenza, copertura strutturale e isolamento delle dipendenze esterne. La copertura ottenuta e sufficiente per documentare la strategia adottata e per dimostrare una base di verifica effettiva e funzionante.
-
-Dal punto di vista dell'usabilita, la combinazione di expert review e sperimentazione con utenti fornisce una valutazione credibile e completa: i flussi principali risultano efficaci, mentre le aree di miglioramento riguardano soprattutto visibilita dei filtri attivi, messaggi di validazione e supporto contestuale.
-
-Il progetto dimostra inoltre un utilizzo coerente degli strumenti di sviluppo moderni: containerizzazione con Docker, gestione delle dipendenze tramite npm, build riproducibili e controllo di versione distribuito con Git e GitHub, con una storia di commit che copre l'intero ciclo di vita del progetto.
 
 \end{document}
