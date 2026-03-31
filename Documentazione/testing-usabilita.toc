@@ -60,4 +60,15 @@
 \contentsline {paragraph}{Domande specifiche.}{13}{section*.38}%
 \contentsline {subsubsection}{\numberline {3.3.6}Risultati}{13}{subsubsection.3.3.6}%
 \contentsline {subsubsection}{\numberline {3.3.7}Discussione dei risultati}{14}{subsubsection.3.3.7}%
-\contentsline {section}{\numberline {4}Conclusioni}{14}{section.4}%
+\contentsline {section}{\numberline {4}Documentazione del processo di sviluppo}{14}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Versionamento}{14}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}GitHub}{14}{subsubsection.4.1.1}%
+\contentsline {paragraph}{File .gitignore.}{14}{section*.40}%
+\contentsline {subsubsection}{\numberline {4.1.2}Statistiche del repository}{15}{subsubsection.4.1.2}%
+\contentsline {paragraph}{Distribuzione dei commit per contributor.}{15}{section*.42}%
+\contentsline {paragraph}{Frequenza dei commit per settimana.}{15}{section*.44}%
+\contentsline {subsection}{\numberline {4.2}Codice sorgente e containerizzazione}{16}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Dockerfile backend}{16}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Dockerfile frontend}{17}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}docker-compose.yml e file di build automatica}{17}{subsubsection.4.2.3}%
+\contentsline {section}{\numberline {5}Conclusioni}{18}{section.5}%

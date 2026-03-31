@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.19)  30 MAR 2026 20:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.19)  31 MAR 2026 13:05
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1093,27 +1093,39 @@ Underfull \hbox (badness 10000) in alignment at lines 593--593
 
 [13]
 
-[14] (./testing-usabilita.aux)
+[14]
+
+[15] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+
+[16{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}]
+
+[17]
+
+[18] (./testing-usabilita.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `testing-usabilita.out' has not changed.
-(rerunfilecheck)             Checksum: 6DC82A86673A150C9BB5D6CF70EEBFA6;7986.
+(rerunfilecheck)             Checksum: 4529A945B2665F8EEED9D4DC8AC4C95F;9544.
  ) 
 Here is how much of TeX's memory you used:
- 16696 strings out of 475102
- 267933 string characters out of 5764877
- 971746 words of memory out of 5000000
- 39207 multiletter control sequences out of 15000+600000
- 624734 words of font info for 157 fonts, out of 8000000 for 9000
+ 16906 strings out of 475102
+ 270533 string characters out of 5764877
+ 1040175 words of memory out of 5000000
+ 39344 multiletter control sequences out of 15000+600000
+ 628331 words of font info for 165 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  75i,10n,79p,1080b,1269s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>
-Output written on testing-usabilita.pdf (16 pages, 242598 bytes).
+</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>
+Output written on testing-usabilita.pdf (20 pages, 279812 bytes).
 PDF statistics:
- 420 PDF objects out of 1000 (max. 8388607)
- 383 compressed objects within 4 object streams
- 141 named destinations out of 1000 (max. 500000)
- 38689 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 552 PDF objects out of 1000 (max. 8388607)
+ 504 compressed objects within 6 object streams
+ 193 named destinations out of 1000 (max. 500000)
+ 40801 words of extra memory for PDF output out of 42996 (max. 10000000)
 

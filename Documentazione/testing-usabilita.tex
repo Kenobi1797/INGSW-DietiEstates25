@@ -607,9 +607,213 @@ I dati raccolti mostrano che i flussi di autenticazione, consultazione del detta
 
 Nel complesso il sistema si colloca in una fascia di usabilita buona, ma con margini di miglioramento ancora chiari e circoscritti. Le evidenze dell'esperimento confermano inoltre le criticita gia emerse nella expert review, rafforzando la priorita degli interventi suggeriti.
 
+\section{Documentazione del processo di sviluppo}
+
+\subsection{Versionamento}
+
+Particolare attenzione e stata dedicata all'impiego di strumenti di controllo versione come \textbf{Git} e \textbf{GitHub}, che hanno permesso di mantenere una cronologia completa e dettagliata delle modifiche apportate, facilitando il lavoro collaborativo e garantendo una gestione efficace delle versioni. Tali strumenti hanno reso possibile la generazione di report statistici utili a documentare in modo oggettivo l'impegno del gruppo: numero di commit, distribuzione dei contributi e frequenza degli aggiornamenti costituiscono indicatori significativi della progressione dello sviluppo.
+
+\subsubsection{GitHub}
+
+Durante lo sviluppo del progetto e stato adottato un flusso di lavoro basato su Git e GitHub, con l'obiettivo di garantire un processo collaborativo efficace, ordinato e tracciabile.
+
+La repository ufficiale del progetto e disponibile pubblicamente al seguente indirizzo:
+
+\begin{center}
+  \url{https://github.com/Kenobi1797/INGSW-DietiEstates25}
+\end{center}
+
+Il ciclo di lavoro ha previsto le seguenti operazioni:
+\begin{enumerate}
+  \item \textbf{Commit frequenti} per tracciare ogni modifica significativa, accompagnati da messaggi descrittivi e coerenti con le funzionalita sviluppate.
+  \item \textbf{Push regolari} verso il repository remoto, in modo da sincronizzare il lavoro e mantenere sempre aggiornata la cronologia condivisa.
+  \item \textbf{Merge} verso il branch principale (\texttt{main}) effettuato solo dopo verifica dell'assenza di conflitti e del corretto funzionamento delle funzionalita integrate.
+\end{enumerate}
+
+\paragraph{File .gitignore.}
+Nel progetto e stato definito un file \texttt{.gitignore} per escludere dal versionamento file e cartelle non pertinenti al codice sorgente, come dipendenze, artefatti di compilazione, file di ambiente e upload generati a runtime. La presenza di questo file e fondamentale per evitare che credenziali sensibili (come variabili d'ambiente contenenti chiavi API, segreti JWT e credenziali del database) vengano accidentalmente incluse nel repository remoto. In particolare sono esclusi:
+\begin{itemize}
+  \item \texttt{node\_modules/} -- dipendenze npm riproducibili tramite \texttt{npm install};
+  \item \texttt{dist/} -- artefatti di compilazione TypeScript;
+  \item \texttt{.env}, \texttt{.env.*} -- file di configurazione con segreti (viene versionato solo \texttt{.env.example} con valori placeholder);
+  \item \texttt{uploads/*} -- file caricati a runtime (immagini degli immobili), con eccezione del file \texttt{.gitkeep} per preservare la struttura della directory;
+  \item \texttt{coverage/} -- report di copertura generati dalla suite Jest.
+\end{itemize}
+
+\subsubsection{Statistiche del repository}
+
+Le statistiche principali rilevate al momento della consegna sono riportate nella Tabella~\ref{tab:git-stats}.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\toprule
+Metrica & Valore \\
+\midrule
+Numero totale di commit & 158 \\
+Numero di contributors & 2 \\
+Branch principale & \texttt{main} \\
+Data del primo commit & 26 agosto 2025 \\
+Data dell'ultimo commit & 30 marzo 2026 \\
+Durata complessiva del progetto & circa 7 mesi \\
+\bottomrule
+\end{tabularx}
+\caption{Statistiche generali del repository Git.}
+\label{tab:git-stats}
+\end{table}
+
+\paragraph{Distribuzione dei commit per contributor.}
+Il repository conta due contributors. La Tabella~\ref{tab:contributors} riporta la distribuzione dei commit per autore:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}l l c@{}}
+\toprule
+Contributor & Identita Git & Commit \\
+\midrule
+Membro principale & \texttt{kenobi1797} & 145 \\
+Membro secondario & \texttt{pietrodok} & 13 \\
+\midrule
+\textbf{Totale} & & \textbf{158} \\
+\bottomrule
+\end{tabular}
+\caption{Distribuzione dei commit per contributor.}
+\label{tab:contributors}
+\end{table}
+
+\paragraph{Frequenza dei commit per settimana.}
+La Tabella~\ref{tab:commit-freq} riporta la distribuzione settimanale dei commit secondo i dati di \emph{GitHub Insights} (\url{https://github.com/Kenobi1797/INGSW-DietiEstates25/graphs/commit-activity}), che registra solo le settimane con almeno un commit. Si individuano tre fasi distinte: una fase di avvio (agosto--ottobre 2025) con attivita regolare, un lungo periodo di inattivita quasi totale (novembre 2025 -- inizio marzo 2026) e uno sprint finale concentrato nelle ultime due settimane di marzo 2026, che da soli rappresentano il 60\% dell'intera attivita.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}l l c@{}}
+\toprule
+Settimana (domenica iniziale) & Periodo & Commit \\
+\midrule
+24 agosto 2025   & Fase 1 -- Avvio         & 5  \\
+7 settembre 2025 & Fase 1 -- Avvio         & 1  \\
+14 settembre 2025& Fase 1 -- Avvio         & 6  \\
+21 settembre 2025& Fase 1 -- Avvio         & 4  \\
+28 settembre 2025& Fase 1 -- Avvio         & 14 \\
+5 ottobre 2025   & Fase 1 -- Avvio         & 19 \\
+12 ottobre 2025  & Fase 1 -- Avvio         & 5  \\
+9 novembre 2025  & Fase 2 -- Intermittente & 2  \\
+7 dicembre 2025  & Fase 2 -- Intermittente & 1  \\
+21 dicembre 2025 & Fase 2 -- Intermittente & 1  \\
+18 gennaio 2026  & Fase 2 -- Intermittente & 1  \\
+15 marzo 2026    & Fase 3 -- Sprint finale & 3  \\
+22 marzo 2026    & Fase 3 -- Sprint finale & \textbf{78} \\
+29 marzo 2026    & Fase 3 -- Sprint finale & 14 \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Totale (settimane con attivita)}} & \textbf{154} \\
+\bottomrule
+\end{tabular}
+\caption{Distribuzione settimanale dei commit secondo GitHub Insights (settimane con commit $> 0$).}
+\label{tab:commit-freq}
+\end{table}
+
+Il picco massimo si registra nella settimana del 22 marzo 2026, con \textbf{78 commit} in sette giorni, corrispondente alla fase di completamento delle funzionalita, integrazione dei test e revisione finale della documentazione prima della consegna. La settimana successiva (29 marzo) aggiunge ulteriori 14 commit di rifinitura.
+
+\subsection{Codice sorgente e containerizzazione}
+
+Il codice sorgente del progetto e organizzato come monorepo nel repository Git, con le seguenti directory principali:
+\begin{itemize}
+  \item \texttt{dietiestates-backend/} -- API REST Node.js/TypeScript (Express, PostgreSQL);
+  \item \texttt{dietiestates-frontend/} -- applicazione web Next.js/TypeScript;
+  \item \texttt{Progettazione/} -- requisiti, glossario, casi d'uso e documentazione dei test;
+  \item \texttt{Documentazione/} -- documenti di consegna in formato \LaTeX.
+\end{itemize}
+
+Per garantire portabilita, isolamento dell'ambiente e riproducibilita della build, l'intero stack e stato containerizzato tramite \textbf{Docker} e orchestrato con \textbf{Docker Compose}.
+
+\subsubsection{Dockerfile backend}
+
+L'immagine del backend viene costruita a partire da \texttt{node:22-alpine}, scelta per la dimensione ridotta e la minore superficie d'attacco rispetto alle immagini full Debian. Le dipendenze vengono installate separatamente dal codice sorgente per sfruttare la cache dei layer Docker:
+
+\begin{lstlisting}[style=projectcode, language=bash]
+COPY package*.json ./
+RUN npm prune && npm install && npm dedupe && npm audit fix
+\end{lstlisting}
+
+L'esecuzione di \texttt{npm audit fix} durante la build consente di rilevare e correggere automaticamente eventuali vulnerabilita note nelle dipendenze. Successivamente vengono copiati i sorgenti e la configurazione:
+
+\begin{lstlisting}[style=projectcode, language=bash]
+COPY tsconfig.json jest.config.ts ./
+COPY src ./src
+COPY test ./test
+\end{lstlisting}
+
+Per rispettare il principio del minimo privilegio, il processo viene eseguito come utente non-root:
+
+\begin{lstlisting}[style=projectcode, language=bash]
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup \
+    && chown -R appuser:appgroup /usr/src/app
+USER appuser
+
+EXPOSE 5000
+CMD ["npm", "run", "dev"]
+\end{lstlisting}
+
+\subsubsection{Dockerfile frontend}
+
+Il frontend adotta anch'esso \texttt{node:22-alpine} e utilizza \texttt{npm ci} al posto di \texttt{npm install} per garantire installazioni riproducibili e deterministiche, basate sul \texttt{package-lock.json}:
+
+\begin{lstlisting}[style=projectcode, language=bash]
+FROM node:22-alpine AS dev
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm ci && npm cache clean --force
+
+COPY next-env.d.ts next.config.ts postcss.config.mjs \
+     eslint.config.mjs tsconfig.json ./
+COPY public ./public
+COPY src ./src
+
+RUN chown -R node:node /usr/src/app
+USER node
+EXPOSE 3000
+\end{lstlisting}
+
+\subsubsection{docker-compose.yml e file di build automatica}
+
+L'orchestrazione dell'intero stack e gestita dal file \texttt{docker-compose.yml} presente nella radice del repository. Esso definisce tre servizi con dipendenze di avvio verificate tramite healthcheck:
+\begin{itemize}
+  \item \textbf{dietiestates-db} -- PostgreSQL 17, healthcheck tramite \texttt{pg\_isready};
+  \item \textbf{dietiestates-backend} -- esposto sulla porta 5000, avvio condizionato all'healthcheck del database;
+  \item \textbf{dietiestates-frontend} -- esposto sulla porta 3000, avvio condizionato all'healthcheck del backend.
+\end{itemize}
+
+Le variabili d'ambiente sensibili (credenziali database, JWT secret, OAuth credentials) sono lette dal file \texttt{.env} tramite la direttiva \texttt{env\_file}, in modo da non essere incluse nel file \texttt{docker-compose.yml} versionato. L'intero stack puo essere avviato con un unico comando:
+
+\begin{lstlisting}[style=projectcode, language=bash]
+docker compose up --build
+\end{lstlisting}
+
+Gli script di build definiti nei rispettivi \texttt{package.json} sono riportati nella Tabella~\ref{tab:build-scripts}.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+Componente & Script & Descrizione \\
+\midrule
+Backend & \texttt{npm run build} & Compilazione TypeScript con \texttt{tsc} (output in \texttt{dist/}) \\
+Backend & \texttt{npm run dev} & Avvio con \texttt{nodemon} + \texttt{ts-node} (hot reload in sviluppo) \\
+Backend & \texttt{npm test} & Suite Jest con \texttt{--runInBand --detectOpenHandles} \\
+Frontend & \texttt{npm run build} & Build di produzione Next.js (\texttt{next build}) \\
+Frontend & \texttt{npm run dev} & Server di sviluppo Next.js con hot reload \\
+Frontend & \texttt{npm run lint} & Analisi statica del codice con ESLint \\
+\bottomrule
+\end{tabularx}
+\caption{Script di build e sviluppo definiti nei \texttt{package.json}.}
+\label{tab:build-scripts}
+\end{table}
+
 \section{Conclusioni}
 L'analisi dei file di test e della documentazione di progetto mostra che DietiEstates25 dispone gia di una suite xUnit coerente per quattro metodi backend non banali, progettata con criteri di equivalenza, copertura strutturale e isolamento delle dipendenze esterne. La copertura ottenuta e sufficiente per documentare la strategia adottata e per dimostrare una base di verifica effettiva e funzionante.
 
 Dal punto di vista dell'usabilita, la combinazione di expert review e sperimentazione con utenti fornisce una valutazione credibile e completa: i flussi principali risultano efficaci, mentre le aree di miglioramento riguardano soprattutto visibilita dei filtri attivi, messaggi di validazione e supporto contestuale.
+
+Il progetto dimostra inoltre un utilizzo coerente degli strumenti di sviluppo moderni: containerizzazione con Docker, gestione delle dipendenze tramite npm, build riproducibili e controllo di versione distribuito con Git e GitHub, con una storia di commit che copre l'intero ciclo di vita del progetto.
 
 \end{document}
