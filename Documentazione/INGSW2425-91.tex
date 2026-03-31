@@ -537,7 +537,7 @@ PostgreSQL & Database & Database relazionale scelto per la solidità e per la su
 Di seguito viene fornita una breve descrizione delle principali entità che compongono il modello dei dati del sistema:
 
 \begin{itemize}
-    \item \textbf{Utente:} rappresenta tutti gli utenti registrati nel sistema. A ciascun utente è associato un ruolo (cliente, agente, amministratore, supporto) che determina le funzionalità accessibili.
+    \item \textbf{Utente:} rappresenta tutti gli utenti registrati nel sistema. A ciascun utente è associato un ruolo (cliente, agente, supporto, amministratore) che determina le funzionalità accessibili. La gerarchia dei privilegi è la seguente: amministratore come specializzazione di supporto, e supporto come specializzazione di agente.
     \item \textbf{Immobile:} rappresenta un annuncio immobiliare con le sue caratteristiche principali .
     \item \textbf{Offerta:} rappresenta una proposta di acquisto avanzata per un determinato immobile.
     \item \textbf{Agenzia:} rappresenta l'agenzia immobiliare a cui appartengono gli agenti e gli immobili gestiti.
@@ -791,13 +791,14 @@ La valutazione è stata condotta tramite ispezione euristica, usando le \textbf{
 
 \textbf{Punti di forza:}
 \begin{itemize}
-    \item \textbf{Flessibilità ed efficienza:} La navbar si adatta al ruolo dell'utente autenticato, mostrando solo le voci pertinenti (cliente, agente, admin, supporto).
+    \item \textbf{Flessibilità ed efficienza:} La navbar si adatta al ruolo dell'utente autenticato, mostrando solo le voci pertinenti (cliente, agente, supporto, admin).
     \item \textbf{Corrispondenza col mondo reale:} Le voci di navigazione sono chiare e visibili, senza ambiguità terminologiche.
+    \item \textbf{Gestione dei ruoli:} La struttura dei permessi segue una gerarchia esplicita: Admin è specializzazione di Supporto e Supporto è specializzazione di Agente.
 \end{itemize}
 
 \textbf{Criticità:}
 \begin{itemize}
-    \item \textbf{Visibilità dello stato:} La navbar non indica chiaramente in quale sezione si trova l'utente. Non è presente un segnale visivo (es. voce evidenziata, sottolineatura o colore diverso) sulla pagina corrente, rendendo difficile l'orientamento durante la navigazione.
+    \item \textbf{Visibilità dello stato:} La navbar indica la sezione corrente, ma in alcune schermate l'indicatore risulta poco evidente (contrasto o enfasi visiva non sempre immediati), riducendo la rapidità di orientamento.
 \end{itemize}
 \subsubsection*{Inserimento Immobile}
 
@@ -981,8 +982,8 @@ U5 & Marco P.    & 4 & 4 & 5 & 4 & No & 4 & No  & 5 \\ \hline
     è risultato generalmente facile da usare, con qualche difficoltà 
     per l'utente con minore esperienza digitale (U4).
     \item \textbf{D2 -- Orientamento:} media 3.6/5. Il punteggio più basso, 
-    coerente con la criticità emersa nella expert review sull'assenza 
-    di un indicatore di sezione attiva nella navbar.
+    coerente con la criticità emersa nella expert review sulla ridotta 
+    evidenza dell'indicatore di sezione attiva nella navbar.
     \item \textbf{D3 -- Design:} media 4.4/5. Il design minimalista è stato 
     il punto più apprezzato da tutti i partecipanti.
     \item \textbf{D4 -- Reperibilità delle funzionalità:} media 4.0/5. 
