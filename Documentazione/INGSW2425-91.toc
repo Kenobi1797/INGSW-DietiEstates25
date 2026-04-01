@@ -1,0 +1,106 @@
+\babel@toc {italian}{}\relax 
+\contentsline {section}{Cronologia Revisioni}{1}{section*.1}%
+\contentsline {section}{Introduzione}{2}{section*.3}%
+\contentsline {section}{\numberline {1}Documento dei Requisiti Software}{7}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Glossario}{7}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Casi D'uso}{11}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Personas}{13}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Personas 1: Cliente in cerca di una casa in affitto}{13}{subsubsection.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.2}Personas 2: Agente Immobiliare professionista}{13}{subsubsection.1.3.2}%
+\contentsline {subsubsection}{\numberline {1.3.3}Personas 3: Amministratore Agenzia}{14}{subsubsection.1.3.3}%
+\contentsline {subsubsection}{\numberline {1.3.4}Personas 4: Visitatore non registrato}{14}{subsubsection.1.3.4}%
+\contentsline {subsection}{\numberline {1.4}Formalizzazione dei casi d'uso}{15}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Requisiti non funzionali e di Dominio}{24}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}Requisiti non funzionali}{24}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}Requisiti di Dominio}{24}{subsubsection.1.5.2}%
+\contentsline {section}{\numberline {2}Documento di Design del sistema}{25}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Architettura}{25}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Tecnologie adottate}{26}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Schema persistenza dei dati}{27}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Descrizione e motivazione delle scelte di design dell'interfaccia utente}{29}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Analisi sugli attributi di qualità di Nielsen}{29}{subsection.2.5}%
+\contentsline {subsubsection}{\numberline {2.5.1}Learnability e Memorability}{29}{subsubsection.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.2}Gestione degli Errori (Errors)}{29}{subsubsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.6}Scelte Tecnologiche: Next.js e Tailwind CSS}{29}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Principi di Design e HCI}{29}{subsection.2.7}%
+\contentsline {subsubsection}{\numberline {2.7.1}Affordances}{29}{subsubsection.2.7.1}%
+\contentsline {subsubsection}{\numberline {2.7.2}Constraints (Vincoli)}{29}{subsubsection.2.7.2}%
+\contentsline {subsubsection}{\numberline {2.7.3}Feedback (Riscontro)}{29}{subsubsection.2.7.3}%
+\contentsline {subsubsection}{\numberline {2.7.4}Metaphors e Mappings}{29}{subsubsection.2.7.4}%
+\contentsline {subsection}{\numberline {2.8}Modelli Predittivi e Cognitivi}{30}{subsection.2.8}%
+\contentsline {subsubsection}{\numberline {2.8.1}Legge di Hick}{30}{subsubsection.2.8.1}%
+\contentsline {subsubsection}{\numberline {2.8.2}Legge di Fitts}{30}{subsubsection.2.8.2}%
+\contentsline {subsection}{\numberline {2.9}Visual Design: Colore e Tipografia}{30}{subsection.2.9}%
+\contentsline {subsubsection}{\numberline {2.9.1}Strategia Cromatica}{30}{subsubsection.2.9.1}%
+\contentsline {subsubsection}{\numberline {2.9.2}Tipografia}{30}{subsubsection.2.9.2}%
+\contentsline {subsection}{\numberline {2.10}Classi di design}{30}{subsection.2.10}%
+\contentsline {subsubsection}{\numberline {2.10.1}class design back-end}{30}{subsubsection.2.10.1}%
+\contentsline {subsubsection}{\numberline {2.10.2}class design front-end}{31}{subsubsection.2.10.2}%
+\contentsline {subsection}{\numberline {2.11}Sequenze diagram}{32}{subsection.2.11}%
+\contentsline {subsubsection}{\numberline {2.11.1}Creazione Agente}{33}{subsubsection.2.11.1}%
+\contentsline {subsubsection}{\numberline {2.11.2}Creazione Supporto}{34}{subsubsection.2.11.2}%
+\contentsline {subsubsection}{\numberline {2.11.3}Inserimento Offerta Manuale}{36}{subsubsection.2.11.3}%
+\contentsline {subsubsection}{\numberline {2.11.4}Visualizzazione Immobile}{37}{subsubsection.2.11.4}%
+\contentsline {subsection}{\numberline {2.12}Mock-up delle schermate principali}{37}{subsection.2.12}%
+\contentsline {subsubsection}{\numberline {2.12.1}Dashboard per ruolo}{37}{subsubsection.2.12.1}%
+\contentsline {subsubsection}{\numberline {2.12.2}Navigazione e ricerca immobili}{38}{subsubsection.2.12.2}%
+\contentsline {subsubsection}{\numberline {2.12.3}Dettaglio immobile e gestione offerte}{38}{subsubsection.2.12.3}%
+\contentsline {subsubsection}{\numberline {2.12.4}Creazione agente -- flusso nominale e gestione errori}{38}{subsubsection.2.12.4}%
+\contentsline {subsubsection}{\numberline {2.12.5}Creazione supporto -- gestione errori e feedback}{38}{subsubsection.2.12.5}%
+\contentsline {section}{\numberline {3}Testing e Qualità del Codice}{41}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Tecnologia e impostazione della suite}{41}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Metodi selezionati}{41}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Strategia di progettazione dei test}{43}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Analisi dei quattro metodi testati}{43}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}\texttt {OffertaDAO.updateStatoOfferta(idOfferta, nuovoStato)}}{43}{subsubsection.3.4.1}%
+\contentsline {paragraph}{Classi di equivalenza.}{43}{section*.36}%
+\contentsline {paragraph}{Copertura adottata.}{43}{section*.37}%
+\contentsline {paragraph}{Evidenza dal test.}{43}{lstlisting.-2}%
+\contentsline {subsubsection}{\numberline {3.4.2}\texttt {UtenteDAO.assignUserToAgency(idUtente, idAgenzia)}}{43}{subsubsection.3.4.2}%
+\contentsline {paragraph}{Classi di equivalenza.}{44}{section*.39}%
+\contentsline {paragraph}{Copertura adottata.}{44}{section*.40}%
+\contentsline {paragraph}{Evidenza dal test.}{44}{lstlisting.-3}%
+\contentsline {subsubsection}{\numberline {3.4.3}\texttt {OffertaDAO.createOfferta(idImmobile, idUtente, prezzoOfferto)}}{44}{subsubsection.3.4.3}%
+\contentsline {paragraph}{Classi di equivalenza.}{44}{section*.42}%
+\contentsline {paragraph}{Copertura adottata.}{44}{section*.43}%
+\contentsline {paragraph}{Evidenza dal test.}{44}{lstlisting.-4}%
+\contentsline {subsubsection}{\numberline {3.4.4}\texttt {getNearbyPlaces(lat, lon, radius?)}}{44}{subsubsection.3.4.4}%
+\contentsline {paragraph}{Classi di equivalenza.}{45}{section*.45}%
+\contentsline {paragraph}{Copertura adottata.}{45}{section*.46}%
+\contentsline {paragraph}{Evidenza dal test.}{45}{lstlisting.-5}%
+\contentsline {subsection}{\numberline {3.5}Riepilogo della copertura progettata}{45}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Codice dei quattro test principali}{45}{subsection.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}Test 1: \texttt {updateStatoOfferta(idOfferta, nuovoStato)}}{45}{subsubsection.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}Test 2: \texttt {assignUserToAgency(idUtente, idAgenzia)}}{46}{subsubsection.3.6.2}%
+\contentsline {subsubsection}{\numberline {3.6.3}Test 3: \texttt {createOfferta(idImmobile, idUtente, prezzoOfferto)}}{47}{subsubsection.3.6.3}%
+\contentsline {subsubsection}{\numberline {3.6.4}Test 4: \texttt {getNearbyPlaces(lat, lon, radius)}}{47}{subsubsection.3.6.4}%
+\contentsline {subsection}{\numberline {3.7}Esito dell'esecuzione reale della suite}{48}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.8}Qualità del Codice: Analisi Statica con SonarQube}{48}{subsection.3.8}%
+\contentsline {section}{\numberline {4}Valutazione dell'usabilita}{48}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Obiettivi e collegamento ai requisiti}{48}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Expert review / inspection}{49}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Metodo adottato}{49}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Checklist di review}{49}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Esiti e priorita di intervento}{50}{subsubsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.3}Esperimento con utenti reali o potenziali}{51}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Soggetti reclutati}{51}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Procedura sperimentale}{51}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.3}Task sperimentali}{51}{subsubsection.4.3.3}%
+\contentsline {subsubsection}{\numberline {4.3.4}Metriche osservate}{51}{subsubsection.4.3.4}%
+\contentsline {subsubsection}{\numberline {4.3.5}Survey post-esperimento}{52}{subsubsection.4.3.5}%
+\contentsline {paragraph}{Questionario SUS.}{52}{section*.52}%
+\contentsline {paragraph}{Domande specifiche.}{52}{section*.53}%
+\contentsline {subsubsection}{\numberline {4.3.6}Risultati}{53}{subsubsection.4.3.6}%
+\contentsline {subsubsection}{\numberline {4.3.7}Discussione dei risultati}{53}{subsubsection.4.3.7}%
+\contentsline {section}{\numberline {5}Documentazione del processo di sviluppo}{53}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Versionamento}{53}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}GitHub}{53}{subsubsection.5.1.1}%
+\contentsline {paragraph}{File .gitignore.}{54}{section*.55}%
+\contentsline {subsubsection}{\numberline {5.1.2}Statistiche del repository}{54}{subsubsection.5.1.2}%
+\contentsline {paragraph}{Distribuzione dei commit per contributor.}{55}{section*.57}%
+\contentsline {subsubsection}{\numberline {5.1.3}Evidenze grafiche da GitHub e SonarQube}{55}{subsubsection.5.1.3}%
+\contentsline {paragraph}{Frequenza dei commit per settimana.}{55}{section*.62}%
+\contentsline {subsection}{\numberline {5.2}Codice sorgente e containerizzazione}{57}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Dockerfile backend}{58}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Dockerfile frontend}{58}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}docker-compose.yml e file di build automatica}{58}{subsubsection.5.2.3}%

@@ -155,32 +155,121 @@ Il presente documento definisce i requisiti software attraverso una formalizzazi
 
 \subsection{Glossario}
 
-Il Glossario è una raccolta di vocaboli specifici del dominio applicativo, accompagnati dalla spiegazione del loro significato nel contesto del sistema. Questa sezione mira a superare le barriere comunicative tra stakeholder e sviluppatori.
+Il Glossario costituisce uno strumento essenziale per superare le barriere comunicative che emergono durante la fase di elicitazione dei requisiti. Gli stakeholder del progetto — agenzie immobiliari, agenti, clienti e amministratori — utilizzano spesso un gergo specifico del proprio settore e possono dare per scontati alcuni requisiti che, invece, necessitano di essere esplicitati. Ciascuno stakeholder possiede una conoscenza approfondita del proprio ambito lavorativo, ma può avere una visione parziale delle attività e delle necessità di altri soggetti coinvolti.
 
-\renewcommand{\arraystretch}{1.5} % Rende le righe più alte e leggibili
-\begin{table}[h]
-\centering
-\begin{tabularx}{\textwidth}{|l|X|}
+Il Glossario ha pertanto lo scopo di:
+\begin{itemize}
+    \item Definire in modo univoco i termini tecnici e di dominio utilizzati nel documento;
+    \item Creare un linguaggio comune condiviso tra tutti gli stakeholder e il team di sviluppo;
+    \item Eliminare ambiguità e incomprensioni terminologiche;
+    \item Facilitare la comunicazione durante tutto il ciclo di vita del progetto.
+\end{itemize}
+
+\renewcommand{\arraystretch}{1.6}
+\begin{longtable}{|p{4.2cm}|p{10.5cm}|}
 \hline
-\rowcolor[HTML]{010066} 
-{\color[HTML]{EFEFEF} \textit{\textbf{Nome}}} & {\color[HTML]{FFFFFF} \textit{\textbf{Descrizione}}} \\ \hline
-Amministratore agenzia & Utente con pieni poteri di gestione su organico e configurazioni di sistema. \\ \hline
-Supporto               & Profilo tecnico per la manutenzione e l'assistenza operativa diretta. \\ \hline
-Agente immobiliare     & Operatore che gestisce il portafoglio immobili e la relazione con i clienti. \\ \hline
-Cliente                & Utente registrato che interagisce per acquisto, vendita o affitto di immobili. \\ \hline
-Cliente non registrato & Visitatore che consulta pubblicamente gli annunci senza autenticazione. \\ \hline
-Immobile               & Entità fisica e catastale oggetto dell'attività di intermediazione. \\ \hline
-Offerta                & Proposta formale di acquisto o affitto di un immobile a un determinato prezzo, inviata da un cliente registrato e gestita da un agente. \\ \hline
-Controproposta         & Risposta a un'offerta ricevuta con condizioni modificate, implementata come offerta manuale da parte dell'agente. \\ \hline
-Agenzia immobiliare    & Organizzazione registrata che impiega agenti immobiliari e gestisce un portafoglio di annunci. \\ \hline
-JWT (JSON Web Token)   & Standard per la trasmissione sicura di informazioni tra client e server tramite token firmati e con scadenza. \\ \hline
-OAuth                  & Protocollo di delega dell'autorizzazione; nel progetto consente l'accesso tramite account Google senza gestire direttamente le credenziali. \\ \hline
-Geoapify               & Servizio API esterno per il recupero di punti di interesse (scuole, parchi, trasporti) nelle vicinanze di un indirizzo geografico. \\ \hline
-API REST               & Interfaccia di comunicazione tra frontend e backend basata su HTTP; le risorse sono identificate tramite URL e i dati scambiati in formato JSON. \\ \hline
-DTO (Data Transfer Object) & Oggetto intermediario usato per trasferire dati tra i livelli dell'applicazione; nel progetto validato con la libreria Zod. \\ \hline
-DAO (Data Access Object)   & Strato di accesso al database che astrae le query SQL dal resto della logica applicativa, garantendo separazione delle responsabilità. \\ \hline
-\end{tabularx}
-\end{table}
+\rowcolor[HTML]{010066}
+{\color[HTML]{FFFFFF} \textit{\textbf{Termine}}} & {\color[HTML]{FFFFFF} \textit{\textbf{Descrizione}}} \\ \hline
+\endfirsthead
+\hline
+\rowcolor[HTML]{010066}
+{\color[HTML]{FFFFFF} \textit{\textbf{Termine}}} & {\color[HTML]{FFFFFF} \textit{\textbf{Descrizione}}} \\ \hline
+\endhead
+
+Amministratore agenzia &
+Figura con i massimi privilegi di gestione all'interno del sistema. Viene creata con credenziali predefinite al momento dell'installazione e può modificare la propria password dopo il primo accesso. Ha la facoltà di creare account di supporto e di gestire la configurazione dell'intera piattaforma. \\ \hline
+
+Supporto &
+Profilo tecnico subordinato all'amministratore, con accesso alle funzionalità di manutenzione e assistenza operativa. Specializzazione dell'Agente immobiliare: eredita i permessi di gestione immobili ma dispone anche dei privilegi amministrativi delegati. \\ \hline
+
+Agente immobiliare &
+Professionista registrato nel sistema dal gestore dell'agenzia che gestisce il proprio portafoglio di immobili, riceve e gestisce offerte dai clienti, può accettare, rifiutare o controproporre e inserisce manualmente offerte ricevute al di fuori della piattaforma. \\ \hline
+
+Cliente (utente registrato) &
+Utente che ha completato il processo di registrazione, autenticato tramite email/password o credenziali di terze parti. Può effettuare ricerche avanzate, visualizzare i dettagli degli immobili, inviare offerte di acquisto o affitto e consultare lo storico delle proprie attività. \\ \hline
+
+Visitatore (utente non registrato) &
+Soggetto che accede alla piattaforma senza autenticazione. Può consultare pubblicamente gli annunci e i dettagli degli immobili ma non può effettuare offerte né prenotare visite. \\ \hline
+
+Agenzia immobiliare &
+Organizzazione formalmente registrata nel sistema che impiega agenti immobiliari e gestisce un portafoglio di annunci. Ogni installazione di DietiEstates25 è associata a una specifica agenzia. \\ \hline
+
+Immobile &
+Bene immobiliare (appartamento, villa, locale commerciale, ecc.) caricato da un agente con un insieme completo di metadati: foto, descrizione, prezzo, dimensioni, indirizzo, numero di stanze, piano, presenza di ascensore, classe energetica, servizi aggiuntivi. Classificato come "vendita" o "affitto". \\ \hline
+
+Inserzione &
+Annuncio pubblico relativo a un immobile, comprensivo di tutti i dettagli e degli eventuali indicatori di prossimità calcolati automaticamente al momento della pubblicazione tramite Geoapify. \\ \hline
+
+Offerta &
+Proposta economica formale inviata da un cliente su un immobile, con un prezzo eventualmente inferiore a quello di listino. L'offerta può essere accettata, rifiutata o oggetto di controproposta da parte dell'agente. Tutte le offerte sono tracciate in uno storico accessibile ad entrambe le parti. \\ \hline
+
+Controproposta &
+Risposta dell'agente a un'offerta ricevuta con una proposta di prezzo o condizioni alternative. Nel sistema è implementata come offerta manuale inserita dall'agente, collegata all'offerta originale tramite il campo \texttt{idOffertaOriginale}. \\ \hline
+
+Storico offerte &
+Registro completo e cronologico di tutte le offerte e controproposte scambiate tra un cliente e un agente per un determinato immobile. Visibile sia agli agenti sia ai clienti dall'apposita sezione della dashboard. \\ \hline
+
+Indicatori di prossimità &
+Etichette associate automaticamente a un'inserzione al momento della pubblicazione, che segnalano la vicinanza a scuole, parchi pubblici o fermate del trasporto pubblico. Generati interrogando le API Geoapify con le coordinate geografiche dell'immobile. \\ \hline
+
+Mappa interattiva &
+Componente cartografico integrato nell'interfaccia (basato su OpenStreetMap/Leaflet) che consente di visualizzare la posizione degli immobili, selezionare un'ubicazione durante il caricamento e filtrare i risultati di ricerca per area geografica. \\ \hline
+
+Ricerca avanzata &
+Funzionalità che permette ai clienti di filtrare il catalogo degli immobili tramite parametri multipli combinabili: tipologia (vendita/affitto), fascia di prezzo, numero di stanze, classe energetica, posizione geografica (comune o raggio). \\ \hline
+
+Credenziali di terze parti &
+Meccanismo di autenticazione federata che consente la registrazione e il login tramite account Google, senza che il sistema gestisca direttamente la password dell'utente. Implementato con il protocollo OAuth 2.0 tramite Passport.js e la strategia Google. \\ \hline
+
+API REST &
+Interfaccia di programmazione che espone le funzionalità del back-end attraverso endpoint HTTP. Le risorse sono identificate da URL gerarchici, le operazioni dai metodi HTTP (GET, POST, PUT, DELETE) e i dati scambiati in formato JSON. \\ \hline
+
+JWT (JSON Web Token) &
+Standard aperto (RFC 7519) per la trasmissione sicura di informazioni tra client e server sotto forma di token compatti e auto-contenuti. Nel progetto è utilizzato per la gestione delle sessioni autenticate; il token viene firmato con una chiave segreta e ha una scadenza configurabile. \\ \hline
+
+OAuth 2.0 &
+Protocollo di autorizzazione che consente a un'applicazione di ottenere accesso limitato a un account utente su un servizio di terze parti (Identity Provider), senza che le credenziali originali vengano condivise con l'applicazione stessa. \\ \hline
+
+Geoapify &
+Servizio API esterno utilizzato per la geocodifica degli indirizzi e per il recupero di punti di interesse (scuole, parchi, fermate di trasporto pubblico) nelle vicinanze di una coordinata geografica. Viene interrogato automaticamente al momento del caricamento di un nuovo immobile. \\ \hline
+
+DTO (Data Transfer Object) &
+Oggetto intermediario privo di logica di business, utilizzato per trasportare dati tra i diversi livelli dell'applicazione (controller, DAO, client). Nel progetto ogni DTO è validato a runtime tramite la libreria Zod, garantendo la correttezza strutturale dei dati in ingresso. \\ \hline
+
+DAO (Data Access Object) &
+Componente dello strato di persistenza che incapsula l'accesso al database, astraendo le query SQL dal resto della logica applicativa. Ogni entità di dominio (Immobile, Offerta, Utente, Agenzia) ha un proprio DAO dedicato, in linea con il principio di separazione delle responsabilità. \\ \hline
+
+Back-end &
+Componente server-side del sistema, responsabile della logica di business, dell'elaborazione dei dati, dell'interazione con il database e dell'esposizione delle API REST. Implementato con Node.js ed Express, è completamente indipendente dal front-end e può essere eseguito e testato in autonomia. \\ \hline
+
+Front-end &
+Interfaccia utente del sistema, implementata come applicazione web con Next.js e React. Comunica con il back-end esclusivamente tramite le API REST esposte e può essere sostituita o modificata senza alcuna modifica al back-end. \\ \hline
+
+PostgreSQL &
+Sistema di gestione di basi di dati relazionale open-source utilizzato come layer di persistenza del progetto. Le query sono eseguite tramite il modulo \texttt{pg} (node-postgres) all'interno dei DAO. \\ \hline
+
+Docker &
+Piattaforma di containerizzazione che permette di eseguire applicazioni in ambienti isolati e riproducibili (container). Nel progetto ogni macro-componente (back-end, front-end, database) è definito tramite un \texttt{Dockerfile} dedicato e orchestrato con \texttt{docker-compose}. \\ \hline
+
+TypeScript &
+Superset tipizzato di JavaScript utilizzato sia nel back-end (Node.js/Express) sia nel front-end (Next.js). La tipizzazione statica riduce i bug a runtime e migliora la manutenibilità attraverso il controllo dei tipi in fase di compilazione. \\ \hline
+
+Jest &
+Framework di unit testing della famiglia xUnit per JavaScript/TypeScript. Nel progetto è configurato con \texttt{ts-jest} per l'esecuzione dei test sul codice TypeScript del back-end; genera report di copertura in formato LCOV. \\ \hline
+
+SonarQube &
+Piattaforma di analisi statica del codice sorgente che rileva bug, vulnerabilità, code smells e misura la copertura dei test. Nel progetto è stata applicata al codice back-end, producendo i report di qualità inclusi nella documentazione. \\ \hline
+
+Zod &
+Libreria TypeScript per la validazione e il parsing di schemi di dati a runtime. Utilizzata nella definizione dei DTO per garantire l'integrità dei dati in ingresso alle API. \\ \hline
+
+Hashing (bcrypt) &
+Processo crittografico irreversibile che trasforma una password in chiaro in una stringa di lunghezza fissa. Nel progetto le password degli utenti sono cifrate tramite bcrypt prima di essere salvate nel database, conformemente alle best practice di sicurezza. \\ \hline
+
+GDPR &
+Regolamento europeo (General Data Protection Regulation, UE 2016/679) sulla protezione dei dati personali. Il sistema è progettato in conformità con esso: le credenziali sono hashate, i token hanno scadenza e i dati personali non sono esposti in log o risposte non autorizzate. \\ \hline
+
+\end{longtable}
 
 \newpage
 \subsection{Casi D'uso}

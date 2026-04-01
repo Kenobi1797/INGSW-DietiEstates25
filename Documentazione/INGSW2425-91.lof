@@ -1,0 +1,26 @@
+\babel@toc {italian}{}\relax 
+\contentsline {figure}{\numberline {1}{\ignorespaces Diagramma dei casi d'uso -- DietiEstates25}}{12}{figure.caption.10}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Schema concettuale sintetico del dominio dati.}}{27}{figure.caption.20}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Database}}{28}{figure.caption.21}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Back-end class design}}{30}{figure.caption.22}%
+\contentsline {figure}{\numberline {5}{\ignorespaces front-end class design}}{31}{figure.caption.23}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Diagramma di sequenza -- Creazione Agente}}{33}{figure.caption.24}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Diagramma di sequenza -- Creazione Supporto}}{35}{figure.caption.25}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Diagramma di sequenza -- Inserimento Offerta Manuale}}{36}{figure.caption.26}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Diagramma di sequenza -- Visualizzazione Dettaglio Immobile}}{37}{figure.caption.27}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Dashboard -- Amministratore}}{37}{figure.caption.28}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Dashboard -- Profilo Supporto}}{37}{figure.caption.28}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Schermata ricerca avanzata immobili}}{38}{figure.caption.29}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Vista ``I miei immobili'' dell'agente}}{38}{figure.caption.29}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Dettaglio immobile con mappa e dati}}{38}{figure.caption.30}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Inserimento offerta manuale da agente}}{38}{figure.caption.30}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Creazione agente -- form compilato correttamente}}{39}{figure.caption.31}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Creazione agente -- email non valida}}{39}{figure.caption.32}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Creazione agente -- form non valido}}{39}{figure.caption.32}%
+\contentsline {figure}{\numberline {19}{\ignorespaces Creazione supporto -- email non valida}}{39}{figure.caption.33}%
+\contentsline {figure}{\numberline {20}{\ignorespaces Creazione supporto -- form non valido}}{39}{figure.caption.33}%
+\contentsline {figure}{\numberline {21}{\ignorespaces Feedback -- inserimento completato con successo}}{40}{figure.caption.34}%
+\contentsline {figure}{\numberline {22}{\ignorespaces Report della qualità del codice generato da SonarQube -- Overall Code.}}{49}{figure.caption.50}%
+\contentsline {figure}{\numberline {23}{\ignorespaces Evidenze GitHub: (sinistra) contributi per autore, (destra) attivita recente del repository (Pulse).}}{55}{figure.caption.59}%
+\contentsline {figure}{\numberline {24}{\ignorespaces Andamento della frequenza del codice nel tempo.}}{56}{figure.caption.60}%
+\contentsline {figure}{\numberline {25}{\ignorespaces Evidenze SonarQube: (sinistra) panoramica complessiva, (destra) indicatori relativi al nuovo codice.}}{56}{figure.caption.61}%

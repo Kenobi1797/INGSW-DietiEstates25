@@ -1,0 +1,1472 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.3.19)  31 MAR 2026 19:54
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**/home/kenobi/Documenti/GitHub/INGSW-DietiEstates25/Documentazione/INGSW2425-91.tex
+(/home/kenobi/Documenti/GitHub/INGSW-DietiEstates25/Documentazione/INGSW2425-91.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2024/06/29 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2024/06/29 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count196
+\c@section=\count197
+\c@subsection=\count198
+\c@subsubsection=\count199
+\c@paragraph=\count266
+\c@subparagraph=\count267
+\c@figure=\count268
+\c@table=\count269
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen141
+) (/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks17
+\inpenc@posthook=\toks18
+) (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+) (/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2025/02/14 v25.4 The multilingual framework for pdfLaTeX, LuaLaTeX and XeLaTeX
+\babel@savecnt=\count270
+\U@D=\dimen142
+\l@unhyphenated=\language7
+ (/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@readstream=\read2
+\bbl@dirlevel=\count271
+ (/usr/share/texlive/texmf-dist/tex/generic/babel/locale/it/babel-italian.tex)
+Package babel Info: Importing data for italian
+(babel)             from babel-it.ini. Reported on input line 4167.
+Package babel Info: Hyphen rules for 'italian' set to \l@english
+(babel)             (\language0). Reported on input line 4167.
+) (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+) (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count272
+\Gm@cntv=\count273
+\c@Gm@tempcnt=\count274
+\Gm@bindingoffset=\dimen143
+\Gm@wd@mp=\dimen144
+\Gm@odd@mp=\dimen145
+\Gm@even@mp=\dimen146
+\Gm@layoutwidth=\dimen147
+\Gm@layoutheight=\dimen148
+\Gm@layouthoffset=\dimen149
+\Gm@layoutvoffset=\dimen150
+\Gm@dimlist=\toks20
+) (/usr/share/texmf/tex/latex/lm/lmodern.sty
+Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
+) (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+Package: microtype 2025/02/11 v3.2a Micro-typographical refinements (RS)
+ (/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2025/02/11 v2.5l e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count275
+)
+\MT@toks=\toks21
+\MT@tempbox=\box52
+\MT@count=\count276
+LaTeX Info: Redefining \noprotrusionifhmode on input line 1087.
+LaTeX Info: Redefining \leftprotrusion on input line 1088.
+\MT@prot@toks=\toks22
+LaTeX Info: Redefining \rightprotrusion on input line 1107.
+LaTeX Info: Redefining \textls on input line 1449.
+\MT@outer@kern=\dimen151
+LaTeX Info: Redefining \microtypecontext on input line 2053.
+LaTeX Info: Redefining \textmicrotypecontext on input line 2070.
+\MT@listname@count=\count277
+ (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def
+File: microtype-pdftex.def 2025/02/11 v3.2a Definitions specific to pdftex (RS)
+LaTeX Info: Redefining \lsstyle on input line 944.
+LaTeX Info: Redefining \lslig on input line 944.
+\MT@outer@space=\skip51
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+ (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg
+File: microtype.cfg 2025/02/11 v3.2a microtype main configuration file (RS)
+)
+LaTeX Info: Redefining \microtypesetup on input line 3065.
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count278
+\float@exts=\toks23
+\float@box=\box53
+\@float@everytoks=\toks24
+\@floatcapt=\box54
+) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+) (/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2024/07/06 v1.0i Color table columns (DPC)
+ (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
+\col@sep=\dimen152
+\ar@mcellbox=\box55
+\extrarowheight=\dimen153
+\NC@list=\toks25
+\extratabsurround=\skip52
+\backup@length=\skip53
+\ar@cellbox=\box56
+)
+\everycr=\toks26
+\minrowclearance=\skip54
+\rownum=\count279
+) (/usr/share/texlive/texmf-dist/tex/generic/soul/soul.sty
+Package: soul 2023-06-14 v3.1 Permit use of UTF-8 characters in soul (HO)
+ (/usr/share/texlive/texmf-dist/tex/generic/soul/soul-ori.sty
+Package: soul-ori 2023-06-14 v3.1 letterspacing/underlining (mf)
+\SOUL@word=\toks27
+\SOUL@lasttoken=\toks28
+\SOUL@syllable=\toks29
+\SOUL@cmds=\toks30
+\SOUL@buffer=\toks31
+\SOUL@token=\toks32
+\SOUL@syllgoal=\dimen154
+\SOUL@syllwidth=\dimen155
+\SOUL@charkern=\dimen156
+\SOUL@hyphkern=\dimen157
+\SOUL@dimen=\dimen158
+\SOUL@dimeni=\dimen159
+\SOUL@minus=\count280
+\SOUL@comma=\count281
+\SOUL@apo=\count282
+\SOUL@grave=\count283
+\SOUL@spaceskip=\skip55
+\SOUL@ttwidth=\dimen160
+\SOUL@uldp=\dimen161
+\SOUL@ulht=\dimen162
+) (/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+)
+\Gin@req@height=\dimen163
+\Gin@req@width=\dimen164
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
+\TX@col@width=\dimen165
+\TX@old@table=\dimen166
+\TX@old@col=\dimen167
+\TX@target=\dimen168
+\TX@delta=\dimen169
+\TX@cols=\count284
+\TX@ftn=\toks33
+) (/usr/share/texlive/texmf-dist/tex/latex/makecell/makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen170
+\c@nlinenum=\count285
+\TeXr@lab=\toks34
+) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
+\multirow@colwidth=\skip56
+\multirow@cntb=\count286
+\multirow@dima=\skip57
+\bigstrutjot=\dimen171
+) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen172
+\lightrulewidth=\dimen173
+\cmidrulewidth=\dimen174
+\belowrulesep=\dimen175
+\belowbottomsep=\dimen176
+\aboverulesep=\dimen177
+\abovetopsep=\dimen178
+\cmidrulesep=\dimen179
+\cmidrulekern=\dimen180
+\defaultaddspace=\dimen181
+\@cmidla=\count287
+\@cmidlb=\count288
+\@aboverulesep=\dimen182
+\@belowrulesep=\dimen183
+\@thisruleclass=\count289
+\@lastruleclass=\count290
+\@thisrulewidth=\dimen184
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2024-10-27 v4.22 Multi-page Table package (DPC)
+\LTleft=\skip58
+\LTright=\skip59
+\LTpre=\skip60
+\LTpost=\skip61
+\LTchunksize=\count291
+\LTcapwidth=\dimen185
+\LT@head=\box57
+\LT@firsthead=\box58
+\LT@foot=\box59
+\LT@lastfoot=\box60
+\LT@gbox=\box61
+\LT@cols=\count292
+\LT@rows=\count293
+\c@LT@tables=\count294
+\c@LT@chunks=\count295
+\LT@p@ftn=\toks35
+) (/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty
+Package: enumitem 2025/02/06 v3.11 Customized lists
+\labelindent=\skip62
+\enit@outerparindent=\dimen186
+\enit@toks=\toks36
+\enit@inbox=\box62
+\enit@count@id=\count296
+\enitdp@description=\count297
+) (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count298
+\lst@gtempboxa=\box63
+\lst@token=\toks37
+\lst@length=\count299
+\lst@currlwidth=\dimen187
+\lst@column=\count300
+\lst@pos=\count301
+\lst@lostspace=\dimen188
+\lst@width=\dimen189
+\lst@newlines=\count302
+\lst@lineno=\count303
+\lst@maxwidth=\dimen190
+ (/usr/share/texlive/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2024/09/23 1.10c (Carsten Heinz)
+) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
+\c@lstnumber=\count304
+\lst@skipnumbers=\count305
+\lst@framebox=\box64
+) (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2024/09/23 1.10c listings configuration
+))
+Package: listings 2024/09/23 1.10c (Carsten Heinz)
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen191
+\captionmargin=\dimen192
+\caption@leftmargin=\dimen193
+\caption@rightmargin=\dimen194
+\caption@width=\dimen195
+\caption@indent=\dimen196
+\caption@parindent=\dimen197
+\caption@hangindent=\dimen198
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count306
+\c@continuedfloat=\count307
+Package caption Info: float package is loaded.
+Package caption Info: listings package is loaded.
+Package caption Info: longtable package is loaded.
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
+)) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2024-11-05 v7.01l Hypertext links for LaTeX
+ (/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+ (/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)) (/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
+ (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+ (/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count308
+) (/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
+)
+\@linkdim=\dimen199
+\Hy@linkcounter=\count309
+\Hy@pagecounter=\count310
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2024-11-05 v7.01l Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+) (/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count311
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2024-11-05 v7.01l Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Hyper figures OFF on input line 4157.
+Package hyperref Info: Link nesting OFF on input line 4162.
+Package hyperref Info: Hyper index ON on input line 4165.
+Package hyperref Info: Plain pages OFF on input line 4172.
+Package hyperref Info: Backreferencing OFF on input line 4177.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4424.
+\c@Hy@tempcnt=\count312
+ (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4763.
+\XeTeXLinkMargin=\dimen256
+ (/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+ (/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
+))
+\Fld@menulength=\count313
+\Field@Width=\dimen257
+\Fld@charsize=\dimen258
+Package hyperref Info: Hyper figures OFF on input line 6042.
+Package hyperref Info: Link nesting OFF on input line 6047.
+Package hyperref Info: Hyper index ON on input line 6050.
+Package hyperref Info: backreferencing OFF on input line 6057.
+Package hyperref Info: Link coloring OFF on input line 6062.
+Package hyperref Info: Link coloring with OCG OFF on input line 6067.
+Package hyperref Info: PDF/A mode OFF on input line 6072.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count314
+\c@Item=\count315
+\c@Hfootnote=\count316
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2024-11-05 v7.01l Hyperref driver for pdfTeX
+ (/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
+with kernel methods
+)
+\Fld@listcount=\count317
+\c@bookmark@seq@number=\count318
+ (/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
+ (/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
+)
+\Hy@SectionHShift=\skip63
+) (/usr/share/texlive/texmf-dist/tex/latex/svg/svg.sty
+Package: svg 2020/11/26 v2.02k (include SVG pictures)
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrbase.sty
+Package: scrbase 2024/10/24 v3.43 KOMA-Script package (KOMA-Script-independent basics and keyval usage)
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlfile.sty
+Package: scrlfile 2024/10/24 v3.43 KOMA-Script package (file load hooks)
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty
+Package: scrlfile-hook 2024/10/24 v3.43 KOMA-Script package (using LaTeX hooks)
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlogo.sty
+Package: scrlogo 2024/10/24 v3.43 KOMA-Script package (logo)
+)))
+Applying: [2021/05/01] Usage of raw or classic option list on input line 254.
+Already applied: [0000/00/00] Usage of raw or classic option list on input line 370.
+) (/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/shellesc.sty
+Package: shellesc 2023/07/08 v1.0d unified shell escape interface for LaTeX
+Package shellesc Info: Restricted shell escape enabled on input line 77.
+)
+\c@svg@param@lastpage=\count319
+\svg@box=\box65
+\c@svg@param@currpage=\count320
+) (/usr/share/texlive/texmf-dist/tex/latex/transparent/transparent.sty
+Package: transparent 2022-10-27 v1.5 Transparency with color stacks
+ (/usr/share/texlive/texmf-dist/tex/latex/transparent/transparent-nometadata.sty
+Package: transparent-nometadata 2022-10-27 v1.5 Transparency via pdfTeX's color stack (HO)
+ (/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+))) (/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks38
+\pgfutil@tempdima=\dimen259
+\pgfutil@tempdimb=\dimen260
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box66
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex (/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks39
+\pgfkeys@temptoks=\toks40
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.tex
+\pgfkeys@tmptoks=\toks41
+))
+\pgf@x=\dimen261
+\pgf@y=\dimen262
+\pgf@xa=\dimen263
+\pgf@ya=\dimen264
+\pgf@xb=\dimen265
+\pgf@yb=\dimen266
+\pgf@xc=\dimen267
+\pgf@yc=\dimen268
+\pgf@xd=\dimen269
+\pgf@yd=\dimen270
+\w@pgf@writea=\write3
+\r@pgf@reada=\read3
+\c@pgf@counta=\count321
+\c@pgf@countb=\count322
+\c@pgf@countc=\count323
+\c@pgf@countd=\count324
+\t@pgf@toka=\toks42
+\t@pgf@tokb=\toks43
+\t@pgf@tokc=\toks44
+\pgf@sys@id@count=\count325
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+)
+Driver file for pgf: pgfsys-pdftex.def
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
+ (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+))) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count326
+\pgfsyssoftpath@bigbuffer@items=\count327
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))
+Package hyperref Info: Option `colorlinks' set `true' on input line 38.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 60.
+ (/usr/share/texmf/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count328
+\l__pdf_internal_box=\box67
+) (./INGSW2425-91.aux)
+\openout1 = `INGSW2425-91.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(73.97733pt, 449.55322pt, 73.97733pt)
+* v-part:(T,H,B)=(73.97733pt, 697.0922pt, 73.97733pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=449.55322pt
+* \textheight=697.0922pt
+* \oddsidemargin=1.70734pt
+* \evensidemargin=1.70734pt
+* \topmargin=-35.29266pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=50.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Info: Redefining \microtypecontext on input line 60.
+Package microtype Info: Applying patch `item' on input line 60.
+Package microtype Info: Applying patch `toc' on input line 60.
+Package microtype Info: Applying patch `eqnum' on input line 60.
+Package microtype Info: Applying patch `footnote' on input line 60.
+Package microtype Info: Applying patch `verbatim' on input line 60.
+LaTeX Info: Redefining \microtypesetup on input line 60.
+Package microtype Info: Generating PDF output.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: Automatic font expansion enabled (level 2),
+(microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
+Package microtype Info: Using default expansion set `alltext-nott'.
+LaTeX Info: Redefining \showhyphens on input line 60.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of interword spacing.
+Package microtype Info: No adjustment of character kerning.
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
+) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count329
+\scratchdimen=\dimen271
+\scratchbox=\box68
+\nofMPsegments=\count330
+\nofMParguments=\count331
+\everyMPshowfont=\toks45
+\MPscratchCnt=\count332
+\MPscratchDim=\dimen272
+\MPnumerator=\count333
+\makeMPintoPDFobject=\count334
+\everyMPtoPDFconversion=\toks46
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
+\c@lstlisting=\count335
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: hyperref package is loaded.
+Package caption Info: End \AtBeginDocument code.
+Package hyperref Info: Link coloring ON on input line 60.
+ (./INGSW2425-91.out) (./INGSW2425-91.out)
+\@outlinefile=\write4
+\openout4 = `INGSW2425-91.out'.
+
+<../Doc-Start/INGSW2425/Logo.jpg, id=360, 326.21875pt x 238.8925pt>
+File: ../Doc-Start/INGSW2425/Logo.jpg Graphic file (type jpg)
+<use ../Doc-Start/INGSW2425/Logo.jpg>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/Logo.jpg  used on input line 66.
+(pdftex.def)             Requested size: 224.77661pt x 164.60999pt.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 89.
+ (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
+File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 89.
+ (/usr/share/texmf/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 89.
+ (/usr/share/texmf/tex/latex/lm/omslmsy.fd
+File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 89.
+ (/usr/share/texmf/tex/latex/lm/omxlmex.fd
+File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 89.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 89.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 89.
+
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc} <../Doc-Start/INGSW2425/Logo.jpg>]
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.116 \newpage
+               [1]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 137.
+ (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+
+[2{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}]
+
+[3] (./INGSW2425-91.toc
+
+[4]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 55.
+ (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `lmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+)
+\tf@toc=\write5
+\openout5 = `INGSW2425-91.toc'.
+
+
+
+[5] (./INGSW2425-91.lof)
+\tf@lof=\write6
+\openout6 = `INGSW2425-91.lof'.
+
+
+
+[6]
+Underfull \hbox (badness 2698) in paragraph at lines 191--191
+[]|\T1/lmr/m/n/10.95 (+20) Visitatore (utente non
+ []
+
+[7] [8] [9]
+
+[10]
+
+[11]
+<../Doc-Start/INGSW2425/Usecase0.png, id=569, 343.2825pt x 464.937pt>
+File: ../Doc-Start/INGSW2425/Usecase0.png Graphic file (type png)
+<use ../Doc-Start/INGSW2425/Usecase0.png>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/Usecase0.png  used on input line 281.
+(pdftex.def)             Requested size: 449.55322pt x 608.86618pt.
+
+
+[12 <../Doc-Start/INGSW2425/Usecase0.png>]
+<../Doc-Start/INGSW2425/Cliente.png, id=577, 1413.28pt x 770.88pt>
+File: ../Doc-Start/INGSW2425/Cliente.png Graphic file (type png)
+<use ../Doc-Start/INGSW2425/Cliente.png>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/Cliente.png  used on input line 293.
+(pdftex.def)             Requested size: 179.81854pt x 98.0771pt.
+<../Doc-Start/INGSW2425/Agente.png, id=578, 1413.28pt x 770.88pt>
+File: ../Doc-Start/INGSW2425/Agente.png Graphic file (type png)
+<use ../Doc-Start/INGSW2425/Agente.png>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/Agente.png  used on input line 323.
+(pdftex.def)             Requested size: 179.81854pt x 98.0771pt.
+<../Doc-Start/INGSW2425/Amministratore.png, id=579, 1413.28pt x 770.88pt>
+File: ../Doc-Start/INGSW2425/Amministratore.png Graphic file (type png)
+<use ../Doc-Start/INGSW2425/Amministratore.png>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/Amministratore.png  used on input line 350.
+(pdftex.def)             Requested size: 179.81854pt x 98.0771pt.
+
+
+[13 <../Doc-Start/INGSW2425/Cliente.png> <../Doc-Start/INGSW2425/Agente.png>]
+
+[14 <../Doc-Start/INGSW2425/Amministratore.png>]
+
+[15]
+Underfull \hbox (badness 10000) in paragraph at lines 411--411
+[]|\T1/lmr/bx/n/10.95 (+20) Attore prin-ci-
+ []
+
+
+Underfull \hbox (badness 2970) in paragraph at lines 430--430
+[]|\T1/lmr/m/n/10.95 (+20) messaggio email già es-
+ []
+
+
+Overfull \hbox (3.19748pt too wide) in paragraph at lines 446--447
+\T1/lmr/m/it/10.95 (-20) Prototipazione: le scher-mate di rifer-i-men-to per questo ca-so d'u-so sono ri-por-tate nel-la Sezione [][]2.12[][],
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 466--466
+[]|\T1/lmr/bx/n/10.95 (+20) Attore prin-ci-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 477--477
+[]|\T1/lmr/m/n/10.95 (+20) Valida dati e mostra
+ []
+
+
+Overfull \hbox (3.19748pt too wide) in paragraph at lines 500--501
+\T1/lmr/m/it/10.95 (-20) Prototipazione: le scher-mate di rifer-i-men-to per questo ca-so d'u-so sono ri-por-tate nel-la Sezione [][]2.12[][],
+ []
+
+
+
+[16]
+
+[17]
+
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 524--524
+[]|\T1/lmr/bx/n/10.95 (+20) Attore prin-ci-
+ []
+
+
+Underfull \hbox (badness 5189) in paragraph at lines 536--536
+[]|\T1/lmr/m/n/10.95 (+20) Clicca sul bot-tone per
+ []
+
+
+
+[19
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 573--573
+[]|\T1/lmr/bx/n/10.95 (+20) Caso d'u-so
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 576--576
+[]|\T1/lmr/bx/n/10.95 (+20) Condizione
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 577--577
+[]|\T1/lmr/bx/n/10.95 (+20) Condizione
+ []
+
+
+Overfull \hbox (7.22762pt too wide) in paragraph at lines 583--583
+[]|\T1/lmr/bx/n/10.95 (-20) Passo| 
+ []
+
+
+Overfull \hbox (3.19748pt too wide) in paragraph at lines 592--593
+\T1/lmr/m/it/10.95 (-20) Prototipazione: le scher-mate di rifer-i-men-to per questo ca-so d'u-so sono ri-por-tate nel-la Sezione [][]2.12[][],
+ []
+
+
+
+[20
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 602--602
+[]|\T1/lmr/bx/n/10.95 (+20) Caso d'u-so
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 605--605
+[]|\T1/lmr/bx/n/10.95 (+20) Condizione
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 606--606
+[]|\T1/lmr/bx/n/10.95 (+20) Condizione
+ []
+
+
+Overfull \hbox (7.22762pt too wide) in paragraph at lines 611--611
+[]|\T1/lmr/bx/n/10.95 (-20) Passo| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 614--614
+[]|\T1/lmr/m/n/10.95 (+20) Compila tito-lo, de-
+ []
+
+
+Underfull \hbox (badness 1292) in paragraph at lines 617--617
+[]|\T1/lmr/m/n/10.95 (+20) Valida i dati; per-siste
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 618--618
+[]|\T1/lmr/m/n/10.95 (+20) Interroga Geoapi-fy:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 618--618
+\T1/lmr/m/n/10.95 (+20) ril-e-va scuole, parchi,
+ []
+
+
+Underfull \hbox (badness 1867) in paragraph at lines 619--619
+\T1/lmr/m/n/10.95 (+20) serzione; ter-mi-na ca-so
+ []
+
+
+Overfull \hbox (7.22762pt too wide) in paragraph at lines 622--622
+[]|\T1/lmr/bx/n/10.95 (-20) Passo| 
+ []
+
+
+Overfull \hbox (7.22762pt too wide) in paragraph at lines 626--626
+[]|\T1/lmr/bx/n/10.95 (-20) Passo| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 628--628
+[]|\T1/lmr/m/n/10.95 (+20) API Geoapi-fy non
+ []
+
+
+Underfull \hbox (badness 6094) in paragraph at lines 628--628
+\T1/lmr/m/n/10.95 (+20) disponi-bile: im-mo-bile
+ []
+
+
+Overfull \hbox (42.38028pt too wide) in paragraph at lines 599--630
+ [][] 
+ []
+
+
+
+[21
+
+]
+Overfull \vbox (79.3472pt too high) has occurred while \output is active []
+
+
+
+[22]
+Overfull \hbox (3.19748pt too wide) in paragraph at lines 633--634
+\T1/lmr/m/it/10.95 (-20) Prototipazione: le scher-mate di rifer-i-men-to per questo ca-so d'u-so sono ri-por-tate nel-la Sezione [][]2.12[][],
+ []
+
+
+
+[23]
+
+[24
+
+]
+
+[25]
+
+[26
+
+]
+<../Doc-Start/INGSW2425/schemadb.png, id=657, 436.63126pt x 398.6895pt>
+File: ../Doc-Start/INGSW2425/schemadb.png Graphic file (type png)
+<use ../Doc-Start/INGSW2425/schemadb.png>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/schemadb.png  used on input line 761.
+(pdftex.def)             Requested size: 368.63693pt x 336.60635pt.
+
+
+[27 <../Doc-Start/INGSW2425/schemadb.png>]
+<../Doc-Start/INGSW2425/database_ristrutturatobuono.pdf, id=663, 566.86781pt x 513.41812pt>
+File: ../Doc-Start/INGSW2425/database_ristrutturatobuono.pdf Graphic file (type pdf)
+<use ../Doc-Start/INGSW2425/database_ristrutturatobuono.pdf>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/database_ristrutturatobuono.pdf  used on input line 771.
+(pdftex.def)             Requested size: 449.55322pt x 407.17836pt.
+
+
+[28 <../Doc-Start/INGSW2425/database_ristrutturatobuono.pdf>]
+
+[29]
+<../Doc-Start/INGSW2425/classdesign-backend.pdf, id=1003, 2880.26062pt x 852.93657pt>
+File: ../Doc-Start/INGSW2425/classdesign-backend.pdf Graphic file (type pdf)
+<use ../Doc-Start/INGSW2425/classdesign-backend.pdf>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/classdesign-backend.pdf  used on input line 839.
+(pdftex.def)             Requested size: 449.55322pt x 133.11484pt.
+
+
+[30 <../Doc-Start/INGSW2425/classdesign-backend.pdf>]
+<../Doc-Start/INGSW2425/dietiestates-classdesign2.pdf, id=1030, 3675.98344pt x 1099.85907pt>
+File: ../Doc-Start/INGSW2425/dietiestates-classdesign2.pdf Graphic file (type pdf)
+<use ../Doc-Start/INGSW2425/dietiestates-classdesign2.pdf>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/dietiestates-classdesign2.pdf  used on input line 850.
+(pdftex.def)             Requested size: 449.55322pt x 134.49477pt.
+
+
+[31 <../Doc-Start/INGSW2425/dietiestates-classdesign2.pdf>]
+
+[32]
+<../Doc-Start/INGSW2425/Sequence Diagram crea agente.pdf, id=1060, 1647.90656pt x 1459.70343pt>
+File: ../Doc-Start/INGSW2425/Sequence Diagram crea agente.pdf Graphic file (type pdf)
+<use ../Doc-Start/INGSW2425/Sequence Diagram crea agente.pdf>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/Sequence Diagram crea agente.pdf  used on input line 862.
+(pdftex.def)             Requested size: 449.55322pt x 398.2012pt.
+
+
+[33 <../Doc-Start/INGSW2425/Sequence Diagram crea agente.pdf>]
+<../Doc-Start/INGSW2425/Sequence Diagram creazione supporto.pdf, id=1090, 1413.02907pt x 1668.2325pt>
+File: ../Doc-Start/INGSW2425/Sequence Diagram creazione supporto.pdf Graphic file (type pdf)
+<use ../Doc-Start/INGSW2425/Sequence Diagram creazione supporto.pdf>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/Sequence Diagram creazione supporto.pdf  used on input line 871.
+(pdftex.def)             Requested size: 449.55322pt x 530.73979pt.
+
+
+[34]
+
+[35 <../Doc-Start/INGSW2425/Sequence Diagram creazione supporto.pdf>]
+<../Doc-Start/INGSW2425/Sequence Diagram Offerta manuale.pdf, id=2232, 1445.4pt x 757.32938pt>
+File: ../Doc-Start/INGSW2425/Sequence Diagram Offerta manuale.pdf Graphic file (type pdf)
+<use ../Doc-Start/INGSW2425/Sequence Diagram Offerta manuale.pdf>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/Sequence Diagram Offerta manuale.pdf  used on input line 879.
+(pdftex.def)             Requested size: 449.55322pt x 235.54393pt.
+
+
+[36 <../Doc-Start/INGSW2425/Sequence Diagram Offerta manuale.pdf>]
+<../Doc-Start/INGSW2425/Sequence Diagram Dietiestates.pdf, id=3197, 1160.08406pt x 561.59813pt>
+File: ../Doc-Start/INGSW2425/Sequence Diagram Dietiestates.pdf Graphic file (type pdf)
+<use ../Doc-Start/INGSW2425/Sequence Diagram Dietiestates.pdf>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/Sequence Diagram Dietiestates.pdf  used on input line 888.
+(pdftex.def)             Requested size: 449.55322pt x 217.6256pt.
+<../Doc-Start/mokcup/dashboardAdmin.png, id=3198, 441.44925pt x 311.36325pt>
+File: ../Doc-Start/mokcup/dashboardAdmin.png Graphic file (type png)
+<use ../Doc-Start/mokcup/dashboardAdmin.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/dashboardAdmin.png  used on input line 906.
+(pdftex.def)             Requested size: 215.78362pt x 152.19875pt.
+<../Doc-Start/mokcup/Dasboardsupporto01.png, id=3199, 437.83575pt x 316.18124pt>
+File: ../Doc-Start/mokcup/Dasboardsupporto01.png Graphic file (type png)
+<use ../Doc-Start/mokcup/Dasboardsupporto01.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/Dasboardsupporto01.png  used on input line 912.
+(pdftex.def)             Requested size: 215.78362pt x 155.82751pt.
+<../Doc-Start/mokcup/ricerca.png, id=3200, 430.60875pt x 239.09325pt>
+File: ../Doc-Start/mokcup/ricerca.png Graphic file (type png)
+<use ../Doc-Start/mokcup/ricerca.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/ricerca.png  used on input line 926.
+(pdftex.def)             Requested size: 215.78362pt x 119.81628pt.
+<../Doc-Start/mokcup/Mieiimmobili.png, id=3201, 389.65575pt x 185.493pt>
+File: ../Doc-Start/mokcup/Mieiimmobili.png Graphic file (type png)
+<use ../Doc-Start/mokcup/Mieiimmobili.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/Mieiimmobili.png  used on input line 932.
+(pdftex.def)             Requested size: 215.78362pt x 102.72339pt.
+
+
+[37 <../Doc-Start/INGSW2425/Sequence Diagram Dietiestates.pdf> <../Doc-Start/mokcup/dashboardAdmin.png> <../Doc-Start/mokcup/Dasboardsupporto01.png>]
+<../Doc-Start/mokcup/visualizzaimmobile.png, id=3837, 389.65575pt x 237.88875pt>
+File: ../Doc-Start/mokcup/visualizzaimmobile.png Graphic file (type png)
+<use ../Doc-Start/mokcup/visualizzaimmobile.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/visualizzaimmobile.png  used on input line 946.
+(pdftex.def)             Requested size: 215.78362pt x 131.73941pt.
+<../Doc-Start/mokcup/offertamanuale.png, id=3838, 437.83575pt x 310.761pt>
+File: ../Doc-Start/mokcup/offertamanuale.png Graphic file (type png)
+<use ../Doc-Start/mokcup/offertamanuale.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/offertamanuale.png  used on input line 952.
+(pdftex.def)             Requested size: 215.78362pt x 153.15619pt.
+<../Doc-Start/mokcup/creaagentegiusto.png, id=3839, 440.24475pt x 311.36325pt>
+File: ../Doc-Start/mokcup/creaagentegiusto.png Graphic file (type png)
+<use ../Doc-Start/mokcup/creaagentegiusto.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/creaagentegiusto.png  used on input line 964.
+(pdftex.def)             Requested size: 247.25563pt x 174.87059pt.
+<../Doc-Start/mokcup/ageente_mailnonvalida.png, id=3840, 442.65375pt x 311.36325pt>
+File: ../Doc-Start/mokcup/ageente_mailnonvalida.png Graphic file (type png)
+<use ../Doc-Start/mokcup/ageente_mailnonvalida.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/ageente_mailnonvalida.png  used on input line 973.
+(pdftex.def)             Requested size: 215.78362pt x 151.7854pt.
+<../Doc-Start/mokcup/agente_formnon valido.png, id=3841, 438.438pt x 316.18124pt>
+File: ../Doc-Start/mokcup/agente_formnon valido.png Graphic file (type png)
+<use ../Doc-Start/mokcup/agente_formnon valido.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/agente_formnon valido.png  used on input line 979.
+(pdftex.def)             Requested size: 215.78362pt x 155.61523pt.
+<../Doc-Start/mokcup/emailnonvalida_supporto.png, id=3842, 441.44925pt x 317.38576pt>
+File: ../Doc-Start/mokcup/emailnonvalida_supporto.png Graphic file (type png)
+<use ../Doc-Start/mokcup/emailnonvalida_supporto.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/emailnonvalida_supporto.png  used on input line 993.
+(pdftex.def)             Requested size: 215.78362pt x 155.14262pt.
+<../Doc-Start/mokcup/formnonvalidosupporto.png, id=3843, 443.85825pt x 314.97675pt>
+File: ../Doc-Start/mokcup/formnonvalidosupporto.png Graphic file (type png)
+<use ../Doc-Start/mokcup/formnonvalidosupporto.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/formnonvalidosupporto.png  used on input line 999.
+(pdftex.def)             Requested size: 215.78362pt x 153.1288pt.
+<../Doc-Start/mokcup/inserimento con successo.png, id=3844, 437.2335pt x 314.97675pt>
+File: ../Doc-Start/mokcup/inserimento con successo.png Graphic file (type png)
+<use ../Doc-Start/mokcup/inserimento con successo.png>
+Package pdftex.def Info: ../Doc-Start/mokcup/inserimento con successo.png  used on input line 1007.
+(pdftex.def)             Requested size: 247.25563pt x 178.12079pt.
+
+
+[38 <../Doc-Start/mokcup/ricerca.png> <../Doc-Start/mokcup/Mieiimmobili.png> <../Doc-Start/mokcup/visualizzaimmobile.png> <../Doc-Start/mokcup/offertamanuale.png>]
+
+[39 <../Doc-Start/mokcup/creaagentegiusto.png> <../Doc-Start/mokcup/ageente_mailnonvalida.png> <../Doc-Start/mokcup/agente_formnon valido.png> <../Doc-Start/mokcup/emailnonvalida_supporto.png> <../Doc-Start/mokcup/formnonvalidosupporto.png>]
+
+[40 <../Doc-Start/mokcup/inserimento con successo.png>] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+Overfull \hbox (20.11467pt too wide) in paragraph at lines 1047--1047
+[]|\T1/lmr/m/n/10.95 (-20) Motivazione
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) del-la
+ []
+
+
+Overfull \hbox (35.05363pt too wide) in paragraph at lines 1047--1047
+[]|\T1/lmr/m/n/10.95 (-20) Aggiornamento
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) per-sis-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) tente
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) ping
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) DTO
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) con
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) con-ver-
+ []
+
+
+Overfull \hbox (8.92343pt too wide) in paragraph at lines 1047--1047
+[]|\T1/lmr/m/n/10.95 (-20) UPDATE
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) con
+ []
+
+
+Overfull \hbox (4.51447pt too wide) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (-20) WHERE
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) con-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) dizion-
+ []
+
+
+Underfull \hbox (badness 5022) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) a-to su
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) ruo-lo
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) e ges-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) tione
+ []
+
+
+Overfull \hbox (18.42058pt too wide) in paragraph at lines 1047--1047
+[]|\T1/lmr/m/n/10.95 (-20) Inserimento
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) ori di
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) de-fault
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) di do-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) minio
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) e nor-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) mal-iz-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) zazione
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) del
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) record
+ []
+
+
+Overfull \hbox (8.79845pt too wide) in paragraph at lines 1047--1047
+[]|\T1/lmr/m/n/10.95 (-20) Chiamate
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) HTTP
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) mul-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) ti-ple,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) let-tura
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) vari-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) abili
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) d'am-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) bi-ente
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) e ag-
+ []
+
+
+Overfull \hbox (12.40587pt too wide) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (-20) gregazione
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1047
+\T1/lmr/m/n/10.95 (+20) risul-
+ []
+
+
+
+[41
+
+]
+Overfull \vbox (30.69287pt too high) has occurred while \output is active []
+
+
+
+[42]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1068.
+
+
+[43]
+
+[44]
+Overfull \hbox (70.51273pt too wide) in alignment at lines 1173--1173
+[][][][][] 
+ []
+
+
+Overfull \hbox (108.34898pt too wide) in paragraph at lines 1179--1180
+\T1/lmr/m/n/10.95 (-20) Di se-gui-to sono ri-por-tati i quat-tro bloc-chi di test prin-ci-pali pre-sen-ti in \T1/lmtt/m/n/10.95 dietiestates-backend/test/backend.test.ts\T1/lmr/m/n/10.95 (-20) ,
+ []
+
+
+
+[45]
+
+[46]
+
+[47]
+<../Doc-Start/INGSW2425/sonarqube.jpg, id=4061, 1284.8pt x 554.07pt>
+File: ../Doc-Start/INGSW2425/sonarqube.jpg Graphic file (type jpg)
+<use ../Doc-Start/INGSW2425/sonarqube.jpg>
+Package pdftex.def Info: ../Doc-Start/INGSW2425/sonarqube.jpg  used on input line 1354.
+(pdftex.def)             Requested size: 368.63693pt x 158.96838pt.
+
+
+[48]
+Underfull \hbox (badness 4242) in paragraph at lines 1389--1390
+\T1/lmr/m/n/10.95 (+20) co-mu-ni-cati nelle
+ []
+
+
+Underfull \hbox (badness 1221) in paragraph at lines 1390--1391
+[]|\T1/lmr/m/n/10.95 (+20) Lessico uni-forme
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1391--1392
+\T1/lmr/m/n/10.95 (+20) nav-i-ga-bili sen-za
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1392--1393
+[]|\T1/lmr/m/n/10.95 (+20) Riutilizzo di
+ []
+
+
+Underfull \hbox (badness 5245) in paragraph at lines 1392--1393
+\T1/lmr/m/n/10.95 (+20) navbar, card e
+ []
+
+
+Underfull \hbox (badness 1087) in paragraph at lines 1393--1394
+[]|\T1/lmr/m/n/10.95 (+20) Form e back-end
+ []
+
+
+Underfull \hbox (badness 1874) in paragraph at lines 1393--1394
+\T1/lmr/m/n/10.95 (+20) e vin-coli di do-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1394--1394
+[]|\T1/lmr/m/n/10.95 (+20) Parzialmente
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1396--1396
+[]|\T1/lmr/m/n/10.95 (+20) Parzialmente
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1396--1397
+[]|\T1/lmr/m/n/10.95 (+20) Opportuno ag-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1396--1397
+\T1/lmr/m/n/10.95 (+20) ev-i-den-za per-sis-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1397--1398
+[]|\T1/lmr/m/n/10.95 (+20) Dashboard e
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1398--1399
+[]|\T1/lmr/m/n/10.95 (+20) Struttura vi-si-va
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1399--1399
+[]|\T1/lmr/m/n/10.95 (+20) Parzialmente
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1399--1400
+[]|\T1/lmr/m/n/10.95 (+20) Migliorabile la
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1399--1400
+\T1/lmr/m/n/10.95 (+20) lo-cal-iz-zazione
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1399--1400
+\T1/lmr/m/n/10.95 (+20) degli er-rori in
+ []
+
+[49 <../Doc-Start/INGSW2425/sonarqube.jpg>]
+
+[50]
+Underfull \hbox (badness 10000) in paragraph at lines 1448--1448
+[]|\T1/lmr/m/n/10.95 (+20) Accesso com-ple-ta-to
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1448--1448
+[]|\T1/lmr/m/n/10.95 (+20) Visualizzazione dei
+ []
+
+
+Underfull \hbox (badness 1789) in paragraph at lines 1448--1448
+[]|\T1/lmr/m/n/10.95 (+20) Comprensione cor-ret-
+ []
+
+
+Underfull \hbox (badness 7221) in paragraph at lines 1448--1448
+[]|\T1/lmr/m/n/10.95 (+20) Storico rag-giun-to e
+ []
+
+
+Underfull \hbox (badness 3088) in paragraph at lines 1448--1448
+\T1/lmr/m/n/10.95 (+20) in-ter-pre-ta-to cor-ret-ta-
+ []
+
+
+Underfull \hbox (badness 10000) in alignment at lines 1448--1448
+[][][] 
+ []
+
+
+
+[51]
+Underfull \hbox (badness 10000) in alignment at lines 1506--1506
+[][][][] 
+ []
+
+
+
+[52]
+
+[53]
+
+[54]
+<../Doc-Start/ImmaginiDoc/Github-Contributors.png, id=4142, 918.43124pt x 684.5575pt>
+File: ../Doc-Start/ImmaginiDoc/Github-Contributors.png Graphic file (type png)
+<use ../Doc-Start/ImmaginiDoc/Github-Contributors.png>
+Package pdftex.def Info: ../Doc-Start/ImmaginiDoc/Github-Contributors.png  used on input line 1604.
+(pdftex.def)             Requested size: 220.28354pt x 164.18225pt.
+<../Doc-Start/ImmaginiDoc/Github-Pulse.png, id=4143, 911.405pt x 464.73625pt>
+File: ../Doc-Start/ImmaginiDoc/Github-Pulse.png Graphic file (type png)
+<use ../Doc-Start/ImmaginiDoc/Github-Pulse.png>
+Package pdftex.def Info: ../Doc-Start/ImmaginiDoc/Github-Pulse.png  used on input line 1609.
+(pdftex.def)             Requested size: 220.28354pt x 112.32611pt.
+<../Doc-Start/ImmaginiDoc/CodeFrequency.png, id=4144, 913.4125pt x 548.0475pt>
+File: ../Doc-Start/ImmaginiDoc/CodeFrequency.png Graphic file (type png)
+<use ../Doc-Start/ImmaginiDoc/CodeFrequency.png>
+Package pdftex.def Info: ../Doc-Start/ImmaginiDoc/CodeFrequency.png  used on input line 1617.
+(pdftex.def)             Requested size: 413.58813pt x 248.14943pt.
+<../Doc-Start/ImmaginiDoc/Sonar-OverallCode.png, id=4145, 1685.29625pt x 727.71875pt>
+File: ../Doc-Start/ImmaginiDoc/Sonar-OverallCode.png Graphic file (type png)
+<use ../Doc-Start/ImmaginiDoc/Sonar-OverallCode.png>
+Package pdftex.def Info: ../Doc-Start/ImmaginiDoc/Sonar-OverallCode.png  used on input line 1626.
+(pdftex.def)             Requested size: 220.28354pt x 95.11754pt.
+<../Doc-Start/ImmaginiDoc/Sonar-NewCode.png, id=4146, 1685.29625pt x 727.71875pt>
+File: ../Doc-Start/ImmaginiDoc/Sonar-NewCode.png Graphic file (type png)
+<use ../Doc-Start/ImmaginiDoc/Sonar-NewCode.png>
+Package pdftex.def Info: ../Doc-Start/ImmaginiDoc/Sonar-NewCode.png  used on input line 1631.
+(pdftex.def)             Requested size: 220.28354pt x 95.11754pt.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 1664.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 1664.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 1664.
+
+
+[55 <../Doc-Start/ImmaginiDoc/Github-Contributors.png> <../Doc-Start/ImmaginiDoc/Github-Pulse.png>]
+
+[56 <../Doc-Start/ImmaginiDoc/CodeFrequency.png> <../Doc-Start/ImmaginiDoc/Sonar-OverallCode.png> <../Doc-Start/ImmaginiDoc/Sonar-NewCode.png>]
+
+[57] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+
+[58]
+
+[59] (./INGSW2425-91.aux)
+ ***********
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+ ***********
+Package rerunfilecheck Info: File `INGSW2425-91.out' has not changed.
+(rerunfilecheck)             Checksum: 84F08F8E693475F122BBCF5A58B11B76;18989.
+ ) 
+Here is how much of TeX's memory you used:
+ 20558 strings out of 475102
+ 351499 string characters out of 5764877
+ 1454108 words of memory out of 5000000
+ 42608 multiletter control sequences out of 15000+600000
+ 634134 words of font info for 179 fonts, out of 8000000 for 9000
+ 59 hyphenation exceptions out of 8191
+ 94i,12n,93p,1075b,2070s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbxi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>
+Output written on INGSW2425-91.pdf (60 pages, 7994382 bytes).
+PDF statistics:
+ 4357 PDF objects out of 5155 (max. 8388607)
+ 3159 compressed objects within 32 object streams
+ 429 named destinations out of 1000 (max. 500000)
+ 43368 words of extra memory for PDF output out of 51595 (max. 10000000)
+
