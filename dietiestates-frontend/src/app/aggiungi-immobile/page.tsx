@@ -32,7 +32,7 @@ const EXTERNAL_FEATURES: FeatureOption[] = [
 ];
 
 export default function PaginaCaricamentoImmobile() {
-  const { authuser } = useUser();
+  const { authUser } = useUser();
   const router = useRouter();
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -110,7 +110,7 @@ export default function PaginaCaricamentoImmobile() {
     // Enter su un campo dei passi precedenti non deve attivare la submit
     if (currentStep < 3) return;
 
-    if (!authuser?.idUtente) {
+    if (!authUser?.idUtente) {
       setError('Utente non autenticato');
       return;
     }
@@ -144,7 +144,7 @@ export default function PaginaCaricamentoImmobile() {
           ...formData,
           fotoUrls,
         },
-        authuser.idUtente
+        authUser.idUtente
       );
 
       alert('Immobile creato con successo!');

@@ -6,7 +6,8 @@
     "start": "node dist/server.js",
     "dev": "nodemon --watch src --ext ts --exec ts-node --transpile-only src/server.ts",
     "build": "tsc",
-    "test": "jest --runInBand --detectOpenHandles"
+    "test": "jest --runInBand --detectOpenHandles",
+    "test:coverage:sonar": "npm test -- --coverage --coverageReporters=lcov --coverageReporters=text && sed -i 's|^SF:src/|SF:dietiestates-backend/src/|g' coverage/lcov.info"
   },
   "keywords": [],
   "author": "",

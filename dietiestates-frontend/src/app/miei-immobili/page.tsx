@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { ClipboardList, CircleCheck, BadgeDollarSign, MapPin } from 'lucide-react';
 
 export default function MieiImmobiliPage() {
-  const { authuser } = useUser();
+  const { authUser } = useUser();
   const router = useRouter();
   const [immobili, setImmobili] = useState<ImmobileAgente[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,8 +26,8 @@ export default function MieiImmobiliPage() {
         const data = await res.json();
         const list = Array.isArray(data) ? data : [];
         // Difesa lato UI: mostra solo immobili realmente associati all'utente corrente.
-        const miei = authuser?.idUtente
-          ? list.filter((imm) => Number(imm.idAgente) === Number(authuser.idUtente))
+        const miei = authUser?.idUtente
+          ? list.filter((imm) => Number(imm.idAgente) === Number(authUser.idUtente))
           : list;
         setImmobili(miei);
       } catch (err) {
@@ -37,9 +37,9 @@ export default function MieiImmobiliPage() {
       }
     }
     fetchMiei();
-  }, [authuser?.idUtente]);
+  }, [authUser?.idUtente]);
 
-  if (!authuser) return (
+  if (!authUser) return (
     <div className="min-h-screen flex items-center justify-center">
       <p className="text-gray-500">Devi essere loggato per accedere a questa sezione.</p>
     </div>

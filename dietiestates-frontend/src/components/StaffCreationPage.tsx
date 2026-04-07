@@ -19,9 +19,9 @@ export default function StaffCreationPage({
   description,
   allowedRoles,
 }: StaffCreationPageProps) {
-  const { authuser } = useUser();
+  const { authUser } = useUser();
 
-  if (!authuser) {
+  if (!authUser) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-gray-500">Devi essere loggato per accedere a questa sezione.</p>
@@ -29,7 +29,7 @@ export default function StaffCreationPage({
     );
   }
 
-  if (!allowedRoles.includes(authuser.ruolo as AllowedRole)) {
+  if (!allowedRoles.includes(authUser.ruolo as AllowedRole)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center max-w-sm shadow-sm">

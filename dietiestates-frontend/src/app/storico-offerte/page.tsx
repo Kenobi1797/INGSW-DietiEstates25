@@ -20,7 +20,7 @@ interface Offerta {
 }
 
 export default function StoricoOffertePage() {
-  const { authuser } = useUser();
+  const { authUser } = useUser();
   const [offerte, setOfferte] = useState<Offerta[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -57,7 +57,7 @@ export default function StoricoOffertePage() {
     }
   };
 
-  if (!authuser) return (
+  if (!authUser) return (
     <div className="min-h-screen flex items-center justify-center">
       <p className="text-gray-500">Devi essere loggato per accedere a questa sezione.</p>
     </div>
@@ -100,7 +100,7 @@ export default function StoricoOffertePage() {
               {offerte.length > 0 ? `${offerte.length} offerta/e trovata/e` : 'Nessuna offerta'}
             </p>
           </div>
-          {pendingControfferte.length > 0 && authuser.ruolo === 'Cliente' && (
+          {pendingControfferte.length > 0 && authUser.ruolo === 'Cliente' && (
             <Link href="/controfferte"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
               <Undo2 size={15} /> {pendingControfferte.length} controfferta/e da valutare →
@@ -190,7 +190,7 @@ export default function StoricoOffertePage() {
                               Vedi immobile →
                             </Link>
 
-                            {isControfferta && offerta.stato === 'InAttesa' && authuser.ruolo === 'Cliente' && (
+                            {isControfferta && offerta.stato === 'InAttesa' && authUser.ruolo === 'Cliente' && (
                               <Link href="/controfferte"
                                 className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-full font-semibold transition-colors">
                                 Rispondi →

@@ -1,5 +1,5 @@
 import express from 'express';
-import { assignStaffToAgenzia, createAgenzia, getAgenzie, getAssignableStaff, updateAgenzia } from '../controllers/agenziaController';
+import { assignStaffToAgenzia, createAgenzia, getAgenzie, getAssignableStaff } from '../controllers/agenziaController';
 import { authMiddleware, roleMiddleware } from '../middleware/authMiddleware';
 
 const router = express.Router();
@@ -15,8 +15,5 @@ router.get('/staff', authMiddleware, roleMiddleware('AmministratoreAgenzia', 'Su
 
 // Assegna agente/supporto a un'agenzia esistente (solo admin/supporto)
 router.post('/assegna-staff', authMiddleware, roleMiddleware('AmministratoreAgenzia', 'Supporto'), assignStaffToAgenzia);
-
-// Aggiornamento agenzia (solo admin/supporto se vuoi)
-router.put('/:idAgenzia', authMiddleware, roleMiddleware('AmministratoreAgenzia', 'Supporto'), updateAgenzia);
 
 export default router;

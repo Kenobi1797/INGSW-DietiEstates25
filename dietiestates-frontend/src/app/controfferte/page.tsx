@@ -24,7 +24,7 @@ const STATO_CONFIG: Record<string, { label: string; classes: string; dot: string
 };
 
 export default function ControffertePage() {
-  const { authuser } = useUser();
+  const { authUser } = useUser();
   const [controfferte, setControfferte] = useState<Controfferta[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -79,7 +79,7 @@ export default function ControffertePage() {
     }
   };
 
-  if (!authuser) return (
+  if (!authUser) return (
     <div className="min-h-screen flex items-center justify-center">
       <p className="text-gray-500">Devi essere loggato per accedere a questa sezione.</p>
     </div>

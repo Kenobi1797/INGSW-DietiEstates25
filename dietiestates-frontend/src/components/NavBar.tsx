@@ -14,11 +14,11 @@ interface NavbarProps {
 }
 
 export default function Navbar({ className = "", compact = false }: NavbarProps) {
-  const { authuser, logout } = useUser();
+  const { authUser, logout } = useUser();
   const router = useRouter();
   const pathname = usePathname();
 
-  const menuItems = authuser ? getMenuForRole(authuser.ruolo) : [];
+  const menuItems = authUser ? getMenuForRole(authUser.ruolo) : [];
 
   const handleLogout = () => {
     logout();
@@ -29,7 +29,7 @@ export default function Navbar({ className = "", compact = false }: NavbarProps)
     <nav className={`navbar ${className}`}>
       <Logo />
 
-      {authuser ? (
+      {authUser ? (
         <>
           {compact ? (
             /* ── Home: bottone dropdown ── */

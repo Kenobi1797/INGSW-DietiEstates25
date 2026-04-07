@@ -196,14 +196,14 @@ function getActionsByRole(ruolo: Ruolo): ActionItem[] {
 }
 
 export default function DashboardAgent() {
-  const { authuser } = useUser();
+  const { authUser } = useUser();
   const [stats, setStats] = useState<DashboardStats>(EMPTY_STATS);
   const [statsError, setStatsError] = useState<string>("");
   const [statsLoading, setStatsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchStats = async () => {
-      if (!authuser) return;
+      if (!authUser) return;
 
       try {
         setStatsLoading(true);
@@ -212,7 +212,7 @@ export default function DashboardAgent() {
         const token = sessionStorage.getItem('token');
         const immobiliDisponibili = await fetchImmobiliDisponibili();
 
-        if ((authuser.ruolo === "Agente" || authuser.ruolo === "AmministratoreAgenzia") && token) {
+        if ((authUser.ruolo === "Agente" || authUser.ruolo === "AmministratoreAgenzia") && token) {
           setStats(await fetchOfferteStats(
             `${process.env.NEXT_PUBLIC_API_URL}/offerte/agente`,
             token, immobiliDisponibili,
@@ -221,7 +221,7 @@ export default function DashboardAgent() {
           return;
         }
 
-        if (authuser.ruolo === "Cliente" && token) {
+        if (authUser.ruolo === "Cliente" && token) {
           setStats(await fetchOfferteStats(
             `${process.env.NEXT_PUBLIC_API_URL}/offerte/utente`,
             token, immobiliDisponibili,
@@ -230,7 +230,7 @@ export default function DashboardAgent() {
           return;
         }
 
-        if (authuser.ruolo === "Supporto" && token) {
+        if (authUser.ruolo === "Supporto" && token) {
           setStats(await fetchOfferteStats(
             `${process.env.NEXT_PUBLIC_API_URL}/offerte/storico`,
             token, immobiliDisponibili,
@@ -250,13 +250,13 @@ export default function DashboardAgent() {
     };
 
     fetchStats();
-  }, [authuser]);
+  }, [authUser]);
 
-  if (!authuser) {
+  if (!authUser) {
     return <p>Devi essere loggato per accedere alla dashboard.</p>;
   }
 
-  const actions = getActionsByRole(authuser.ruolo as Ruolo);
+  const actions = getActionsByRole(authUser.ruolo as Ruolo);
 
   const cards = [
         {
@@ -296,8 +296,8 @@ export default function DashboardAgent() {
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-500 mt-1">Benvenuto, <span className="font-semibold text-red-600">{authuser.nome}</span>
-            <span className="ml-2 text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{authuser.ruolo}</span>
+          <p className="text-gray-500 mt-1">Benvenuto, <span className="font-semibold text-red-600">{authUser.nome}</span>
+            <span className="ml-2 text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{authUser.ruolo}</span>
           </p>
         </div>
 

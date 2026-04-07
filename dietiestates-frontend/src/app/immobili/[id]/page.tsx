@@ -59,7 +59,7 @@ const DOTAZIONI: { key: keyof ImmobileDettaglio; icon: React.ReactNode; label: s
 export default function ImmobileDettaglioPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const { authuser } = useUser();
+  const { authUser } = useUser();
 
   const [immobile, setImmobile] = useState<ImmobileDettaglio | null>(null);
   const [loading, setLoading] = useState(true);
@@ -228,7 +228,7 @@ export default function ImmobileDettaglioPage() {
           <div className="space-y-4">
             <EstateMap lat={immobile.latitudine} lon={immobile.longitudine} />
 
-            {authuser?.ruolo === 'Cliente' && !immobile.venduto && (
+            {authUser?.ruolo === 'Cliente' && !immobile.venduto && (
               <div className="border-2 border-red-200 rounded-xl p-4 space-y-3">
                 <h2 className="text-base font-semibold">Fai un&apos;offerta</h2>
                 <form onSubmit={handleOfferta} className="space-y-2">
@@ -254,7 +254,7 @@ export default function ImmobileDettaglioPage() {
               </div>
             )}
 
-            {!authuser && (
+            {!authUser && (
               <div className="border rounded-xl p-4 text-center bg-gray-50">
                 <p className="text-sm text-gray-600 mb-2">Accedi per inviare un&apos;offerta</p>
                 <Link href="/login" className="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 inline-block font-semibold">Accedi</Link>

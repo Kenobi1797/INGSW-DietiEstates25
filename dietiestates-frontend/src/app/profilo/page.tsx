@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useUser } from '@/Context/Context';
 
 export default function ProfiloPage() {
-  const { authuser } = useUser();
+  const { authUser } = useUser();
 
   const [oldPassword, setOldPassword]     = useState('');
   const [newPassword, setNewPassword]     = useState('');
@@ -13,7 +13,7 @@ export default function ProfiloPage() {
   const [success, setSuccess]             = useState('');
   const [error, setError]                 = useState('');
 
-  if (!authuser) {
+  if (!authUser) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-gray-500">Devi essere loggato per accedere a questa sezione.</p>
@@ -84,31 +84,31 @@ export default function ProfiloPage() {
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500">Nome</span>
-              <span className="text-sm font-semibold text-gray-900">{authuser.nome}</span>
+              <span className="text-sm font-semibold text-gray-900">{authUser.nome}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500">Ruolo</span>
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700 border border-red-200">
-                {ruoloLabel[authuser.ruolo] ?? authuser.ruolo}
+                {ruoloLabel[authUser.ruolo] ?? authUser.ruolo}
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500">Metodo di accesso</span>
               <span className="text-sm font-semibold text-gray-900">
-                {authuser.loginMethod ?? (authuser.isOAuth ? 'Google' : 'Email e password')}
+                {authUser.loginMethod ?? (authUser.isOAuth ? 'Google' : 'Email e password')}
               </span>
             </div>
-            {authuser.idAgenzia && (
+            {authUser.idAgenzia && (
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">ID Agenzia</span>
-                <span className="text-sm font-semibold text-gray-900">#{authuser.idAgenzia}</span>
+                <span className="text-sm font-semibold text-gray-900">#{authUser.idAgenzia}</span>
               </div>
             )}
           </div>
         </div>
 
         {/* Card cambio password — visibile solo all'AmministratoreAgenzia e non per utenti OAuth */}
-        {!authuser.isOAuth && authuser.ruolo === 'AmministratoreAgenzia' && <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        {!authUser.isOAuth && authUser.ruolo === 'AmministratoreAgenzia' && <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Cambia password</h2>
 
           {success && (

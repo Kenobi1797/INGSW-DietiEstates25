@@ -19,7 +19,7 @@ interface Offerta {
 }
 
 export default function ValutaOffertePage() {
-  const { authuser } = useUser();
+  const { authUser } = useUser();
   const [offerte, setOfferte] = useState<Offerta[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -39,7 +39,7 @@ export default function ValutaOffertePage() {
       const data = await response.json();
       let offerteList = Array.isArray(data) ? data : [];
 
-      if (authuser?.ruolo === 'Supporto') {
+      if (authUser?.ruolo === 'Supporto') {
         const immobiliResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/immobili/miei`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -64,10 +64,12 @@ export default function ValutaOffertePage() {
     } finally {
       setLoading(false);
     }
-  }, [authuser?.ruolo]);
+  }, [authUser?.ruolo]);
 
   useEffect(() => {
-    void fetchOfferte();
+    fetchOfferte().catch(() => {
+      // Error state is already handled inside fetchOfferte.
+    });
   }, [fetchOfferte]);
 
   const toggleContropropostaForm = (idOfferta: number) => {
@@ -119,7 +121,7 @@ export default function ValutaOffertePage() {
     }
   };
 
-  if (!authuser) return (
+  if (!authUser) return (
     <div className="min-h-screen flex items-center justify-center">
       <p className="text-gray-500">Devi essere loggato per accedere a questa sezione.</p>
     </div>

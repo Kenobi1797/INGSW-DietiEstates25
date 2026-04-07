@@ -84,6 +84,14 @@ export async function createManualOfferta(req: AuthRequest, res: Response) {
   if (!parsed.success) return res.status(400).json({ error: parsed.error });
 
   try {
+    const immobileVenduto = await OffertaDAO.getImmobileVendutoState(parsed.data.idImmobile);
+    if (immobileVenduto === null) {
+      return res.status(404).json({ error: 'Immobile non trovato' });
+    }
+    if (immobileVenduto) {
+      return res.status(409).json({ error: 'Non e possibile inserire offerte manuali su un immobile venduto' });
+    }
+
     const idCliente = parsed.data.idCliente ?? await UtenteDAO.getOrCreateManualCliente();
 
     const offerta = await OffertaDAO.createManualOfferta(
